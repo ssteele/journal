@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEntryRequest;
+// use App\Http\Requests\UpdateEntryRequest;
+use App\Models\Entry;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class EntryController extends Controller
@@ -48,9 +52,12 @@ class EntryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEntryRequest $request)
     {
-        //
+        $entry = new Entry($request->all());
+        \Auth::user()->entry()->save($entry);
+    
+        return redirect()->route('entries.create');
     }
 
     /**

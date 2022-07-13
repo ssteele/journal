@@ -42,15 +42,16 @@ class Entry extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
+    // @todo
     // /**
     //  * Define the relationship between two eloquent models: Entry & EntryHasTag
     //  */
     // public function entryHasTag()
     // {
-    //     return $this->hasMany('App\EntryHasTag');
+    //     return $this->hasMany('App\Models\EntryHasTag');
     // }
 
     // /**
@@ -58,7 +59,7 @@ class Entry extends Model
     //  */
     // public function entryHasMention()
     // {
-    //     return $this->hasMany('App\EntryHasMention');
+    //     return $this->hasMany('App\Models\EntryHasMention');
     // }
 
     // /**
@@ -66,6 +67,6 @@ class Entry extends Model
     //  */
     // public function marker()
     // {
-    //     return $this->hasMany('App\Marker');
+    //     return $this->hasMany('App\Models\Marker');
     // }
 }

@@ -4,18 +4,21 @@ import { Head, useForm, Link } from '@inertiajs/inertia-react';
 
 export default function Create(props) {
     const defaultDate = new Date().toISOString().slice(0, 10);
-
-    const { data, setData, errors, post } = useForm({
+    const initialState = {
         date: defaultDate,
         tempo: '',
         entry: '',
-    });
+    };
+    const { data, errors, post, setData } = useForm(initialState);
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log('e:', e);
-        console.log('data:', data);
-        // post(route('posts.store'));
+        post(route('entries.store'), {
+            onSuccess: () => {
+                // @todo: flash notify
+                console.log('Entry added');
+            },
+        });
     }
 
     return (
