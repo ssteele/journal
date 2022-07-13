@@ -2,7 +2,7 @@ import React from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head, useForm, Link } from '@inertiajs/inertia-react';
 
-export default function Entry(props) {
+export default function Create(props) {
     const defaultDate = new Date().toISOString().slice(0, 10);
 
     const { data, setData, errors, post } = useForm({

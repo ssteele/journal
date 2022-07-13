@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\EntryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,8 @@ use Inertia\Inertia;
 |
 */
 
+Route::resource('entries', EntryController::class);
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -23,10 +26,6 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
-Route::get('/entry', function () {
-    return Inertia::render('Entry');
-})->middleware(['auth', 'verified'])->name('entry');
 
 Route::get('/upload', function () {
     return Inertia::render('Upload');
