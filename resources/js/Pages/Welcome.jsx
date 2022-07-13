@@ -1,4 +1,5 @@
 import React from 'react';
+import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link, Head } from '@inertiajs/inertia-react';
 
 export default function Welcome(props) {
@@ -10,9 +11,15 @@ export default function Welcome(props) {
             <div className="relative flex justify-center min-h-screen bg-gray-100 dark:bg-gray-900 items-center sm:pt-0">
                 <div className="fixed top-0 right-0 px-6 py-4 sm:block">
                     {props.auth.user ? (
-                        <Link href={route('dashboard')} className="text-sm text-gray-700 underline">
-                            Dashboard
-                        </Link>
+                        <>
+                            <Link href={route('entry')} className="pr-4 text-sm text-gray-700 underline">
+                                Entry
+                            </Link>
+
+                            <Link href={route('upload')} className="text-sm text-gray-700 underline">
+                                Upload
+                            </Link>
+                        </>
                     ) : (
                         <>
                             <Link href={route('login')} className="text-sm text-gray-700 underline">
@@ -30,7 +37,7 @@ export default function Welcome(props) {
 
                 <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <h1 className="flex justify-center pt-8 sm:justify-start text-6xl">
-                        Journey
+                        <ApplicationLogo className="block h-32 w-auto text-gray-500" />ournal
                     </h1>
                 </div>
             </div>
