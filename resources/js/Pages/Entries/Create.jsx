@@ -1,6 +1,6 @@
-import React from 'react';
 import Authenticated from '@/Layouts/Authenticated';
-import { Head, useForm, Link } from '@inertiajs/inertia-react';
+import { Head, useForm } from '@inertiajs/inertia-react';
+import React from 'react';
 
 export default function Create(props) {
     const defaultDate = new Date().toISOString().slice(0, 10);

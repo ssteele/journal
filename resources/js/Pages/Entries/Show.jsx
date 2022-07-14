@@ -1,5 +1,5 @@
-import { Head } from '@inertiajs/inertia-react';
 import Authenticated from '@/Layouts/Authenticated';
+import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Show({ auth, entry, errors }) {

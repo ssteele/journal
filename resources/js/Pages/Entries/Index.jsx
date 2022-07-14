@@ -1,6 +1,6 @@
 import Card from '@/Components/Entry/Card';
-import { Head } from '@inertiajs/inertia-react';
 import Authenticated from '@/Layouts/Authenticated';
+import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Index({ auth, entries, errors }) {

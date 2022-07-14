@@ -1,6 +1,6 @@
-import React from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link, Head } from '@inertiajs/inertia-react';
+import React from 'react';
 
 export default function Welcome(props) {
     const canRegister = false;
