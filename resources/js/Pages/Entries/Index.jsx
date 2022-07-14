@@ -14,10 +14,12 @@ export default function Index({ auth, entries, errors }) {
 
             <div className="py-12">
                 {entries.map((entry, i) => {
-                    return <Card
-                        key={i}
-                        entry={entry}
-                    ></Card>
+                    return (
+                        <Card
+                            key={i}
+                            entry={entry}
+                        ></Card>
+                    );
                 })}
             </div>
         </Authenticated>
