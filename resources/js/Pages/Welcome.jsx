@@ -16,6 +16,10 @@ export default function Welcome(props) {
                                 Create
                             </Link>
 
+                            <Link href={route('entries.index')} className="pr-4 text-sm text-gray-700 underline">
+                                View
+                            </Link>
+
                             <Link href={route('upload')} className="text-sm text-gray-700 underline">
                                 Upload
                             </Link>
