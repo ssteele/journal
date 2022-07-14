@@ -2,21 +2,21 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head, useForm } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Create({ auth, errors }) {
-    const defaultDate = new Date().toISOString().slice(0, 10);
+export default function Edit({ auth, entry, errors }) {
+    const { id, date, tempo, entry: body } = entry;
     const initialState = {
-        date: defaultDate,
-        tempo: '',
-        entry: '',
+        date,
+        tempo,
+        entry: body,
     };
-    const { data, errors: formErrors, post, setData } = useForm(initialState);
+    const { data, errors: formErrors, put, setData } = useForm(initialState);
 
     function handleSubmit(e) {
         e.preventDefault();
-        post(route('entries.store'), {
+        put(route('entries.update', id), {
             onSuccess: () => {
                 // @todo: flash notify
-                console.log('Entry added');
+                console.log('Entry updated');
             },
         });
     }
@@ -93,7 +93,7 @@ export default function Create({ auth, errors }) {
                                         type="submit"
                                         className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
                                     >
-                                        Log
+                                        Update
                                     </button>
                                 </div>
                             </form>

@@ -50,15 +50,14 @@ class EntryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreEntryRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreEntryRequest $request)
     {
         $entry = new Entry($request->all());
-        \Auth::user()->entry()->save($entry);
-    
-        return redirect()->route('entries.create');
+        $entity = \Auth::user()->entry()->save($entry);
+        return redirect()->route('entries.update', $entity->id);
     }
 
     /**
@@ -81,19 +80,32 @@ class EntryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $entry = Entry::find($id);
+        return Inertia::render('Entries/Edit', ['entry' => $entry]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreEntryRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreEntryRequest $request, $id)
     {
-        //
+        $entry = Entry::find($id);
+        $update = new Entry($request->all());
+
+        // update fillable fields (except user_id)
+        $fillable = array_filter($update->getFillable(), function ($prop) {
+            return $prop != 'user_id';
+        });
+        foreach ($fillable as $prop) {
+            $entry->$prop = $update->$prop;
+        }
+    
+        $entry->save();
+        return redirect()->route('entries.update', $id);
     }
 
     /**

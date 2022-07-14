@@ -1,9 +1,11 @@
 import Authenticated from '@/Layouts/Authenticated';
-import { Head } from '@inertiajs/inertia-react';
+import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Show({ auth, entry, errors }) {
     const { id, date, tempo, entry: body } = entry;
+    const rawDate = new Date(date);
+    const formattedDate = new Date(rawDate.getTime() - rawDate.getTimezoneOffset() * -60000).toLocaleDateString();
 
     return (
         <Authenticated
@@ -20,17 +22,23 @@ export default function Show({ auth, entry, errors }) {
                             <div className="flex flex-col">
                                 <div className="mb-4">
                                     <label>Date</label>
-                                    <div className="p-4 border bg-gray-100">{ date }</div>
+                                    <Link href={route('entries.edit', id)}>
+                                        <div className="p-4 border bg-gray-100">{ formattedDate }</div>
+                                    </Link>
                                 </div>
 
                                 <div className="mb-4">
                                     <label>Tempo</label>
-                                    <div className="p-4 border bg-gray-100">{ tempo }</div>
+                                    <Link href={route('entries.edit', id)}>
+                                        <div className="p-4 border bg-gray-100">{ tempo }</div>
+                                    </Link>
                                 </div>
 
                                 <div className="mb-0">
                                     <label>Entry</label>
-                                    <div className="p-4 border bg-gray-100">{ body }</div>
+                                    <Link href={route('entries.edit', id)}>
+                                        <div className="p-4 border bg-gray-100">{ body }</div>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
