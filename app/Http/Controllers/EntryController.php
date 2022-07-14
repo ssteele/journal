@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEntryRequest;
-// use App\Http\Requests\UpdateEntryRequest;
+use App\Http\Requests\UpdateEntryRequest;
 use App\Models\Entry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -87,11 +87,11 @@ class EntryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\StoreEntryRequest  $request
+     * @param  \App\Http\Requests\UpdateEntryRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreEntryRequest $request, $id)
+    public function update(UpdateEntryRequest $request, $id)
     {
         $entry = Entry::find($id);
         $update = new Entry($request->all());

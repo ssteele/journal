@@ -26,7 +26,6 @@ class UpdateEntryRequest extends FormRequest
     {
         return [
             'date'  => 'required | date',
-            // 'date'  => 'required | date | unique:entries', // @todo: not sure - this is update method
             'tempo' => 'required | numeric',
             'entry' => 'required',
         ];
