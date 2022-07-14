@@ -1,11 +1,11 @@
 import Authenticated from '@/Layouts/Authenticated';
+import FormatDate from '@/Utils/FormatDate';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Show({ auth, entry, errors }) {
     const { id, date, tempo, entry: body } = entry;
-    const rawDate = new Date(date);
-    const formattedDate = new Date(rawDate.getTime() - rawDate.getTimezoneOffset() * -60000).toLocaleDateString();
+    const formattedDate = FormatDate(date);
 
     return (
         <Authenticated
