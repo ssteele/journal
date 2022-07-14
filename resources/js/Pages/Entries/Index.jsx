@@ -1,6 +1,6 @@
 import Card from '@/Components/Entry/Card';
 import Authenticated from '@/Layouts/Authenticated';
-import { Head } from '@inertiajs/inertia-react';
+import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Index({ auth, entries, errors }) {
@@ -15,10 +15,14 @@ export default function Index({ auth, entries, errors }) {
             <div className="py-12">
                 {entries.map((entry, i) => {
                     return (
-                        <Card
+                        <Link
+                            href={route('entries.show', entry?.id)}
                             key={i}
-                            entry={entry}
-                        ></Card>
+                        >
+                            <Card
+                                entry={entry}
+                            ></Card>
+                        </Link>
                     );
                 })}
             </div>
