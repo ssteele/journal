@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class EntryController extends Controller
 {
-    // private $dateLimit = 28;
+    private $dateLimit = 28;
     // private $average = 0;
     // private $csvRows = [];
     // private $csvCounter = 0;
@@ -33,7 +33,7 @@ class EntryController extends Controller
      */
     public function index()
     {
-        $entries = Entry::all();
+        $entries = Entry::limit($this->dateLimit)->get();
         return Inertia::render('Entries/Index', ['entries' => $entries]);
     }
 
