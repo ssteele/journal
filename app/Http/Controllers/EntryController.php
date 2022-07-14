@@ -33,7 +33,8 @@ class EntryController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Entries/Index');
+        $entries = Entry::all();
+        return Inertia::render('Entries/Index', ['entries' => $entries]);
     }
 
     /**
@@ -68,7 +69,8 @@ class EntryController extends Controller
      */
     public function show($id)
     {
-        //
+        $entry = Entry::find($id);
+        return Inertia::render('Entries/Show', ['entry' => $entry]);
     }
 
     /**

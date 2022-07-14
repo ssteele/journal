@@ -39,7 +39,7 @@ export default function Create(props) {
                                         <label>Date</label>
                                         <input
                                             type="date"
-                                            className="w-full px-4 py-2 border-gray-200"
+                                            className="w-full p-4 border-gray-200"
                                             label="date"
                                             name="date"
                                             value={data.date}
@@ -56,7 +56,7 @@ export default function Create(props) {
                                         <label>Tempo</label>
                                         <input
                                             type="number"
-                                            className="w-full px-4 py-2 border-gray-200"
+                                            className="w-full p-4 border-gray-200"
                                             label="Tempo"
                                             name="tempo"
                                             value={data.tempo}
@@ -73,7 +73,7 @@ export default function Create(props) {
                                         <label>Entry</label>
                                         <textarea
                                             type="text"
-                                            className="w-full h-96 px-4 py-2 border-gray-200"
+                                            className="w-full h-96 p-4 border-gray-200"
                                             label="entry"
                                             name="entry"
                                             errors={errors.entry}
@@ -88,7 +88,7 @@ export default function Create(props) {
                                     </div>
                                 </div>
 
-                                <div className="mt-4">
+                                <div className="mt-4 flex justify-end">
                                     <button
                                         type="submit"
                                         className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
