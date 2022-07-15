@@ -156,7 +156,6 @@ class EntryController extends Controller
     public function upload(UploadEntryRequest $request)
     {
         $csv = $request->file('csv');
-        $fileName = $csv->getClientOriginalName();
         $filePath = base_path() . '/public/';
         $fileUpload = $csv->move($filePath, $csv);
 
@@ -175,6 +174,8 @@ class EntryController extends Controller
             $this->store($entryRequest);
             // $this->store($entryRequest, $annotationHandler);
         }
+        // delete uploaded csv
+        unlink($fileUpload);
 
         return redirect()->route('entries.index');
     }
