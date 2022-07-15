@@ -28,7 +28,10 @@ Route::get('/', function () {
 });
 
 Route::get('/upload', function () {
-    return Inertia::render('Upload');
-})->middleware(['auth', 'verified'])->name('upload');
+    return Inertia::render('Entries/Upload');
+})->middleware(['auth', 'verified'])->name('create-upload');
+
+Route::post('/upload', [EntryController::class, 'upload'])
+    ->middleware(['auth', 'verified'])->name('store-upload');
 
 require __DIR__.'/auth.php';

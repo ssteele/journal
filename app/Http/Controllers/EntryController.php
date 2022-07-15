@@ -4,17 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEntryRequest;
 use App\Http\Requests\UpdateEntryRequest;
+use App\Http\Requests\UploadEntryRequest;
 use App\Models\Entry;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class EntryController extends Controller
 {
+    /** @var integer */
     private $dateLimit = 28;
+
+    // /** @var float */
     // private $average = 0;
-    // private $csvRows = [];
-    // private $csvCounter = 0;
+
 
     /**
      * Create a new controller instance
@@ -57,7 +61,9 @@ class EntryController extends Controller
     {
         $entry = new Entry($request->all());
         $entity = \Auth::user()->entry()->save($entry);
-        return redirect()->route('entries.update', $entity->id);
+        if (is_null($request->bulk)) {
+            return redirect()->route('entries.update', $entity->id);
+        }
     }
 
     /**
@@ -117,5 +123,59 @@ class EntryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Use maatwebsite/excel package to extract CSV data
+     * @param  object $csvUpload    File upload
+     */
+    private function extractCsvData($csvUpload)
+    {
+        $headers = [];
+        $rows = [];
+        if (false !== ($file = fopen($csvUpload, 'r'))) {
+            if (false !== ($data = fgetcsv($file, null, '|'))) {        
+                $headers = array_map('strtolower', $data); 
+            }
+
+            while (false !== ($data = fgetcsv($file, null, '|'))) {        
+                $rows[] = array_combine($headers, $data);
+            }
+            fclose($file);
+        }
+
+        return $rows;
+    }
+
+    /**
+     * Save several journal entries
+     *
+     * @return Response
+     */
+    // public function upload(UploadEntryRequest $request, Handler $annotationHandler)
+    public function upload(UploadEntryRequest $request)
+    {
+        $csv = $request->file('csv');
+        $fileName = $csv->getClientOriginalName();
+        $filePath = base_path() . '/public/';
+        $fileUpload = $csv->move($filePath, $csv);
+
+        $csvRows = $this->extractCsvData($fileUpload);
+        foreach ($csvRows as $row) {
+            // pass through entry request validation
+            $entryRequest = new StoreEntryRequest;
+            $entryRequest->replace([
+                'user'  => \Auth::user(),
+                'date'  => Carbon::createFromFormat('m.d.y', $row['date'])->toDateTimeString(),
+                'tempo' => $row['tempo'],
+                'entry' => $row['entry'],
+                'bulk'  => true,
+            ]);
+
+            $this->store($entryRequest);
+            // $this->store($entryRequest, $annotationHandler);
+        }
+
+        return redirect()->route('entries.index');
     }
 }
