@@ -12,15 +12,15 @@ export default function Welcome(props) {
                 <div className="fixed top-0 right-0 px-6 py-4 sm:block">
                     {props.auth.user ? (
                         <>
-                            <Link href={route('entries.create')} className="pr-4 text-sm text-gray-700 underline">
-                                Create
-                            </Link>
-
                             <Link href={route('entries.index')} className="pr-4 text-sm text-gray-700 underline">
                                 View
                             </Link>
 
-                            <Link href={route('upload')} className="text-sm text-gray-700 underline">
+                            <Link href={route('entries.create')} className="pr-4 text-sm text-gray-700 underline">
+                                Create
+                            </Link>
+
+                            <Link href={route('create-upload')} className="text-sm text-gray-700 underline">
                                 Upload
                             </Link>
                         </>
