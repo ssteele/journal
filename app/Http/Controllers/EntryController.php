@@ -71,11 +71,12 @@ class EntryController extends Controller
         $entry = new Entry($request->all());
         $entity = $user->entry()->save($entry);
 
-        // save annotations
+        // set annotations
         $annotationHandler->setUserId($user->id);
         $annotationHandler->setEntryId($entity->id);
         $annotationHandler->setEntryText($entity->entry);
 
+        // save annotations
         $annotationHandler->extract();
         $annotationHandler->save();
 
@@ -115,22 +116,37 @@ class EntryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function update(UpdateEntryRequest $request, $id, Handler $annotationHandler)
-    public function update(UpdateEntryRequest $request, $id)
+    public function update(UpdateEntryRequest $request, $id, Handler $annotationHandler)
     {
+        // get/create the things
+        $user = \Auth::user();
         $entry = Entry::find($id);
         $update = new Entry($request->all());
 
-        // update fillable fields (except user_id)
+        // update fillable fields (except user_id), then save
         $fillable = array_filter($update->getFillable(), function ($prop) {
             return $prop != 'user_id';
         });
         foreach ($fillable as $prop) {
             $entry->$prop = $update->$prop;
         }
-    
         $entry->save();
-        return redirect()->route('entries.update', $id);
+
+        // set annotations
+        $annotationHandler->setUserId($user->id);
+        $annotationHandler->setEntryId($id);
+        $annotationHandler->setEntryText($entry->entry);
+
+        // clear existing annotations
+        $annotationHandler->clear();
+
+        // save annotations
+        $annotationHandler->extract();
+        $annotationHandler->save();
+
+        if (is_null($request->bulk)) {
+            return redirect()->route('entries.update', $id);
+        }
     }
 
     /**

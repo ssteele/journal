@@ -190,4 +190,34 @@ class Handler
             }
         }
     }
+
+    /**
+     * Clear entry mentions on entry update
+     */
+    private function clearEntryMentions($entryId)
+    {
+        \DB::table('entry_has_mentions')
+            ->where('entry_id', $entryId)
+            ->delete();
+    }
+
+    /**
+     * Clear entry tags on entry update
+     */
+    private function clearEntryTags($entryId)
+    {
+        \DB::table('entry_has_tags')
+            ->where('entry_id', $entryId)
+            ->delete();
+    }
+
+    /**
+     * Clear annotations on entry update
+     * @return void
+     */
+    public function clear()
+    {
+        $this->clearEntryMentions($this->entryId);
+        $this->clearEntryTags($this->entryId);
+    }
 }
