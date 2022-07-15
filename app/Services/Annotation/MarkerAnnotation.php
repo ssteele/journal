@@ -54,6 +54,7 @@ class MarkerAnnotation extends AbstractAnnotation
             }
         }
 
+        // @todo: do this better or not at all
         // verify all markers have been assigned
         $originalMarkerCount = count($originalMarkers);
         $categorizedMarkerCount = count($categorizedMarkers, COUNT_RECURSIVE) - count($categorizedMarkers);
