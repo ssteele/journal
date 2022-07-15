@@ -45,28 +45,27 @@ class Entry extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    // @todo
-    // /**
-    //  * Define the relationship between two eloquent models: Entry & EntryHasTag
-    //  */
-    // public function entryHasTag()
-    // {
-    //     return $this->hasMany('App\Models\EntryHasTag');
-    // }
+    /**
+     * Define the relationship between two eloquent models: Entry & EntryHasTag
+     */
+    public function entryHasTag()
+    {
+        return $this->hasMany('App\Models\EntryHasTag');
+    }
 
-    // /**
-    //  * Define the relationship between two eloquent models: Entry & EntryHasTag
-    //  */
-    // public function entryHasMention()
-    // {
-    //     return $this->hasMany('App\Models\EntryHasMention');
-    // }
+    /**
+     * Define the relationship between two eloquent models: Entry & EntryHasTag
+     */
+    public function entryHasMention()
+    {
+        return $this->hasMany('App\Models\EntryHasMention');
+    }
 
-    // /**
-    //  * Define the relationship between two eloquent models: Entry & Marker
-    //  */
-    // public function marker()
-    // {
-    //     return $this->hasMany('App\Models\Marker');
-    // }
+    /**
+     * Define the relationship between two eloquent models: Entry & Marker
+     */
+    public function marker()
+    {
+        return $this->hasMany('App\Models\Marker');
+    }
 }

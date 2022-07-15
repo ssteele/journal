@@ -6,6 +6,7 @@ use App\Http\Requests\StoreEntryRequest;
 use App\Http\Requests\UpdateEntryRequest;
 use App\Http\Requests\UploadEntryRequest;
 use App\Models\Entry;
+use App\Services\Annotation\Handler;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -60,10 +61,23 @@ class EntryController extends Controller
      * @param  \App\Http\Requests\StoreEntryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreEntryRequest $request)
+    public function store(StoreEntryRequest $request, Handler $annotationHandler)
     {
+        // get authenticated user
+        $user = \Auth::user();
+
+        // save entry
         $entry = new Entry($request->all());
-        $entity = \Auth::user()->entry()->save($entry);
+        $entity = $user->entry()->save($entry);
+
+        // save annotations
+        $annotationHandler->setUserId($user->id);
+        $annotationHandler->setEntryId($entity->id);
+        $annotationHandler->setEntryText($entity->entry);
+
+        $annotationHandler->extract();
+        $annotationHandler->save();
+
         if (is_null($request->bulk)) {
             return redirect()->route('entries.update', $entity->id);
         }
@@ -100,6 +114,7 @@ class EntryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // public function update(UpdateEntryRequest $request, $id, Handler $annotationHandler)
     public function update(UpdateEntryRequest $request, $id)
     {
         $entry = Entry::find($id);

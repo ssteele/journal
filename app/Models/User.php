@@ -50,20 +50,19 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Entry');
     }
 
-    // @todo
-    // /**
-    //  * Define the relationship between two eloquent models: User & Tag
-    //  */
-    // public function tag()
-    // {
-    //     return $this->hasMany('App\Models\Tag');
-    // }
+    /**
+     * Define the relationship between two eloquent models: User & Tag
+     */
+    public function tag()
+    {
+        return $this->hasMany('App\Models\Tag');
+    }
 
-    // /**
-    //  * Define the relationship between two eloquent models: User & Mention
-    //  */
-    // public function mention()
-    // {
-    //     return $this->hasMany('App\Models\Mention');
-    // }
+    /**
+     * Define the relationship between two eloquent models: User & Mention
+     */
+    public function mention()
+    {
+        return $this->hasMany('App\Models\Mention');
+    }
 }
