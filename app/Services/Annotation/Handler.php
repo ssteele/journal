@@ -165,7 +165,7 @@ class Handler
             ]);
             EntryHasTag::create([
                 'entry_id' => $this->entryId,
-                'tag_id' => $persistedTag->getAttribute('id'),
+                'tag_id' => $persistedTag->id,
             ]);
         }
 
@@ -176,7 +176,7 @@ class Handler
             ]);
             EntryHasMention::create([
                 'entry_id' => $this->entryId,
-                'mention_id' => $persistedMention->getAttribute('id'),
+                'mention_id' => $persistedMention->id,
             ]);
         }
 
