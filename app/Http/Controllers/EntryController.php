@@ -19,6 +19,7 @@ class EntryController extends Controller
 
     // /** @var float */
     // private $average = 0;
+    // @todo: https://github.com/ssteele/archived-journal/blob/6eb545c781c962cd6d781d8c1d36f0559c95fcd3/app/Http/Controllers/EntryController.php#L58
 
 
     /**
