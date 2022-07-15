@@ -16,6 +16,9 @@ class EntryController extends Controller
     /** @var integer */
     private $dateLimit = 28;
 
+    // /** @var float */
+    // private $average = 0;
+
 
     /**
      * Create a new controller instance
