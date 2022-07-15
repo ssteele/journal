@@ -37,7 +37,10 @@ class EntryController extends Controller
      */
     public function index()
     {
-        $entries = Entry::limit($this->dateLimit)->get();
+        $entries = \DB::table('entries')
+            ->orderBy('date', 'desc')
+            ->limit($this->dateLimit)
+            ->get();
         return Inertia::render('Entries/Index', ['entries' => $entries]);
     }
 
