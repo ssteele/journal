@@ -171,8 +171,7 @@ class EntryController extends Controller
      *
      * @return Response
      */
-    // public function upload(UploadEntryRequest $request, Handler $annotationHandler)
-    public function upload(UploadEntryRequest $request)
+    public function upload(UploadEntryRequest $request, Handler $annotationHandler)
     {
         $csv = $request->file('csv');
         $filePath = base_path() . '/public/';
@@ -190,8 +189,7 @@ class EntryController extends Controller
                 'bulk'  => true,
             ]);
 
-            $this->store($entryRequest);
-            // $this->store($entryRequest, $annotationHandler);
+            $this->store($entryRequest, $annotationHandler);
         }
         // delete uploaded csv
         unlink($fileUpload);
