@@ -6,13 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class MarkerCategory extends Model
 {
-    // /**
-    //  * The database table used by the model.
-    //  *
-    //  * @var string
-    //  */
-    // protected $table = 'marker_categories';
-
     /**
      * The attributes that are mass assignable.
      *

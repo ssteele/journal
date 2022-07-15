@@ -6,13 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mention extends Model
 {
-    // /**
-    //  * The database table used by the model.
-    //  *
-    //  * @var string
-    //  */
-    // protected $table = 'mentions';
-
     /**
      * The attributes that are mass assignable.
      *
