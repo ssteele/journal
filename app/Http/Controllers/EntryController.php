@@ -169,7 +169,7 @@ class EntryController extends Controller
         $headers = [];
         $rows = [];
         if (false !== ($file = fopen($csvUpload, 'r'))) {
-            if (false !== ($data = fgetcsv($file, null, '|'))) {        
+            if (false !== ($data = fgetcsv($file, 1000, '|'))) {        
                 $headers = array_map('strtolower', $data); 
             }
 
