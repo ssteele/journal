@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// one-off api route example
+// Route::middleware('auth:sanctum')->get('/mentions',[MentionController::class, 'getNames']);
