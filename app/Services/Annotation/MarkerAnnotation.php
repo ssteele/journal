@@ -54,16 +54,9 @@ class MarkerAnnotation extends AbstractAnnotation
             }
         }
 
-        // @todo: do this better or not at all
         // verify all markers have been assigned
         $originalMarkerCount = count($originalMarkers);
         $categorizedMarkerCount = count($categorizedMarkers, COUNT_RECURSIVE) - count($categorizedMarkers);
-        if (! empty($markers) || $originalMarkerCount != $categorizedMarkerCount) {
-            if (! \App::runningUnitTests()) {                       // @TODO: RuntimeException: Session store not set on request.
-                $request = app(Request::class);
-                $request->session()->flash('flash_marker', $markers);
-            }
-        }
 
         return $categorizedMarkers;
     }
