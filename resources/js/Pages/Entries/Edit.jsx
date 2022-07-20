@@ -2,7 +2,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head, useForm } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Edit({ auth, entry, errors }) {
+export default function Edit({ auth, entry, errors, mentions, tags }) {
     const { id, date, tempo, entry: body } = entry;
     const initialState = {
         date,

@@ -43,7 +43,8 @@ class EntryController extends Controller
             ->orderBy('date', 'desc')
             ->limit($this->dateLimit)
             ->get();
-        return Inertia::render('Entries/Index', ['entries' => $entries]);
+        return Inertia::render('Entries/Index')
+            ->with('entries', $entries);
     }
 
     /**
@@ -53,7 +54,17 @@ class EntryController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Entries/Create');
+        $tags = \DB::table('tags')
+            ->orderBy('name', 'asc')
+            ->pluck('name');
+
+        $mentions = \DB::table('mentions')
+            ->orderBy('name', 'asc')
+            ->pluck('name');
+
+        return Inertia::render('Entries/Create')
+            ->with('tags', $tags)
+            ->with('mentions', $mentions);
     }
 
     /**
@@ -94,7 +105,8 @@ class EntryController extends Controller
     public function show($id)
     {
         $entry = Entry::find($id);
-        return Inertia::render('Entries/Show', ['entry' => $entry]);
+        return Inertia::render('Entries/Show')
+            ->with('entry', $entry);
     }
 
     /**
@@ -106,7 +118,19 @@ class EntryController extends Controller
     public function edit($id)
     {
         $entry = Entry::find($id);
-        return Inertia::render('Entries/Edit', ['entry' => $entry]);
+
+        $tags = \DB::table('tags')
+            ->orderBy('name', 'asc')
+            ->pluck('name');
+
+        $mentions = \DB::table('mentions')
+            ->orderBy('name', 'asc')
+            ->pluck('name');
+
+        return Inertia::render('Entries/Edit')
+            ->with('entry', $entry)
+            ->with('tags', $tags)
+            ->with('mentions', $mentions);
     }
 
     /**

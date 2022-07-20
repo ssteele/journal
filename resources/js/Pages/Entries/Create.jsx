@@ -3,6 +3,7 @@ import { Head, useForm } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Create({ auth, errors }) {
+export default function Create({ auth, errors, mentions, tags }) {
     const defaultDate = new Date().toISOString().slice(0, 10);
     const initialState = {
         date: defaultDate,
