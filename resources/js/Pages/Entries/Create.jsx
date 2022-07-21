@@ -7,9 +7,14 @@ export default function Create({ auth, errors, mentions, tags }) {
     // @todo: extract me
     const useFocus = () => {
         const htmlElRef = useRef(null);
-        const setFocus = () => {
-            console.log('htmlElRef.current:', htmlElRef.current);
-            htmlElRef.current && htmlElRef.current.focus();
+        const setFocus = (position = null) => {
+            const { current } = htmlElRef;
+            if (current) {
+                current.focus();
+                if (position) {
+                    current.setSelectionRange(position, position);
+                }
+            }
         };
         return [htmlElRef, setFocus];
     }
@@ -23,33 +28,65 @@ export default function Create({ auth, errors, mentions, tags }) {
     const { data, errors: formErrors, post, setData } = useForm(initialState);
     // let isMentioning = false;
     // let currentMention = '';
+    const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
+    const [isTaggingStart, setIsTaggingStart] = useState(false);
     const [isTagging, setIsTagging] = useState(false);
     const [currentTag, setCurrentTag] = useState('');
     const [suggestedTags, setSuggestedTags] = useState([]);
+    const [textAreaPosition, setTextAreaPosition] = useState(0);
     const [inputRef, setInputFocus] = useFocus();
+
+    function getAnnotationState() {
+        return {
+            annotationStartIndex,
+            currentTag,
+            entry: data?.entry,
+            suggestedTags,
+        }
+    }
 
     useEffect(() => {
         suggestTags(currentTag);
     }, [currentTag]);
 
-    function resetTags() {
-        setInputFocus();
+    useEffect(() => {
+        if (isTaggingStart) {
+            setIsTaggingStart(false);
+            const { entry } = getAnnotationState();
+            const annotationStartIndex = entry.search(/(?<=\s|^)#(?=\s|$)/);
+            setAnnotationStartIndex(annotationStartIndex + 1);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        // reset textarea
+        setInputFocus(textAreaPosition);
+        setAnnotationStartIndex(0);
         setIsTagging(false);
         setCurrentTag('');
         setSuggestedTags([]);
+    }, [textAreaPosition]);
+
+    function populateAnnotation({
+        annotationStartIndex,
+        currentTag,
+        entry,
+        text,
+    }) {
+        const pre = entry.substring(0, annotationStartIndex);
+        const post = entry.substring(annotationStartIndex + currentTag.length);
+        entry = `${pre}${text} ${post}`;
+        setData('entry', entry);
+
+        const annotationEndIndex = annotationStartIndex + text.length + 1;
+        setTextAreaPosition(annotationEndIndex);
     }
 
-    function populateAnnotation(text) {
-        console.log('text:', text);
-        let { entry } = data;
-        const lastIndex = entry.lastIndexOf(currentTag);
-        // if (n > -1 && n + list[i].length >= str.length) {
-        if (lastIndex > -1) {
-            entry = `${entry.substring(0, lastIndex)}${text} `;
-        }
-        console.log('entry:', entry);
-        setData('entry', entry);
-        resetTags();
+    function triggerPopulateAnnotation(text) {
+        populateAnnotation({
+            ...getAnnotationState(),
+            text,
+        });
     }
 
     function isValidKey(key) {
@@ -72,22 +109,27 @@ export default function Create({ auth, errors, mentions, tags }) {
 
     function listenForAnnotation(e) {
         const { key: lastKey } = e;
-        console.log('lastKey:', lastKey);
+        const { currentTag, suggestedTags } = getAnnotationState();
+
         if (isTagging) {
             if (isValidKey(lastKey)) {
                 setCurrentTag(`${currentTag}${lastKey}`);
             } else if ('Backspace' === lastKey) {
-                setCurrentTag(currentTag.slice(0, -1));
+                if (currentTag.length) {
+                    setCurrentTag(currentTag.slice(0, -1));
+                } else {
+                    setTextAreaPosition();
+                }
             } else if ('Tab' === lastKey) {
                 e.preventDefault();
-                populateAnnotation(suggestedTags[0]);
-                resetTags();
+                triggerPopulateAnnotation(suggestedTags[0]);
             } else if (' ' === lastKey) {
-                resetTags();
+                setTextAreaPosition();
             }
         }
 
         if ('#' === lastKey) {
+            setIsTaggingStart(true);
             setIsTagging(true);
         }
         
@@ -185,7 +227,7 @@ export default function Create({ auth, errors, mentions, tags }) {
                                         {
                                             suggestedTags.map((tag, i) => {
                                                 return <AutoAnnotation
-                                                    callback={populateAnnotation}
+                                                    callback={triggerPopulateAnnotation}
                                                     key={i}
                                                     type="button"
                                                 >{tag}</AutoAnnotation>
