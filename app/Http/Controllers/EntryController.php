@@ -47,6 +47,26 @@ class EntryController extends Controller
             ->with('entries', $entries);
     }
 
+    private function getTagsSortedByFrequency()
+    {
+        return \DB::table('tags')
+            ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
+            ->select('name', \DB::raw('count(*) as freq'))
+            ->groupBy('name')
+            ->orderBy('freq', 'desc')
+            ->pluck('name');
+    }
+
+    private function getMentionsSortedByFrequency()
+    {
+        return \DB::table('mentions')
+            ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
+            ->select('name', \DB::raw('count(*) as freq'))
+            ->groupBy('name')
+            ->orderBy('freq', 'desc')
+            ->pluck('name');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -54,13 +74,8 @@ class EntryController extends Controller
      */
     public function create()
     {
-        $tags = \DB::table('tags')
-            ->orderBy('name', 'asc')
-            ->pluck('name');
-
-        $mentions = \DB::table('mentions')
-            ->orderBy('name', 'asc')
-            ->pluck('name');
+        $tags = $this->getTagsSortedByFrequency();
+        $mentions = $this->getMentionsSortedByFrequency();
 
         return Inertia::render('Entries/Create')
             ->with('tags', $tags)
