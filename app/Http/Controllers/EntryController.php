@@ -7,6 +7,9 @@ use App\Http\Requests\UpdateEntryRequest;
 use App\Http\Requests\UploadEntryRequest;
 use App\Models\Entry;
 use App\Services\Annotation\Handler;
+use App\Repositories\EntryRepository;
+use App\Repositories\MentionRepository;
+use App\Repositories\TagRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -14,6 +17,10 @@ use Inertia\Inertia;
 
 class EntryController extends Controller
 {
+    private $entryRepository;
+    private $tagRepository;
+    private $mentionRepository;
+
     /** @var integer */
     private $dateLimit = 28;
 
@@ -27,9 +34,16 @@ class EntryController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        EntryRepository $entryRepository,
+        TagRepository $tagRepository,
+        MentionRepository $mentionRepository,
+    )
     {
         $this->middleware('auth');
+        $this->entryRepository = $entryRepository;
+        $this->tagRepository = $tagRepository;
+        $this->mentionRepository = $mentionRepository;
     }
 
     /**
@@ -39,32 +53,9 @@ class EntryController extends Controller
      */
     public function index()
     {
-        $entries = \DB::table('entries')
-            ->orderBy('date', 'desc')
-            ->limit($this->dateLimit)
-            ->get();
+        $entries = $this->entryRepository->getRecent($this->dateLimit);
         return Inertia::render('Entries/Index')
             ->with('entries', $entries);
-    }
-
-    private function getTagsSortedByFrequency()
-    {
-        return \DB::table('tags')
-            ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
-            ->select('name', \DB::raw('count(*) as freq'))
-            ->groupBy('name')
-            ->orderBy('freq', 'desc')
-            ->pluck('name');
-    }
-
-    private function getMentionsSortedByFrequency()
-    {
-        return \DB::table('mentions')
-            ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
-            ->select('name', \DB::raw('count(*) as freq'))
-            ->groupBy('name')
-            ->orderBy('freq', 'desc')
-            ->pluck('name');
     }
 
     /**
@@ -74,9 +65,8 @@ class EntryController extends Controller
      */
     public function create()
     {
-        $tags = $this->getTagsSortedByFrequency();
-        $mentions = $this->getMentionsSortedByFrequency();
-
+        $tags = $this->tagRepository->getSortedByFrequency();
+        $mentions = $this->mentionRepository->getSortedByFrequency();
         return Inertia::render('Entries/Create')
             ->with('tags', $tags)
             ->with('mentions', $mentions);
