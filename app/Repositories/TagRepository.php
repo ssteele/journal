@@ -6,6 +6,15 @@ use Illuminate\Support\Facades\DB;
 
 class TagRepository
 {
+    public function getForEntry($id)
+    {
+        return DB::table('tags')
+            ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
+            ->select('tags.id', 'tags.name')
+            ->where('entry_has_tags.entry_id', '=', $id)
+            ->get();
+    }
+
     public function getSortedByFrequency()
     {
         return DB::table('tags')

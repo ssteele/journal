@@ -110,8 +110,12 @@ class EntryController extends Controller
     public function show($id)
     {
         $entry = Entry::find($id);
+        $tags = $this->tagRepository->getForEntry($entry->id);
+        // $mentions = $this->mentionRepository->getSortedByFrequency();
         return Inertia::render('Entries/Show')
-            ->with('entry', $entry);
+            ->with('entry', $entry)
+            ->with('tags', $tags);
+            // ->with('mentions', $mentions);
     }
 
     /**

@@ -3,7 +3,7 @@ import FormatDate from '@/Utils/FormatDate';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Show({ auth, entry, errors }) {
+export default function Show({ auth, entry, errors, mentions, tags }) {
     const { id, date, tempo, entry: body } = entry;
     const formattedDate = FormatDate(date);
 
@@ -44,7 +44,9 @@ export default function Show({ auth, entry, errors }) {
                                 <div className="mt-6">
                                     <label>Tags</label>
                                     <div className="p-4 border border-gray-100 bg-gray-100">
-                                        adaharvi
+                                        {
+                                            tags.map((t) => t.name).join(' ')
+                                        }
                                     </div>
                                 </div>
                             </div>
