@@ -17,7 +17,7 @@ export default function Show({ auth, entry, errors }) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="px-6 bg-white">
                             <div className="flex flex-col">
                                 <div className="mt-6">
@@ -37,7 +37,7 @@ export default function Show({ auth, entry, errors }) {
                             </div>
                         </div>
 
-                        <div className="px-6 bg-white">
+                        <div className="md:col-span-2 px-6 bg-white">
                             <div className="flex flex-col">
                                 <div className="mt-6">
                                     <label>Entry</label>
