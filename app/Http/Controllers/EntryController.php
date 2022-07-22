@@ -123,15 +123,8 @@ class EntryController extends Controller
     public function edit($id)
     {
         $entry = Entry::find($id);
-
-        $tags = \DB::table('tags')
-            ->orderBy('name', 'asc')
-            ->pluck('name');
-
-        $mentions = \DB::table('mentions')
-            ->orderBy('name', 'asc')
-            ->pluck('name');
-
+        $tags = $this->tagRepository->getSortedByFrequency();
+        $mentions = $this->mentionRepository->getSortedByFrequency();
         return Inertia::render('Entries/Edit')
             ->with('entry', $entry)
             ->with('tags', $tags)
