@@ -243,7 +243,7 @@ export default function Create({ auth, errors, mentions, tags }) {
                                 <div className="mb-4">
                                     <label>Suggested</label>
                                     <div className={`
-                                        min-h-fit p-4 border border-gray-200 ${(isAnnotating) && 'bg-green-50'}
+                                        p-4 border border-gray-200 ${(isAnnotating) ? 'bg-green-50' : 'h-40'}
                                     `}>
                                         {
                                             suggestedAnnotations.map((annotation, i) => {
