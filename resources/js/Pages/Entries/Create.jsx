@@ -14,15 +14,9 @@ export default function Create({ auth, errors, mentions, tags }) {
     const { data, errors: formErrors, post, setData } = useForm(initialState);
     const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
     const [isAnnotatingStart, setIsAnnotatingStart] = useState(false);
-    const [isTaggingStart, setIsTaggingStart] = useState(false);
-    const [isMentioningStart, setIsMentioningStart] = useState(false);
     const [isAnnotating, setIsAnnotating] = useState(false);
-    const [isTagging, setIsTagging] = useState(false);
-    const [isMentioning, setIsMentioning] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
-    const [suggestedTags, setSuggestedTags] = useState([]);
-    const [suggestedMentions, setSuggestedMentions] = useState([]);
     const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = UseFocus();
 
@@ -32,21 +26,17 @@ export default function Create({ auth, errors, mentions, tags }) {
             entry: data?.entry,
             searchTerm,
             suggestedAnnotations,
-            suggestedMentions,
-            suggestedTags,
         }
     }
 
     useEffect(() => {
-        // suggestTags(searchTerm);
-        // suggestMentions(searchTerm);
         suggestAnnotations(searchTerm);
     }, [searchTerm]);
 
     useEffect(() => {
         if (isAnnotatingStart) {
             setReset(null);
-            setIsTaggingStart(false);
+            setIsAnnotatingStart(false);
             const { entry } = getAnnotationState();
             let regex;
             if ('tag' === isAnnotating) {
@@ -57,22 +47,6 @@ export default function Create({ auth, errors, mentions, tags }) {
             const annotationStartIndex = entry.search(regex) + 1;
             setAnnotationStartIndex(annotationStartIndex);
         }
-
-        // if (isTaggingStart) {
-        //     setReset(null);
-        //     setIsTaggingStart(false);
-        //     const { entry } = getAnnotationState();
-        //     const annotationStartIndex = entry.search(/(?<=\s|^)#\w(?=\s|$)/) + 1;
-        //     setAnnotationStartIndex(annotationStartIndex);
-        // }
-
-        // if (isMentioningStart) {
-        //     setReset(null);
-        //     setIsMentioningStart(false);
-        //     const { entry } = getAnnotationState();
-        //     const annotationStartIndex = entry.search(/(?<=\s|^)@\w(?=\s|$)/) + 1;
-        //     setAnnotationStartIndex(annotationStartIndex);
-        // }
     }, [data?.entry]);
 
     useEffect(() => {
@@ -80,12 +54,8 @@ export default function Create({ auth, errors, mentions, tags }) {
             setInputFocus(reset);
             setAnnotationStartIndex(0);
             setIsAnnotating(false);
-            setIsTagging(false);
-            setIsMentioning(false);
             setSearchTerm('');
             setSuggestedAnnotations([]);
-            setSuggestedMentions([]);
-            setSuggestedTags([]);
         }
     }, [reset]);
 
@@ -134,25 +104,8 @@ export default function Create({ auth, errors, mentions, tags }) {
         setSuggestedAnnotations(suggestions);
     }
 
-    function suggestTags(partialTag = '') {
-        if (!partialTag.length) {
-            return;
-        }
-        const suggestions = tags.filter((t) => t.startsWith(partialTag));
-        setSuggestedTags(suggestions);
-    }
-
-    function suggestMentions(partialMention = '') {
-        if (!partialMention.length) {
-            return;
-        }
-        const suggestions = mentions.filter((m) => m.startsWith(partialMention));
-        setSuggestedMentions(suggestions);
-    }
-
     function listenForTab(e) {
         const { key } = e;
-        // const { suggestedTags, suggestedMentions } = getAnnotationState();
         const { suggestedAnnotations } = getAnnotationState();
 
         if (isAnnotating) {
@@ -170,7 +123,6 @@ export default function Create({ auth, errors, mentions, tags }) {
         const { searchTerm } = getAnnotationState();
 
         if (isAnnotating) {
-        // if (isTagging || isMentioning) {
             if (isValidKey(key)) {
                 setSearchTerm(`${searchTerm}${key}`);
             } else {
@@ -193,15 +145,11 @@ export default function Create({ auth, errors, mentions, tags }) {
         if ('#' === key) {
             setIsAnnotatingStart(true);
             setIsAnnotating('tag');
-            // setIsTaggingStart(true);
-            // setIsTagging(true);
         }
 
         if ('@' === key) {
             setIsAnnotatingStart(true);
             setIsAnnotating('mention');
-            // setIsMentioningStart(true);
-            // setIsMentioning(true);
         }
     }
 
@@ -297,15 +245,6 @@ export default function Create({ auth, errors, mentions, tags }) {
                                     <div className={`
                                         min-h-fit p-4 border border-gray-200 ${(isAnnotating) && 'bg-green-50'}
                                     `}>
-                                        {/* {
-                                            suggestedTags.map((tag, i) => {
-                                                return <AutoAnnotation
-                                                    callback={triggerPopulateAnnotation}
-                                                    key={i}
-                                                    type="button"
-                                                >{tag}</AutoAnnotation>
-                                            })
-                                        } */}
                                         {
                                             suggestedAnnotations.map((annotation, i) => {
                                                 return <AutoAnnotation
