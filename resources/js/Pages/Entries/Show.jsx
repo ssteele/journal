@@ -34,6 +34,19 @@ export default function Show({ auth, entry, errors }) {
                                     </Link>
                                 </div>
 
+                                <div className="mt-6">
+                                    <label>Mentions</label>
+                                    <div className="p-4 border border-gray-100 bg-gray-100">
+                                        marilynwarren
+                                    </div>
+                                </div>
+
+                                <div className="mt-6">
+                                    <label>Tags</label>
+                                    <div className="p-4 border border-gray-100 bg-gray-100">
+                                        adaharvi
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
