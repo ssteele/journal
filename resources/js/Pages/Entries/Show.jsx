@@ -17,27 +17,32 @@ export default function Show({ auth, entry, errors }) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 bg-white border-b border-gray-200">
+                    <div className="grid grid-cols-1 md:grid-cols-2 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="px-6 bg-white">
                             <div className="flex flex-col">
-                                <div className="mb-4">
+                                <div className="mt-6">
                                     <label>Date</label>
                                     <Link href={route('entries.edit', id)}>
-                                        <div className="p-4 border bg-gray-100">{ formattedDate }</div>
+                                        <div className="p-4 border border-gray-100 bg-gray-100">{ formattedDate }</div>
                                     </Link>
                                 </div>
 
-                                <div className="mb-4">
+                                <div className="mt-6">
                                     <label>Tempo</label>
                                     <Link href={route('entries.edit', id)}>
-                                        <div className="p-4 border bg-gray-100">{ tempo }</div>
+                                        <div className="p-4 border border-gray-100 bg-gray-100">{ tempo }</div>
                                     </Link>
                                 </div>
 
-                                <div className="mb-0">
+                            </div>
+                        </div>
+
+                        <div className="px-6 bg-white">
+                            <div className="flex flex-col">
+                                <div className="mt-6">
                                     <label>Entry</label>
                                     <Link href={route('entries.edit', id)}>
-                                        <div className="p-4 border bg-gray-100">{ body }</div>
+                                        <div className="p-4 border border-gray-100 bg-gray-100">{ body }</div>
                                     </Link>
                                 </div>
                             </div>
