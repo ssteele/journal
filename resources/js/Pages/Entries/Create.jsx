@@ -1,24 +1,10 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
 import Authenticated from '@/Layouts/Authenticated';
+import UseFocus from '@/Utils/UseFocus';
 import { Head, useForm } from '@inertiajs/inertia-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Create({ auth, errors, mentions, tags }) {
-    // @todo: extract me
-    const useFocus = () => {
-        const htmlElRef = useRef(null);
-        const setFocus = (position = null) => {
-            const { current } = htmlElRef;
-            if (current) {
-                current.focus();
-                if (position) {
-                    current.setSelectionRange(position, position);
-                }
-            }
-        };
-        return [htmlElRef, setFocus];
-    }
-
     const defaultDate = new Date().toISOString().slice(0, 10);
     const initialState = {
         date: defaultDate,
@@ -34,7 +20,7 @@ export default function Create({ auth, errors, mentions, tags }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [suggestedTags, setSuggestedTags] = useState([]);
     const [reset, setReset] = useState(null);
-    const [inputRef, setInputFocus] = useFocus();
+    const [inputRef, setInputFocus] = UseFocus();
 
     function getAnnotationState() {
         return {
