@@ -34,21 +34,27 @@ export default function Show({ auth, entry, errors, mentions, tags }) {
                                     </Link>
                                 </div>
 
-                                <div className="mt-6">
-                                    <label>Mentions</label>
-                                    <div className="p-4 border border-gray-100 bg-gray-100">
-                                        marilynwarren
+                                {mentions.length > 0 && 
+                                    <div className="mt-6">
+                                        <label>Mentions</label>
+                                        <div className="p-4 border border-gray-100 bg-gray-100">
+                                            {
+                                                mentions.map(a => a.name).join(' ')
+                                            }
+                                        </div>
                                     </div>
-                                </div>
+                                }
 
-                                <div className="mt-6">
-                                    <label>Tags</label>
-                                    <div className="p-4 border border-gray-100 bg-gray-100">
-                                        {
-                                            tags.map((t) => t.name).join(' ')
-                                        }
+                                {tags.length > 0 && 
+                                    <div className="mt-6">
+                                        <label>Tags</label>
+                                        <div className="p-4 border border-gray-100 bg-gray-100">
+                                            {
+                                                tags.map(a => a.name).join(' ')
+                                            }
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             </div>
                         </div>
 
