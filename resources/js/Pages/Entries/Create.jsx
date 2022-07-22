@@ -53,12 +53,13 @@ export default function Create({ auth, errors, mentions, tags }) {
         if (isTaggingStart) {
             setIsTaggingStart(false);
             const { entry } = getAnnotationState();
-            const annotationStartIndex = entry.search(/(?<=\s|^)#(?=\s|$)/);
-            setAnnotationStartIndex(annotationStartIndex + 1);
+            const annotationStartIndex = entry.search(/(?<=\s|^)#\w(?=\s|$)/) + 1;
+            setAnnotationStartIndex(annotationStartIndex);
         }
     }, [data?.entry]);
 
     useEffect(() => {
+        console.log('stop tagging');
         // reset textarea
         setInputFocus(textAreaPosition);
         setAnnotationStartIndex(0);
@@ -107,13 +108,27 @@ export default function Create({ auth, errors, mentions, tags }) {
         setSuggestedTags(suggestions);
     }
 
+    function listenForTab(e) {
+        const { key } = e;
+        const { suggestedTags } = getAnnotationState();
+
+        if (isTagging) {
+            switch (key) {
+                case 'Tab':
+                    console.log('Tab case');
+                    e.preventDefault();
+                    triggerPopulateAnnotation(suggestedTags[0]);
+                    break;
+            }
+        }
+    }
+
     function listenForAnnotation(e) {
         const { key } = e;
-        const { searchTerm, suggestedTags } = getAnnotationState();
+        const { searchTerm } = getAnnotationState();
 
         if (isTagging) {
             if (isValidKey(key)) {
-                console.log('valid:', key);
                 setSearchTerm(`${searchTerm}${key}`);
             } else {
                 switch (key) {
@@ -126,11 +141,6 @@ export default function Create({ auth, errors, mentions, tags }) {
                             setTextAreaPosition();
                         }
                         break;
-                    case 'Tab':
-                        console.log('Tab case');
-                        e.preventDefault();
-                        triggerPopulateAnnotation(suggestedTags[0]);
-                        break;
                     case ' ':
                         console.log('Space case');
                         setTextAreaPosition();
@@ -142,6 +152,7 @@ export default function Create({ auth, errors, mentions, tags }) {
         }
 
         if ('#' === key) {
+            console.log('start tagging');
             setIsTaggingStart(true);
             setIsTagging(true);
         }
@@ -209,7 +220,8 @@ export default function Create({ auth, errors, mentions, tags }) {
                                             label="entry"
                                             name="entry"
                                             onChange={e => setData('entry', e?.target?.value)}
-                                            onKeyDown={e => listenForAnnotation(e)}
+                                            onKeyDown={e => listenForTab(e)}
+                                            onKeyUp={e => listenForAnnotation(e)}
                                             ref={inputRef}
                                             type="text"
                                             value={data.entry}
