@@ -33,7 +33,7 @@ export default function Create({ auth, errors, mentions, tags }) {
     const [isTagging, setIsTagging] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [suggestedTags, setSuggestedTags] = useState([]);
-    const [textAreaPosition, setTextAreaPosition] = useState(0);
+    const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = useFocus();
 
     function getAnnotationState() {
@@ -51,6 +51,7 @@ export default function Create({ auth, errors, mentions, tags }) {
 
     useEffect(() => {
         if (isTaggingStart) {
+            setReset(null);
             setIsTaggingStart(false);
             const { entry } = getAnnotationState();
             const annotationStartIndex = entry.search(/(?<=\s|^)#\w(?=\s|$)/) + 1;
@@ -59,14 +60,14 @@ export default function Create({ auth, errors, mentions, tags }) {
     }, [data?.entry]);
 
     useEffect(() => {
-        console.log('stop tagging');
-        // reset textarea
-        setInputFocus(textAreaPosition);
-        setAnnotationStartIndex(0);
-        setIsTagging(false);
-        setSearchTerm('');
-        setSuggestedTags([]);
-    }, [textAreaPosition]);
+        if (null !== reset) {
+            setInputFocus(reset);
+            setAnnotationStartIndex(0);
+            setIsTagging(false);
+            setSearchTerm('');
+            setSuggestedTags([]);
+        }
+    }, [reset]);
 
     function populateAnnotation({
         annotationStartIndex,
@@ -80,7 +81,7 @@ export default function Create({ auth, errors, mentions, tags }) {
         setData('entry', entry);
 
         const annotationEndIndex = annotationStartIndex + text.length + 1;
-        setTextAreaPosition(annotationEndIndex);
+        setReset(annotationEndIndex);
     }
 
     function triggerPopulateAnnotation(text) {
@@ -115,7 +116,6 @@ export default function Create({ auth, errors, mentions, tags }) {
         if (isTagging) {
             switch (key) {
                 case 'Tab':
-                    console.log('Tab case');
                     e.preventDefault();
                     triggerPopulateAnnotation(suggestedTags[0]);
                     break;
@@ -133,26 +133,21 @@ export default function Create({ auth, errors, mentions, tags }) {
             } else {
                 switch (key) {
                     case 'Backspace':
-                        console.log('Backspace case');
-                        console.log('searchTerm:', searchTerm);
                         if (searchTerm.length) {
                             setSearchTerm(searchTerm.slice(0, -1));
                         } else {
-                            setTextAreaPosition();
+                            setReset();
                         }
                         break;
+                    case 'Escape':
                     case ' ':
-                        console.log('Space case');
-                        setTextAreaPosition();
+                        setReset();
                         break;
-                    default:
-                        console.log('Default case:', key);
                 }
             }
         }
 
         if ('#' === key) {
-            console.log('start tagging');
             setIsTaggingStart(true);
             setIsTagging(true);
         }
