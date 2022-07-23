@@ -5,6 +5,8 @@ import React from 'react';
 
 export default function Show({ auth, entry, errors, mentions, tags }) {
     const { id, date, tempo, entry: body } = entry;
+export default function Show({ auth, entry: dbEntry, errors, mentions, tags }) {
+    const { id, date, tempo, entry } = dbEntry;
     const formattedDate = FormatDate(date);
 
     return (
