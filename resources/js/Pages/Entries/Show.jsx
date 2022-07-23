@@ -8,6 +8,53 @@ export default function Show({ auth, entry: dbEntry, errors, mentions, tags }) {
     const { id, date, tempo, entry } = dbEntry;
     const formattedDate = FormatDate(date);
 
+    function renderMentions(mentions) {
+        return mentions.map(m => m.name).join(', ');
+    }
+
+    function renderTags(tags) {
+        let res = '';
+        let tagsHash = {};
+        let groupedByCount = {};
+        let maxCount = 0;
+
+        tags.map(t => {
+            tagsHash[t.id] = tagsHash[t.id] ? tagsHash[t.id] + 1 : 1;
+            return t;
+        })
+        .map(t => {
+            if (tagsHash[t.id]) {
+                t.count = tagsHash[t.id];
+                delete tagsHash[t.id];
+                return t;
+            }
+        })
+        .filter(t => t)
+        .map(t => {
+            const { count } = t;
+            maxCount = (count > maxCount) ? count : maxCount;
+            if (!groupedByCount[count]) {
+                groupedByCount[count] = [t];
+            } else {
+                groupedByCount[count].push(t);
+            }
+        });
+
+        for (let i=maxCount; i>0; i--) {
+            const group = groupedByCount[i];
+            if (!group) {
+                continue;
+            }
+            const { count } = group[0]
+            res += '<div>';
+            res += `[${count}] `;
+            res += group.map(g => g.name).join(', ');
+            res += '</div>';
+        }
+
+        return res;
+    }
+
     return (
         <Authenticated
             auth={auth}
@@ -39,9 +86,7 @@ export default function Show({ auth, entry: dbEntry, errors, mentions, tags }) {
                                     <div className="mt-6">
                                         <label>Mentions</label>
                                         <div className="p-4 border border-gray-100 bg-gray-100">
-                                            {
-                                                mentions.map(a => a.name).join(' ')
-                                            }
+                                            { renderMentions(mentions) }
                                         </div>
                                     </div>
                                 }
@@ -49,10 +94,10 @@ export default function Show({ auth, entry: dbEntry, errors, mentions, tags }) {
                                 {tags.length > 0 && 
                                     <div className="mt-6">
                                         <label>Tags</label>
-                                        <div className="p-4 border border-gray-100 bg-gray-100">
-                                            {
-                                                tags.map(a => a.name).join(' ')
-                                            }
+                                        <div
+                                            className="p-4 border border-gray-100 bg-gray-100"
+                                            dangerouslySetInnerHTML={{__html: renderTags(tags)}}
+                                        >
                                         </div>
                                     </div>
                                 }
