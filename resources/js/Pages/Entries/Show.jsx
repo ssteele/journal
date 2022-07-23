@@ -1,10 +1,9 @@
 import Authenticated from '@/Layouts/Authenticated';
 import FormatDate from '@/Utils/FormatDate';
+import Nl2br from '@/Utils/Nl2br';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Show({ auth, entry, errors, mentions, tags }) {
-    const { id, date, tempo, entry: body } = entry;
 export default function Show({ auth, entry: dbEntry, errors, mentions, tags }) {
     const { id, date, tempo, entry } = dbEntry;
     const formattedDate = FormatDate(date);
@@ -65,7 +64,10 @@ export default function Show({ auth, entry: dbEntry, errors, mentions, tags }) {
                                 <div className="mt-6">
                                     <label>Entry</label>
                                     <Link href={route('entries.edit', id)}>
-                                        <div className="p-4 border border-gray-100 bg-gray-100">{ body }</div>
+                                        <div
+                                            className="p-4 border border-gray-100 bg-gray-100"
+                                            dangerouslySetInnerHTML={{__html: Nl2br(entry)}}
+                                        ></div>
                                     </Link>
                                 </div>
                             </div>
