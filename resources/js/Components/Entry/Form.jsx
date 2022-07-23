@@ -92,10 +92,10 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
     }) {
         const pre = entry.substring(0, annotationStartIndex);
         const post = entry.substring(annotationStartIndex + searchTerm.length);
-        entry = `${pre}${text} ${post}`;
+        entry = `${pre}${text}${post}`;
         setData('entry', entry);
 
-        const annotationEndIndex = annotationStartIndex + text.length + 1;
+        const annotationEndIndex = annotationStartIndex + text.length;
         setReset(annotationEndIndex);
     }
 
