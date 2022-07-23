@@ -1,6 +1,6 @@
 import Authenticated from '@/Layouts/Authenticated';
 import FormatDate from '@/Utils/FormatDate';
-import Nl2br from '@/Utils/Nl2br';
+import MarkupEntry from '@/Utils/MarkupEntry';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
@@ -66,7 +66,7 @@ export default function Show({ auth, entry: dbEntry, errors, mentions, tags }) {
                                     <Link href={route('entries.edit', id)}>
                                         <div
                                             className="p-4 border border-gray-100 bg-gray-100"
-                                            dangerouslySetInnerHTML={{__html: Nl2br(entry)}}
+                                            dangerouslySetInnerHTML={{__html: MarkupEntry(entry)}}
                                         ></div>
                                     </Link>
                                 </div>
