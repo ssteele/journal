@@ -160,6 +160,11 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
                         }
                         break;
                     case 'Escape':
+                    case 'Enter':
+                    case 'ArrowUp':
+                    case 'ArrowDown':
+                    case 'ArrowLeft':
+                    case 'ArrowRight':
                     case ' ':
                         setReset();
                         break;
