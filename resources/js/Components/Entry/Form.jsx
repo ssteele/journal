@@ -26,6 +26,9 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
     const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = UseFocus();
 
+    // @todo: extract to db
+    const dailyAnnotations = ['sick', 'maybesick', 'alisick', 'harvisick', 'adasick', 'sugarsnack', 'eattoomuch', 'harviday', 'harvihappy', 'harvimontessori', 'harviimpressive', 'harviautonomous', 'harviindependent', 'harviadaindependent', 'harvigrowthspurt', 'temper', 'harvitantrum', 'harviinconsolable', 'harviregression', 'harvitesting', 'harvirestless', 'harvipanics', 'harvisensitive', 'harvionenap', 'aligives', 'alitakes', 'alimindless', 'alidrunk', 'harvidropoff', 'harvipickup', 'harvihomefromschool', 'harvihomefromschoolearly', 'workremote', 'inlateleaveearly', 'workundertime', 'workovertime', 'headsdown', 'stressed', 'productiveday', 'inoffice', 'aliinoffice', 'aliworkslate', 'aliworksreallylate', 'aliovertime', 'harvimommasgirl', 'harvidaddysgirl', 'fatherharvi', 'harviscience', 'harviart', 'cook', 'masturbate', 'flossteeth', 'metime', 'gogogo', 'separatetv', 'needtotalk', 'vulnerable', 'somethingdifferent', 'unusual', 'strangeday', 'awfulday', 'badday', 'longday', 'greatday', 'reallygreatday'];
+
     function handleSubmit(e) {
         e.preventDefault();
         if (isExistingEntry) {
@@ -99,10 +102,20 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
         setReset(annotationEndIndex);
     }
 
-    function triggerPopulateAnnotation(text) {
+    function populateSuggestedAnnotation(text) {
         populateAnnotation({
             ...getAnnotationState(),
             text,
+        });
+    }
+
+    function populateDailyAnnotation(text) {
+        const { entry } = getAnnotationState();
+        populateAnnotation({
+            annotationStartIndex: entry.length,
+            entry,
+            searchTerm: '',
+            text: `#${text} `,
         });
     }
 
@@ -137,7 +150,7 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
             switch (key) {
                 case 'Tab':
                     e.preventDefault();
-                    triggerPopulateAnnotation(suggestedAnnotations[0]);
+                    populateSuggestedAnnotation(suggestedAnnotations[0]);
                     break;
             }
         }
@@ -228,7 +241,7 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
                                         {
                                             suggestedAnnotations.map((annotation, i) => {
                                                 return <AutoAnnotation
-                                                    callback={triggerPopulateAnnotation}
+                                                    callback={populateSuggestedAnnotation}
                                                     key={i}
                                                     type="button"
                                                 >{annotation}</AutoAnnotation>
@@ -267,6 +280,27 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
                                     >
                                         {isExistingEntry ? 'Update' : 'Log'}
                                     </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Daily</label>
+                                <div 
+                                    className="w-full p-4 border border-gray-200"
+                                >
+                                    {
+                                        dailyAnnotations.map((annotation, i) => {
+                                            return <AutoAnnotation
+                                                callback={populateDailyAnnotation}
+                                                key={i}
+                                                type="button"
+                                            >{annotation}</AutoAnnotation>
+                                        })
+                                    }
                                 </div>
                             </div>
                         </div>
