@@ -1,4 +1,5 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
+import { DailyAnnotations, DailyAnnotationsColors } from '@/Constants/DailyAnnotations';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
@@ -25,73 +26,6 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
     const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
     const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = UseFocus();
-
-    // @todo: extract to db
-    const dailyAnnotations = [
-        [
-            'harvihappy',
-            'harvimontessori',
-            'harviimpressive',
-            'harviautonomous',
-            'harviindependent',
-            'harvigrowthspurt',
-            'harvidaddysgirl',
-        ],
-        [
-            'harvitantrum',
-            'harviinconsolable',
-            'harviregression',
-            'harvitesting',
-            'harvirestless',
-            'harvionenap',
-        ],
-        [
-            'harvidropoff',
-            'harvipickup',
-            'harvihomefromschool',
-        ],
-        [
-            'harviday',
-            'fatherharvi',
-            'harviscience',
-            'harviart',
-        ],
-        [
-            'aligives',
-            'alidrunk',
-            'aliworkslate',
-        ],
-        [
-            'workundertime',
-            'headsdown',
-            'stressed',
-            'productiveday',
-            'inoffice',
-        ],
-        [
-            'sick',
-            'sugarsnack',
-            'eattoomuch',
-            'masturbate',
-            'flossteeth',
-            'temper',
-        ],
-        [
-            'cook',
-            'gogogo',
-            'vulnerable',
-            'needtotalk',
-            'greatday',
-        ],
-    ];
-    const dailyAnnotationsColors = [
-        'text-red-500',
-        'text-yellow-500',
-        'text-green-500',
-        'text-blue-500',
-        'text-purple-500',
-        'text-pink-500',
-    ]
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -357,9 +291,9 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
                                     className="w-full p-4 border border-gray-200"
                                 >
                                     {
-                                        dailyAnnotations.map((group, i) => {
-                                            const colorIndex = i % dailyAnnotationsColors.length;
-                                            const color = dailyAnnotationsColors[colorIndex];
+                                        DailyAnnotations.map((group, i) => {
+                                            const colorIndex = i % DailyAnnotationsColors.length;
+                                            const color = DailyAnnotationsColors[colorIndex];
                                             return group.map((annotation, j) => {
                                                 return <AutoAnnotation
                                                     callback={populateDailyAnnotation}

@@ -1,0 +1,67 @@
+// @todo: extract to db?
+export const DailyAnnotations = [
+    [
+        'harvihappy',
+        'harvimontessori',
+        'harviimpressive',
+        'harviautonomous',
+        'harviindependent',
+        'harvigrowthspurt',
+        'harvidaddysgirl',
+    ],
+    [
+        'harvitantrum',
+        'harviinconsolable',
+        'harviregression',
+        'harvitesting',
+        'harvirestless',
+        'harvionenap',
+    ],
+    [
+        'harvidropoff',
+        'harvipickup',
+        'harvihomefromschool',
+    ],
+    [
+        'harviday',
+        'fatherharvi',
+        'harviscience',
+        'harviart',
+    ],
+    [
+        'aligives',
+        'alidrunk',
+        'aliworkslate',
+    ],
+    [
+        'workundertime',
+        'headsdown',
+        'stressed',
+        'productiveday',
+        'inoffice',
+    ],
+    [
+        'sick',
+        'sugarsnack',
+        'eattoomuch',
+        'masturbate',
+        'flossteeth',
+        'temper',
+    ],
+    [
+        'cook',
+        'gogogo',
+        'vulnerable',
+        'needtotalk',
+        'greatday',
+    ],
+];
+
+export const DailyAnnotationsColors = [
+    'text-red-500',
+    'text-yellow-500',
+    'text-green-500',
+    'text-blue-500',
+    'text-purple-500',
+    'text-pink-500',
+];
