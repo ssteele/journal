@@ -260,6 +260,7 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
                                         label="entry"
                                         name="entry"
                                         onChange={e => setData('entry', e?.target?.value)}
+                                        onClick={e => setReset()}
                                         onKeyDown={e => listenForTab(e)}
                                         onKeyUp={e => listenForAnnotation(e)}
                                         ref={inputRef}
