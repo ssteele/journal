@@ -27,7 +27,71 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
     const [inputRef, setInputFocus] = UseFocus();
 
     // @todo: extract to db
-    const dailyAnnotations = ['sick', 'maybesick', 'alisick', 'harvisick', 'adasick', 'sugarsnack', 'eattoomuch', 'harviday', 'harvihappy', 'harvimontessori', 'harviimpressive', 'harviautonomous', 'harviindependent', 'harviadaindependent', 'harvigrowthspurt', 'temper', 'harvitantrum', 'harviinconsolable', 'harviregression', 'harvitesting', 'harvirestless', 'harvipanics', 'harvisensitive', 'harvionenap', 'aligives', 'alitakes', 'alimindless', 'alidrunk', 'harvidropoff', 'harvipickup', 'harvihomefromschool', 'harvihomefromschoolearly', 'workremote', 'inlateleaveearly', 'workundertime', 'workovertime', 'headsdown', 'stressed', 'productiveday', 'inoffice', 'aliinoffice', 'aliworkslate', 'aliworksreallylate', 'aliovertime', 'harvimommasgirl', 'harvidaddysgirl', 'fatherharvi', 'harviscience', 'harviart', 'cook', 'masturbate', 'flossteeth', 'metime', 'gogogo', 'separatetv', 'needtotalk', 'vulnerable', 'somethingdifferent', 'unusual', 'strangeday', 'awfulday', 'badday', 'longday', 'greatday', 'reallygreatday'];
+    const dailyAnnotations = [
+        [
+            'harvihappy',
+            'harvimontessori',
+            'harviimpressive',
+            'harviautonomous',
+            'harviindependent',
+            'harvigrowthspurt',
+            'harvidaddysgirl',
+        ],
+        [
+            'harvitantrum',
+            'harviinconsolable',
+            'harviregression',
+            'harvitesting',
+            'harvirestless',
+            'harvionenap',
+        ],
+        [
+            'harvidropoff',
+            'harvipickup',
+            'harvihomefromschool',
+        ],
+        [
+            'harviday',
+            'fatherharvi',
+            'harviscience',
+            'harviart',
+        ],
+        [
+            'aligives',
+            'alidrunk',
+            'aliworkslate',
+        ],
+        [
+            'workundertime',
+            'headsdown',
+            'stressed',
+            'productiveday',
+            'inoffice',
+        ],
+        [
+            'sick',
+            'sugarsnack',
+            'eattoomuch',
+            'masturbate',
+            'flossteeth',
+            'temper',
+        ],
+        [
+            'cook',
+            'gogogo',
+            'vulnerable',
+            'needtotalk',
+            'greatday',
+        ],
+    ];
+    const dailyAnnotationsColors = [
+        'text-red-500',
+        'text-yellow-500',
+        'text-green-500',
+        'text-blue-500',
+        'text-purple-500',
+        'text-pink-500',
+    ]
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -293,12 +357,17 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
                                     className="w-full p-4 border border-gray-200"
                                 >
                                     {
-                                        dailyAnnotations.map((annotation, i) => {
-                                            return <AutoAnnotation
-                                                callback={populateDailyAnnotation}
-                                                key={i}
-                                                type="button"
-                                            >{annotation}</AutoAnnotation>
+                                        dailyAnnotations.map((group, i) => {
+                                            const colorIndex = i % dailyAnnotationsColors.length;
+                                            const color = dailyAnnotationsColors[colorIndex];
+                                            return group.map((annotation, j) => {
+                                                return <AutoAnnotation
+                                                    callback={populateDailyAnnotation}
+                                                    className={color}
+                                                    key={j}
+                                                    type="button"
+                                                >{annotation}</AutoAnnotation>
+                                            })
                                         })
                                     }
                                 </div>
