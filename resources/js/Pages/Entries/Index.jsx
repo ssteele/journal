@@ -8,7 +8,11 @@ export default function Index({ auth, entries, errors }) {
         <Authenticated
             auth={auth}
             errors={errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Entries</h2>}
+            header={
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                    Entries
+                </h2>
+            }
         >
             <Head title="Entries" />
 

@@ -22,7 +22,11 @@ export default function Create({ auth, errors }) {
         <Authenticated
             auth={auth}
             errors={errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Upload</h2>}
+            header={
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                    Upload
+                </h2>
+            }
         >
             <Head title="Upload" />
 

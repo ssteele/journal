@@ -8,7 +8,11 @@ export default function Create({ auth, errors, mentions, recentTags, tags }) {
         <Authenticated
             auth={auth}
             errors={errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Create</h2>}
+            header={
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                    Create
+                </h2>
+            }
         >
             <Head title="Create Entry" />
 
