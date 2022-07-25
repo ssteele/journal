@@ -65,11 +65,13 @@ class EntryController extends Controller
      */
     public function create()
     {
-        $tags = $this->tagRepository->getSortedByFrequency();
-        $mentions = $this->mentionRepository->getSortedByFrequency();
+        $tags = $this->tagRepository->getNamesSortedByFrequency();
+        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), $this->dateLimit);
         return Inertia::render('Entries/Create')
             ->with('tags', $tags)
-            ->with('mentions', $mentions);
+            ->with('mentions', $mentions)
+            ->with('recentTags', $recentTags);
     }
 
     /**
@@ -127,12 +129,15 @@ class EntryController extends Controller
     public function edit($id)
     {
         $entry = Entry::find($id);
-        $tags = $this->tagRepository->getSortedByFrequency();
-        $mentions = $this->mentionRepository->getSortedByFrequency();
+        $entryDate = Carbon::parse($entry['date']);
+        $tags = $this->tagRepository->getNamesSortedByFrequency();
+        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, $this->dateLimit);
         return Inertia::render('Entries/Edit')
             ->with('entry', $entry)
             ->with('tags', $tags)
-            ->with('mentions', $mentions);
+            ->with('mentions', $mentions)
+            ->with('recentTags', $recentTags);
     }
 
     /**

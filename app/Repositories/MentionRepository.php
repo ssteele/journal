@@ -15,7 +15,7 @@ class MentionRepository
             ->get();
     }
 
-    public function getSortedByFrequency()
+    public function getNamesSortedByFrequency()
     {
         return DB::table('mentions')
             ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')

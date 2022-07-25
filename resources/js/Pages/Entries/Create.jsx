@@ -3,7 +3,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Create({ auth, errors, mentions, tags }) {
+export default function Create({ auth, errors, mentions, recentTags, tags }) {
     return (
         <Authenticated
             auth={auth}
@@ -14,6 +14,7 @@ export default function Create({ auth, errors, mentions, tags }) {
 
             <Form
                 mentions={mentions}
+                recentTags={recentTags}
                 tags={tags}
             />
         </Authenticated>

@@ -4,7 +4,8 @@ import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Form({ dbEntry = {}, mentions, tags }) {
+export default function Form({ dbEntry = {}, mentions, recentTags, tags }) {
+    console.log('recentTags:', recentTags);
     const defaultDate = new Date().toISOString().slice(0, 10);
     const {
         id,
@@ -260,7 +261,7 @@ export default function Form({ dbEntry = {}, mentions, tags }) {
                                         label="entry"
                                         name="entry"
                                         onChange={e => setData('entry', e?.target?.value)}
-                                        onClick={e => setReset()}
+                                        onClick={_ => setReset()}
                                         onKeyDown={e => listenForTab(e)}
                                         onKeyUp={e => listenForAnnotation(e)}
                                         ref={inputRef}
