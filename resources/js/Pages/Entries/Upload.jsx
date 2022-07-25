@@ -2,11 +2,11 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head, useForm } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Create({ auth, errors }) {
+export default function Create({ auth, errors: authErrors }) {
     const initialState = {
         csv: '',
     };
-    const { data, errors: formErrors, post, progress, setData } = useForm(initialState);
+    const { errors, post, progress, setData } = useForm(initialState);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -21,7 +21,7 @@ export default function Create({ auth, errors }) {
     return (
         <Authenticated
             auth={auth}
-            errors={errors}
+            errors={authErrors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                     Upload
@@ -55,7 +55,7 @@ export default function Create({ auth, errors }) {
                                             </progress>
                                         )}
                                         <span className="text-red-600">
-                                            {formErrors.csv}
+                                            {errors.csv}
                                         </span>
                                     </div>
                                 </div>
