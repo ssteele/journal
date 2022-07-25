@@ -22,14 +22,13 @@ export default function Show({ auth, entry: dbEntry, errors, mentions, tags }) {
             tagsHash[t.id] = tagsHash[t.id] ? tagsHash[t.id] + 1 : 1;
             return t;
         })
-        .map(t => {
+        .filter(t => {
             if (tagsHash[t.id]) {
                 t.count = tagsHash[t.id];
                 delete tagsHash[t.id];
                 return t;
             }
         })
-        .filter(t => t)
         .map(t => {
             const { count } = t;
             maxCount = (count > maxCount) ? count : maxCount;
