@@ -112,8 +112,8 @@ class EntryController extends Controller
     public function show($id)
     {
         $entry = Entry::find($id);
-        $tags = $this->tagRepository->getForEntry($entry->id);
-        $mentions = $this->mentionRepository->getForEntry($entry->id);
+        $tags = $this->tagRepository->getIdNamePairsForEntry($entry->id);
+        $mentions = $this->mentionRepository->getIdNamePairsForEntry($entry->id);
         return Inertia::render('Entries/Show')
             ->with('entry', $entry)
             ->with('tags', $tags)
@@ -132,12 +132,14 @@ class EntryController extends Controller
         $entryDate = Carbon::parse($entry['date']);
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
+        $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, $this->dateLimit);
         return Inertia::render('Entries/Edit')
             ->with('entry', $entry)
-            ->with('tags', $tags)
+            ->with('currentTags', $currentTags)
             ->with('mentions', $mentions)
-            ->with('recentTags', $recentTags);
+            ->with('recentTags', $recentTags)
+            ->with('tags', $tags);
     }
 
     /**

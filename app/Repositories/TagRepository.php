@@ -9,12 +9,21 @@ class TagRepository
 {
     const DEFAULT_DATE_LIMIT = 28;
 
-    public function getForEntry($id)
+    public function getNamesForEntry($id)
     {
         return DB::table('tags')
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
-            ->select('tags.id', 'tags.name')
-            ->where('entry_has_tags.entry_id', '=', $id)
+            ->distinct()
+            ->where('entry_id', '=', $id)
+            ->pluck('name');
+    }
+
+    public function getIdNamePairsForEntry($id)
+    {
+        return DB::table('tags')
+            ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
+            ->select('id', 'name')
+            ->where('entry_id', '=', $id)
             ->get();
     }
 
@@ -37,9 +46,9 @@ class TagRepository
         return DB::table('tags')
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
             ->join('entries', 'entry_has_tags.entry_id', '=', 'entries.id')
-            ->select('tags.name', DB::raw('count(*) as freq'))
+            ->select('name', DB::raw('count(*) as freq'))
             ->whereBetween('entries.date', [$pastDate, $date])
-            ->groupBy('tags.name')
+            ->groupBy('name')
             ->orderBy('freq', 'desc')
             ->pluck('name');
     }

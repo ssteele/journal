@@ -4,9 +4,9 @@ import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Form({ dbEntry = {}, mentions, recentTags, tags }) {
+export default function Form({ dbEntry = {}, currentTags = [], mentions, recentTags, tags }) {
     const defaultDate = new Date().toISOString().slice(0, 10);
-    const filteredRecentTagsCount = 25;
+    const recentTagsCount = 25;
     const {
         id,
         date = defaultDate,
@@ -27,21 +27,6 @@ export default function Form({ dbEntry = {}, mentions, recentTags, tags }) {
     const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
     const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = UseFocus();
-
-    function getFilteredRecentTags(recentTags, DailyTags) {
-        const flatDailyTags = DailyTags.flat();
-        let filteredRecentTags = [];
-        for (let i=0; i<=recentTags.length; i++) {
-            const recentTag = recentTags[i];
-            if (!flatDailyTags.includes(recentTag)) {
-                filteredRecentTags.push(recentTag);
-                if (filteredRecentTags.length >= filteredRecentTagsCount) {
-                    break;
-                }
-            }
-        }
-        return filteredRecentTags;
-    }
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -210,6 +195,29 @@ export default function Form({ dbEntry = {}, mentions, recentTags, tags }) {
         }
     }
 
+    function getFilteredDailyTags(DailyTags, currentTags) {
+        const filteredTags = DailyTags.map((group) => {
+            return group.filter(a => !currentTags.includes(a));
+        });
+        return filteredTags;
+    }
+
+    function getFilteredRecentTags(recentTags, DailyTags, currentTags) {
+        const flatDailyTags = DailyTags.flat();
+        const visibleTags = [...new Set([...currentTags, ...flatDailyTags])];
+        let filteredTags = [];
+        for (let i=0; i<=recentTags.length; i++) {
+            const recentTag = recentTags[i];
+            if (!visibleTags.includes(recentTag)) {
+                filteredTags.push(recentTag);
+                if (filteredTags.length >= recentTagsCount) {
+                    break;
+                }
+            }
+        }
+        return filteredTags;
+    }
+
     return (
         <div className="py-12">
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -308,7 +316,7 @@ export default function Form({ dbEntry = {}, mentions, recentTags, tags }) {
                                     className="w-full p-4 border border-gray-200"
                                 >
                                     {
-                                        DailyTags.map((group, i) => {
+                                        getFilteredDailyTags(DailyTags, currentTags).map((group, i) => {
                                             const colorIndex = i % DailyTagsColors.length;
                                             const color = DailyTagsColors[colorIndex];
                                             return group.map((annotation, j) => {
@@ -334,7 +342,7 @@ export default function Form({ dbEntry = {}, mentions, recentTags, tags }) {
                                     className="w-full p-4 border border-gray-200"
                                 >
                                     {
-                                        getFilteredRecentTags(recentTags, DailyTags)
+                                        getFilteredRecentTags(recentTags, DailyTags, currentTags)
                                             .map((annotation, i) => {
                                                 return <AutoAnnotation
                                                     callback={populateTag}

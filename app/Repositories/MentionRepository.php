@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\DB;
 
 class MentionRepository
 {
-    public function getForEntry($id)
+    public function getIdNamePairsForEntry($id)
     {
         return DB::table('mentions')
             ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
-            ->select('mentions.id', 'mentions.name')
-            ->where('entry_has_mentions.entry_id', '=', $id)
+            ->select('id', 'name')
+            ->where('entry_id', '=', $id)
             ->get();
     }
 
