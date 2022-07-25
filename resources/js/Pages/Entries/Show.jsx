@@ -1,5 +1,5 @@
 import Authenticated from '@/Layouts/Authenticated';
-import { FormatDateForInputField, FormatDateForTitle } from '@/Utils/FormatDate';
+import { FormatDateForInputField, FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import MarkupEntry from '@/Utils/MarkupEntry';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
@@ -57,7 +57,7 @@ export default function Show({ auth, entry: dbEntry, errors, mentions, tags }) {
         <Authenticated
             auth={auth}
             errors={errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">{ FormatDateForTitle(date) }</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">{ `${FormatDateForTitle(date)} – ${FormatDateWeekdayLong(date)}` }</h2>}
         >
             <Head title="Entry" />
 

@@ -20,7 +20,6 @@ export function FormatDateForInputField(dateString = '') {
 export function FormatDateForTitle(dateString = '') {
     const date = getDate(dateString);
     return date.toLocaleDateString(defaultLocale, {
-        weekday: 'long',
         year: 'numeric',
         month: 'long',
         day: '2-digit',
