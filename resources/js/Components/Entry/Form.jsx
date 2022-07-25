@@ -1,12 +1,12 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
-import { DailyAnnotations, DailyAnnotationsColors } from '@/Constants/DailyAnnotations';
+import { DailyTags, DailyTagsColors } from '@/Constants/DailyAnnotations';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
 export default function Form({ dbEntry = {}, mentions, recentTags, tags }) {
-    console.log('recentTags:', recentTags);
     const defaultDate = new Date().toISOString().slice(0, 10);
+    const filteredRecentTagsCount = 25;
     const {
         id,
         date = defaultDate,
@@ -27,6 +27,21 @@ export default function Form({ dbEntry = {}, mentions, recentTags, tags }) {
     const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
     const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = UseFocus();
+
+    function getFilteredRecentTags(recentTags, DailyTags) {
+        const flatDailyTags = DailyTags.flat();
+        let filteredRecentTags = [];
+        for (let i=0; i<=recentTags.length; i++) {
+            const recentTag = recentTags[i];
+            if (!flatDailyTags.includes(recentTag)) {
+                filteredRecentTags.push(recentTag);
+                if (filteredRecentTags.length >= filteredRecentTagsCount) {
+                    break;
+                }
+            }
+        }
+        return filteredRecentTags;
+    }
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -108,7 +123,7 @@ export default function Form({ dbEntry = {}, mentions, recentTags, tags }) {
         });
     }
 
-    function populateDailyAnnotation(text) {
+    function populateTag(text) {
         const { entry } = getAnnotationState();
         populateAnnotation({
             annotationStartIndex: entry.length,
@@ -293,18 +308,40 @@ export default function Form({ dbEntry = {}, mentions, recentTags, tags }) {
                                     className="w-full p-4 border border-gray-200"
                                 >
                                     {
-                                        DailyAnnotations.map((group, i) => {
-                                            const colorIndex = i % DailyAnnotationsColors.length;
-                                            const color = DailyAnnotationsColors[colorIndex];
+                                        DailyTags.map((group, i) => {
+                                            const colorIndex = i % DailyTagsColors.length;
+                                            const color = DailyTagsColors[colorIndex];
                                             return group.map((annotation, j) => {
                                                 return <AutoAnnotation
-                                                    callback={populateDailyAnnotation}
+                                                    callback={populateTag}
                                                     className={color}
                                                     key={j}
                                                     type="button"
                                                 >{annotation}</AutoAnnotation>
                                             })
                                         })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Recent</label>
+                                <div 
+                                    className="w-full p-4 border border-gray-200"
+                                >
+                                    {
+                                        getFilteredRecentTags(recentTags, DailyTags)
+                                            .map((annotation, i) => {
+                                                return <AutoAnnotation
+                                                    callback={populateTag}
+                                                    key={i}
+                                                    type="button"
+                                                >{annotation}</AutoAnnotation>
+                                            })
                                     }
                                 </div>
                             </div>

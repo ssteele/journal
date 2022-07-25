@@ -1,5 +1,5 @@
 // @todo: extract to db?
-export const DailyAnnotations = [
+export const DailyTags = [
     [
         'harvihappy',
         'harvimontessori',
@@ -57,7 +57,7 @@ export const DailyAnnotations = [
     ],
 ];
 
-export const DailyAnnotationsColors = [
+export const DailyTagsColors = [
     'text-red-500',
     'text-yellow-500',
     'text-green-500',
