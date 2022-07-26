@@ -147,7 +147,7 @@ export default function Authenticated({ auth, header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            <main className="pb-12">{children}</main>
         </div>
     );
 }

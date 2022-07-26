@@ -69,13 +69,13 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
                 <div className="flex justify-between mt-2 px-6 text-2xl">
                     {idsPrevNext?.prev && (
                         <Link href={route('entries.show', idsPrevNext?.prev)}>
-                            <button className="px-2 font-bold text-white bg-gray-500 rounded">&laquo;</button>
+                            <button className="px-2 font-bold text-white bg-gray-400 rounded">&laquo;</button>
                         </Link>
                     )}
 
                     {idsPrevNext?.next && (
                         <Link href={route('entries.show', idsPrevNext?.next)}>
-                            <button className="px-2 font-bold text-white bg-gray-500 rounded">&raquo;</button>
+                            <button className="px-2 font-bold text-white bg-gray-400 rounded">&raquo;</button>
                         </Link>
                     )}
                 </div>
