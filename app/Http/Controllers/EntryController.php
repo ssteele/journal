@@ -216,11 +216,21 @@ class EntryController extends Controller
     }
 
     /**
+     * Show the form for saving several journal entries
+     *
+     * @return Response
+     */
+    public function createUpload()
+    {
+        return Inertia::render('Entries/Upload');
+    }
+
+    /**
      * Save several journal entries
      *
      * @return Response
      */
-    public function upload(UploadEntryRequest $request, Handler $annotationHandler)
+    public function storeUpload(UploadEntryRequest $request, Handler $annotationHandler)
     {
         $csv = $request->file('csv');
         $filePath = base_path() . '/public/';

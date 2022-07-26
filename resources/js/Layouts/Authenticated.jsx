@@ -8,7 +8,7 @@ import { Link } from '@inertiajs/inertia-react';
 
 export default function Authenticated({ auth, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-    const doRenderBackArrow = ['entries.create', 'entries.show', 'entries.edit', 'create-upload'].includes(route().current());
+    const doRenderBackArrow = ['entries.create', 'entries.show', 'entries.edit', 'entries.create-upload'].includes(route().current());
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -45,7 +45,7 @@ export default function Authenticated({ auth, header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('create-upload')} active={route().current('create-upload')}>
+                                <NavLink href={route('entries.create-upload')} active={route().current('entries.create-upload')}>
                                     Upload
                                 </NavLink>
                             </div>

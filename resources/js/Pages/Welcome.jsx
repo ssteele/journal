@@ -20,7 +20,7 @@ export default function Welcome(props) {
                                 Create
                             </Link>
 
-                            <Link href={route('create-upload')} className="text-sm text-gray-700 underline">
+                            <Link href={route('entries.create-upload')} className="text-sm text-gray-700 underline">
                                 Upload
                             </Link>
                         </>

@@ -16,6 +16,10 @@ use App\Http\Controllers\EntryController;
 |
 */
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/entries/upload', [EntryController::class, 'createUpload'])->name('entries.create-upload');
+    Route::post('/entries/upload', [EntryController::class, 'storeUpload'])->name('entries.store-upload');
+});
 Route::resource('entries', EntryController::class);
 
 Route::get('/', function () {
@@ -24,12 +28,5 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
     ]);
 });
-
-Route::get('/upload', function () {
-    return Inertia::render('Entries/Upload');
-})->middleware(['auth', 'verified'])->name('create-upload');
-
-Route::post('/upload', [EntryController::class, 'upload'])
-    ->middleware(['auth', 'verified'])->name('store-upload');
 
 require __DIR__.'/auth.php';

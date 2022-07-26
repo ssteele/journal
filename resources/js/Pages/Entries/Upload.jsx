@@ -10,7 +10,7 @@ export default function Create({ auth, errors: authErrors }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        post(route('store-upload'), {
+        post(route('entries.store-upload'), {
             onSuccess: () => {
                 // @todo: flash notify
                 console.log('File uploaded');
