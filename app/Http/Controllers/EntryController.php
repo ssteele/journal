@@ -53,7 +53,7 @@ class EntryController extends Controller
      */
     public function index()
     {
-        $entries = $this->entryRepository->getRecent($this->dateLimit);
+        $entries = $this->entryRepository->getRecentWithMentions($this->dateLimit);
         return Inertia::render('Entries/Index')
             ->with('entries', $entries);
     }

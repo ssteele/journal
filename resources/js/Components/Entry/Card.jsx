@@ -2,7 +2,14 @@ import { FormatDateForInputField, FormatDateWeekdayLong } from '@/Utils/FormatDa
 import React from 'react';
 
 export default function Card({ entry }) {
-    const { date, tempo } = entry;
+    const { date, entry_has_mention: entryMentions, tempo } = entry;
+
+    function renderMentions(entryMentions) {
+        return entryMentions.map(entryMention => {
+            const { mention: { name } } = entryMention;
+            return name;
+        }).join(', ');
+    }
 
     return (
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -18,7 +25,7 @@ export default function Card({ entry }) {
                     </div>
 
                     <div className="col-start-5 col-span-7 lg:col-start-4 lg:col-span-8">
-                        <span></span>
+                        <span>{ renderMentions(entryMentions) }</span>
                     </div>
 
                     <div className="col-start-12 text-right">
