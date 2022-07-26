@@ -21,9 +21,6 @@ class EntryController extends Controller
     private $tagRepository;
     private $mentionRepository;
 
-    /** @var integer */
-    private $dateLimit = 28;
-
     // /** @var float */
     // private $average = 0;
     // @todo: https://github.com/ssteele/archived-journal/blob/6eb545c781c962cd6d781d8c1d36f0559c95fcd3/app/Http/Controllers/EntryController.php#L58
@@ -53,7 +50,7 @@ class EntryController extends Controller
      */
     public function index()
     {
-        $entries = $this->entryRepository->getRecentWithMentions($this->dateLimit);
+        $entries = $this->entryRepository->getRecentWithMentions(config('constants.date_limit'));
         return Inertia::render('Entries/Index')
             ->with('entries', $entries);
     }
@@ -67,7 +64,7 @@ class EntryController extends Controller
     {
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
-        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), $this->dateLimit);
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), config('constants.date_limit'));
         return Inertia::render('Entries/Create')
             ->with('mentions', $mentions)
             ->with('recentTags', $recentTags)
@@ -138,7 +135,7 @@ class EntryController extends Controller
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
-        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, $this->dateLimit);
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.date_limit'));
         return Inertia::render('Entries/Edit')
             ->with('currentTags', $currentTags)
             ->with('entry', $entry)

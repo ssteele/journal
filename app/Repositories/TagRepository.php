@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class TagRepository
 {
-    const DEFAULT_DATE_LIMIT = 28;
-
     public function getNamesForEntry($id)
     {
         return DB::table('tags')
@@ -37,11 +35,12 @@ class TagRepository
             ->pluck('name');
     }
 
-    public function getRecentNamesSortedByFrequency($date = null, $limit = self::DEFAULT_DATE_LIMIT)
+    public function getRecentNamesSortedByFrequency($date = null, $limit = null)
     {
         if (!$date) {
             $date = Carbon::today();
         }
+        $limit = $limit ?: config('constants.date_limit');
         $pastDate = $date->copy()->subDay($limit);
         return DB::table('tags')
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
