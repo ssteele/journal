@@ -58,8 +58,10 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
             auth={auth}
             errors={errors}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    { `${FormatDateForTitle(date)} – ${FormatDateWeekdayLong(date)}` }
+                <h2
+                    className="font-semibold text-xl text-gray-800 leading-tight"
+                    dangerouslySetInnerHTML={{__html: `${FormatDateForTitle(date)} &#8211; ${FormatDateWeekdayLong(date)}`}}
+                >
                 </h2>
             }
         >

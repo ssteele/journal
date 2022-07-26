@@ -10,8 +10,10 @@ export default function Edit({ auth, currentTags, entry, errors, mentions, recen
             auth={auth}
             errors={errors}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    { `${FormatDateForTitle(entry?.date)} – ${FormatDateWeekdayLong(entry?.date)}` }
+                <h2
+                    className="font-semibold text-xl text-gray-800 leading-tight"
+                    dangerouslySetInnerHTML={{__html: `${FormatDateForTitle(entry?.date)} &#8211; ${FormatDateWeekdayLong(entry?.date)}`}}
+                >
                 </h2>
             }
         >
