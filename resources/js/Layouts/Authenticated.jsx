@@ -17,9 +17,9 @@ export default function Authenticated({ auth, header, children }) {
                 if (id) {
                     return route('entries.show', id);
                 }
-            default:
-                return route('entries.index');
+                break;
         }
+        return route('entries.index');
     }
 
     return (
