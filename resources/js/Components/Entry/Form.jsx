@@ -67,9 +67,9 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
             const { entry } = getAnnotationState();
             let regex;
             if ('tag' === isAnnotating) {
-                regex = /(?<=\s|^)#\w(?=\s|$)/
+                regex = /(?<=\s|^)#\w(?=[^0-9a-zA-Z]|$)/
             } else if ('mention' === isAnnotating) {
-                regex = /(?<=\s|^)@\w(?=\s|$)/
+                regex = /(?<=\s|^)@\w(?=[^0-9a-zA-Z]|$)/
             }
             const annotationStartIndex = entry.search(regex) + 1;
             setAnnotationStartIndex(annotationStartIndex);
