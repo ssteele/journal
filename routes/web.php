@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\EntryController;
+use App\Http\Controllers\TagController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\EntryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/entries/upload', [EntryController::class, 'storeUpload'])->name('entries.store-upload');
 });
 Route::resource('entries', EntryController::class);
+
+Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
+Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

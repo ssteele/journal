@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\DB;
 
 class TagRepository
 {
+    public function getSortedByName()
+    {
+        return DB::table('tags')
+            ->orderBy('name', 'asc')
+            ->get();
+    }
+
     public function getNamesForEntry($id)
     {
         return DB::table('tags')
