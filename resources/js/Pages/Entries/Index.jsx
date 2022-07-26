@@ -17,18 +17,22 @@ export default function Index({ auth, entries, errors }) {
             <Head title="Entries" />
 
             <div className="py-12">
-                {entries.map((entry, i) => {
-                    return (
-                        <Link
-                            href={route('entries.show', entry?.id)}
-                            key={i}
-                        >
-                            <Card
-                                entry={entry}
-                            ></Card>
-                        </Link>
-                    );
-                })}
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        {entries.map((entry, i) => {
+                            return (
+                                <Link
+                                    href={route('entries.show', entry?.id)}
+                                    key={i}
+                                >
+                                    <Card
+                                        entry={entry}
+                                    ></Card>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </div>
             </div>
         </Authenticated>
     );
