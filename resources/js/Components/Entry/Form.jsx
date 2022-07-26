@@ -219,144 +219,140 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
     }
 
     return (
-        <div className="py-12">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <form name="entryForm" onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-t-lg">
-                        <div className="px-6 bg-white">
-                            <div className="flex flex-col">
-                                <div className="mt-6">
-                                    <label>Date</label>
-                                    <input
-                                        className="w-full p-4 border-gray-200"
-                                        label="date"
-                                        name="date"
-                                        onChange={e => setData('date', e?.target?.value)}
-                                        type="date"
-                                        value={data.date}
-                                    />
-                                    <span className="text-red-600">
-                                        {formErrors.date}
-                                    </span>
-                                </div>
-
-                                <div className="mt-6">
-                                    <label>Tempo</label>
-                                    <input
-                                        className="w-full p-4 border-gray-200"
-                                        label="Tempo"
-                                        name="tempo"
-                                        onChange={e => setData('tempo', e?.target?.value)}
-                                        type="number"
-                                        value={data.tempo}
-                                    />
-                                    <span className="text-red-600">
-                                        {formErrors.tempo}
-                                    </span>
-                                </div>
-
-                                <div className="mt-6">
-                                    <label>Suggested</label>
-                                    <div className={`
-                                        h-20 md:h-72 p-2 overflow-auto border border-green-200 ${(isAnnotating) && 'bg-green-50'}
-                                    `}>
-                                        {
-                                            suggestedAnnotations.map((annotation, i) => {
-                                                return <AutoAnnotation
-                                                    callback={populateSuggestedAnnotation}
-                                                    key={i}
-                                                    type="button"
-                                                >{annotation}</AutoAnnotation>
-                                            })
-                                        }
-                                    </div>
-                                </div>
-                            </div>
+        <div className="max-w-7xl mx-auto mt-12 sm:px-6 lg:px-8">
+            <form name="entryForm" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-t-lg">
+                    <div className="px-6 bg-white">
+                        <div className="mt-6">
+                            <label>Date</label>
+                            <input
+                                className="w-full p-4 border-gray-200"
+                                label="date"
+                                name="date"
+                                onChange={e => setData('date', e?.target?.value)}
+                                type="date"
+                                value={data.date}
+                            />
+                            <span className="text-red-600">
+                                {formErrors.date}
+                            </span>
                         </div>
 
-                        <div className="md:col-span-2 px-6 bg-white">
-                            <div className="flex flex-col">
-                                <div className="mt-6">
-                                    <label>Entry</label>
-                                    <textarea
-                                        className="w-full h-[32rem] p-4 border-gray-200"
-                                        errors={formErrors.entry}
-                                        label="entry"
-                                        name="entry"
-                                        onChange={e => setData('entry', e?.target?.value)}
-                                        onClick={_ => setReset()}
-                                        onKeyDown={e => listenForTab(e)}
-                                        onKeyUp={e => listenForAnnotation(e)}
-                                        ref={inputRef}
-                                        type="text"
-                                        value={data.entry}
-                                    />
-                                    <span className="text-red-600">
-                                        {formErrors.entry}
-                                    </span>
-                                </div>
+                        <div className="mt-6">
+                            <label>Tempo</label>
+                            <input
+                                className="w-full p-4 border-gray-200"
+                                label="Tempo"
+                                name="tempo"
+                                onChange={e => setData('tempo', e?.target?.value)}
+                                type="number"
+                                value={data.tempo}
+                            />
+                            <span className="text-red-600">
+                                {formErrors.tempo}
+                            </span>
+                        </div>
 
-                                <div className="mt-6 flex justify-end">
-                                    <button
-                                        type="submit"
-                                        className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
-                                    >
-                                        {isExistingEntry ? 'Update' : 'Log'}
-                                    </button>
-                                </div>
+                        <div className="mt-6">
+                            <label>Suggested</label>
+                            <div className={`
+                                h-20 md:h-72 p-2 overflow-auto border border-green-200 ${(isAnnotating) && 'bg-green-50'}
+                            `}>
+                                {
+                                    suggestedAnnotations.map((annotation, i) => {
+                                        return <AutoAnnotation
+                                            callback={populateSuggestedAnnotation}
+                                            key={i}
+                                            type="button"
+                                        >{annotation}</AutoAnnotation>
+                                    })
+                                }
                             </div>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm">
-                        <div className="px-6 bg-white">
+                    <div className="md:col-span-2 px-6 bg-white">
+                        <div className="flex flex-col">
                             <div className="mt-6">
-                                <label>Daily</label>
-                                <div 
-                                    className="w-full p-4 border border-gray-200"
+                                <label>Entry</label>
+                                <textarea
+                                    className="w-full h-[32rem] p-4 border-gray-200"
+                                    errors={formErrors.entry}
+                                    label="entry"
+                                    name="entry"
+                                    onChange={e => setData('entry', e?.target?.value)}
+                                    onClick={_ => setReset()}
+                                    onKeyDown={e => listenForTab(e)}
+                                    onKeyUp={e => listenForAnnotation(e)}
+                                    ref={inputRef}
+                                    type="text"
+                                    value={data.entry}
+                                />
+                                <span className="text-red-600">
+                                    {formErrors.entry}
+                                </span>
+                            </div>
+
+                            <div className="mt-6 flex justify-end">
+                                <button
+                                    type="submit"
+                                    className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
                                 >
-                                    {
-                                        getFilteredDailyTags(DailyTags, currentTags).map((group, i) => {
-                                            const colorIndex = i % DailyTagsColors.length;
-                                            const color = DailyTagsColors[colorIndex];
-                                            return group.map((annotation, j) => {
-                                                return <AutoAnnotation
-                                                    callback={populateTag}
-                                                    className={color}
-                                                    key={j}
-                                                    type="button"
-                                                >{annotation}</AutoAnnotation>
-                                            })
+                                    {isExistingEntry ? 'Update' : 'Log'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm">
+                    <div className="px-6 bg-white">
+                        <div className="mt-6">
+                            <label>Daily</label>
+                            <div 
+                                className="w-full p-4 border border-gray-200"
+                            >
+                                {
+                                    getFilteredDailyTags(DailyTags, currentTags).map((group, i) => {
+                                        const colorIndex = i % DailyTagsColors.length;
+                                        const color = DailyTagsColors[colorIndex];
+                                        return group.map((annotation, j) => {
+                                            return <AutoAnnotation
+                                                callback={populateTag}
+                                                className={color}
+                                                key={j}
+                                                type="button"
+                                            >{annotation}</AutoAnnotation>
                                         })
-                                    }
-                                </div>
+                                    })
+                                }
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
-                        <div className="px-6 bg-white">
-                            <div className="mt-6">
-                                <label>Recent</label>
-                                <div 
-                                    className="w-full p-4 border border-gray-200"
-                                >
-                                    {
-                                        getFilteredRecentTags(recentTags, DailyTags, currentTags)
-                                            .map((annotation, i) => {
-                                                return <AutoAnnotation
-                                                    callback={populateTag}
-                                                    key={i}
-                                                    type="button"
-                                                >{annotation}</AutoAnnotation>
-                                            })
-                                    }
-                                </div>
+                <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
+                    <div className="px-6 bg-white">
+                        <div className="mt-6">
+                            <label>Recent</label>
+                            <div 
+                                className="w-full p-4 border border-gray-200"
+                            >
+                                {
+                                    getFilteredRecentTags(recentTags, DailyTags, currentTags)
+                                        .map((annotation, i) => {
+                                            return <AutoAnnotation
+                                                callback={populateTag}
+                                                key={i}
+                                                type="button"
+                                            >{annotation}</AutoAnnotation>
+                                        })
+                                }
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     );
 }

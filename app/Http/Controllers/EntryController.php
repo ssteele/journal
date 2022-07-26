@@ -69,9 +69,9 @@ class EntryController extends Controller
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), $this->dateLimit);
         return Inertia::render('Entries/Create')
-            ->with('tags', $tags)
             ->with('mentions', $mentions)
-            ->with('recentTags', $recentTags);
+            ->with('recentTags', $recentTags)
+            ->with('tags', $tags);
     }
 
     /**
@@ -114,10 +114,15 @@ class EntryController extends Controller
         $entry = Entry::find($id);
         $tags = $this->tagRepository->getIdNamePairsForEntry($entry->id);
         $mentions = $this->mentionRepository->getIdNamePairsForEntry($entry->id);
+        $idsPrevNext = [
+            'prev' => Entry::where('id', '<', $id)->max('id'),
+            'next' => Entry::where('id', '>', $id)->min('id'),
+        ];
         return Inertia::render('Entries/Show')
             ->with('entry', $entry)
-            ->with('tags', $tags)
-            ->with('mentions', $mentions);
+            ->with('idsPrevNext', $idsPrevNext)
+            ->with('mentions', $mentions)
+            ->with('tags', $tags);
     }
 
     /**
@@ -135,8 +140,8 @@ class EntryController extends Controller
         $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, $this->dateLimit);
         return Inertia::render('Entries/Edit')
-            ->with('entry', $entry)
             ->with('currentTags', $currentTags)
+            ->with('entry', $entry)
             ->with('mentions', $mentions)
             ->with('recentTags', $recentTags)
             ->with('tags', $tags);
