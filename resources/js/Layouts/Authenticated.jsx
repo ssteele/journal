@@ -9,6 +9,18 @@ import { Link } from '@inertiajs/inertia-react';
 export default function Authenticated({ auth, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const doRenderBackArrow = ['entries.create', 'entries.show', 'entries.edit', 'entries.create-upload'].includes(route().current());
+    
+    function routeBackArrow(currentRoute) {
+        switch(currentRoute) {
+            case 'entries.edit':
+                const { id } = history?.state?.props?.entry;
+                if (id) {
+                    return route('entries.show', id);
+                }
+            default:
+                return route('entries.index');
+        }
+    }
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -26,7 +38,7 @@ export default function Authenticated({ auth, header, children }) {
 
                             { doRenderBackArrow && (
                                 <div className="shrink-0 flex items-center">
-                                    <Link onClick={() => history.back()}>
+                                    <Link href={routeBackArrow(route().current())}>
                                         <BackArrow className="block h-9 w-auto text-gray-600" />
                                     </Link>
                                 </div>
