@@ -31,7 +31,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = $this->tagRepository->getSortedByName();
+        $tags = $this->tagRepository->getSortedByFrequency();
         return Inertia::render('Tags/Index')
             ->with('tags', $tags);
     }

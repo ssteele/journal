@@ -4,12 +4,12 @@ function getDateOffset(date) {
     return new Date(date.getTime() - date.getTimezoneOffset() * -60000);
 }
 
-function getDate(dateString = '') {
+export function GetDate(dateString = '') {
     return getDateOffset(new Date(dateString));
 }
 
 export function FormatDateForInputField(dateString = '') {
-    const date = getDate(dateString);
+    const date = GetDate(dateString);
     return date.toLocaleDateString(defaultLocale, {
         year: 'numeric',
         month: '2-digit',
@@ -18,7 +18,7 @@ export function FormatDateForInputField(dateString = '') {
 }
 
 export function FormatDateForTitle(dateString = '') {
-    const date = getDate(dateString);
+    const date = GetDate(dateString);
     return date.toLocaleDateString(defaultLocale, {
         year: 'numeric',
         month: 'long',
@@ -27,7 +27,7 @@ export function FormatDateForTitle(dateString = '') {
 }
 
 export function FormatDateWeekdayLong(dateString = '') {
-    const date = getDate(dateString);
+    const date = GetDate(dateString);
     return date.toLocaleDateString(defaultLocale, {
         weekday: 'long',
         // year: 'numeric',
