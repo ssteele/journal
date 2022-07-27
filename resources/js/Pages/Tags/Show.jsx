@@ -38,20 +38,123 @@ export default function Show({ auth, errors, tag, timeline }) {
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div className="mt-12 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div className="p-6 bg-white">
-                        <CalendarHeatmap
-                            startDate={new Date('2022-01-01')}
-                            endDate={new Date('2022-12-31')}
-                            horizontal={true}
-                            showWeekdayLabels={true}
-                            weekdayLabels={['U', 'M', 'T', 'W', 'R', 'F', 'S']}
-                            values={getTimelineFrequency(timeline)}
-                            classForValue={(value) => {
-                                if (!value) {
-                                  return 'color-empty';
-                                }
-                                return `color-scale-${value.count}`;
-                            }}
-                        />
+                        <div>
+                            <CalendarHeatmap
+                                startDate={new Date('2016-01-01')}
+                                endDate={new Date('2016-12-31')}
+                                horizontal={true}
+                                showWeekdayLabels={false}
+                                values={getTimelineFrequency(timeline)}
+                                classForValue={(value) => {
+                                    if (!value) {
+                                    return 'color-empty';
+                                    }
+                                    return `color-scale-${value.count}`;
+                                }}
+                            />
+                        </div>
+
+                        <div className="mt-3 sm:mt-4 md:mt-6">
+                            <CalendarHeatmap
+                                startDate={new Date('2017-01-01')}
+                                endDate={new Date('2017-12-31')}
+                                horizontal={true}
+                                showMonthLabels={false}
+                                showWeekdayLabels={false}
+                                values={getTimelineFrequency(timeline)}
+                                classForValue={(value) => {
+                                    if (!value) {
+                                    return 'color-empty';
+                                    }
+                                    return `color-scale-${value.count}`;
+                                }}
+                            />
+                        </div>
+
+                        <div className="mt-3 sm:mt-4 md:mt-6">
+                            <CalendarHeatmap
+                                startDate={new Date('2018-01-01')}
+                                endDate={new Date('2018-12-31')}
+                                horizontal={true}
+                                showMonthLabels={false}
+                                showWeekdayLabels={false}
+                                values={getTimelineFrequency(timeline)}
+                                classForValue={(value) => {
+                                    if (!value) {
+                                    return 'color-empty';
+                                    }
+                                    return `color-scale-${value.count}`;
+                                }}
+                            />
+                        </div>
+
+                        <div className="mt-3 sm:mt-4 md:mt-6">
+                            <CalendarHeatmap
+                                startDate={new Date('2019-01-01')}
+                                endDate={new Date('2019-12-31')}
+                                horizontal={true}
+                                showMonthLabels={false}
+                                showWeekdayLabels={false}
+                                values={getTimelineFrequency(timeline)}
+                                classForValue={(value) => {
+                                    if (!value) {
+                                    return 'color-empty';
+                                    }
+                                    return `color-scale-${value.count}`;
+                                }}
+                            />
+                        </div>
+
+                        <div className="mt-3 sm:mt-4 md:mt-6">
+                            <CalendarHeatmap
+                                startDate={new Date('2020-01-01')}
+                                endDate={new Date('2020-12-31')}
+                                horizontal={true}
+                                showMonthLabels={false}
+                                showWeekdayLabels={false}
+                                values={getTimelineFrequency(timeline)}
+                                classForValue={(value) => {
+                                    if (!value) {
+                                    return 'color-empty';
+                                    }
+                                    return `color-scale-${value.count}`;
+                                }}
+                            />
+                        </div>
+
+                        <div className="mt-3 sm:mt-4 md:mt-6">
+                            <CalendarHeatmap
+                                startDate={new Date('2021-01-01')}
+                                endDate={new Date('2021-12-31')}
+                                horizontal={true}
+                                showMonthLabels={false}
+                                showWeekdayLabels={false}
+                                values={getTimelineFrequency(timeline)}
+                                classForValue={(value) => {
+                                    if (!value) {
+                                    return 'color-empty';
+                                    }
+                                    return `color-scale-${value.count}`;
+                                }}
+                            />
+                        </div>
+
+                        <div className="mt-3 sm:mt-4 md:mt-6">
+                            <CalendarHeatmap
+                                startDate={new Date('2022-01-01')}
+                                endDate={new Date('2022-12-31')}
+                                horizontal={true}
+                                showMonthLabels={false}
+                                showWeekdayLabels={false}
+                                values={getTimelineFrequency(timeline)}
+                                classForValue={(value) => {
+                                    if (!value) {
+                                    return 'color-empty';
+                                    }
+                                    return `color-scale-${value.count}`;
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
