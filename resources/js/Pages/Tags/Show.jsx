@@ -1,5 +1,4 @@
 import Authenticated from '@/Layouts/Authenticated';
-import { GetDate } from '@/Utils/FormatDate';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
@@ -16,7 +15,7 @@ export default function Show({ auth, errors, tag, timeline }) {
         });
 
         return Object.keys(timehash).map(date => {
-            let dateObj = GetDate(date);            // @hack: address an off-by-one-day bug in react-calendar-heatmap
+            let dateObj = new Date(date);           // @hack: address an off-by-one-day bug in react-calendar-heatmap
             dateObj.setDate(dateObj.getDate() + 1); // https://github.com/kevinsqi/react-calendar-heatmap/issues/112
             return {
                 date: dateObj,

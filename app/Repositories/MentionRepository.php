@@ -22,6 +22,6 @@ class MentionRepository
             ->select('name', DB::raw('count(*) as freq'))
             ->groupBy('name')
             ->orderBy('freq', 'desc')
-            ->get(['name']);
+            ->pluck('name');
     }
 }

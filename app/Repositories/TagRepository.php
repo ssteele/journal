@@ -24,7 +24,7 @@ class TagRepository
             ->select('name', DB::raw('count(*) as freq'))
             ->groupBy('name')
             ->orderBy('freq', 'desc')
-            ->get(['name']);
+            ->pluck('name');
     }
 
     public function getRecentNamesSortedByFrequency($date = null, $limit = null)
@@ -41,7 +41,7 @@ class TagRepository
             ->whereBetween('entries.date', [$pastDate, $date])
             ->groupBy('name')
             ->orderBy('freq', 'desc')
-            ->get(['name']);
+            ->pluck('name');
     }
 
     public function getTimeline($id)
@@ -60,7 +60,7 @@ class TagRepository
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
             ->distinct()
             ->where('entry_id', '=', $entryId)
-            ->get(['name']);
+            ->pluck('name');
     }
 
     public function getIdNamePairsForEntry($entryId)
