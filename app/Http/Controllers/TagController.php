@@ -39,12 +39,16 @@ class TagController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Tag  $tag
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Tag $tag)
+    public function show($id)
     {
-        //
+        $tag = Tag::find($id);
+        $timeline = $this->tagRepository->getTimeline($id);
+        return Inertia::render('Tags/Show')
+            ->with('tag', $tag)
+            ->with('timeline', $timeline);
     }
 
     // /**

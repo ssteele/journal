@@ -14,6 +14,16 @@ class TagRepository
             ->get();
     }
 
+    public function getTimeline($id)
+    {
+        return DB::table('tags')
+            ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
+            ->join('entries', 'entry_has_tags.entry_id', '=', 'entries.id')
+            ->where('tags.id', '=', $id)
+            ->orderBy('date', 'desc')
+            ->get(['name', 'date']);
+    }
+
     public function getNamesForEntry($id)
     {
         return DB::table('tags')
