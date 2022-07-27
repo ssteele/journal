@@ -21,7 +21,7 @@ class TagRepository
             ->join('entries', 'entry_has_tags.entry_id', '=', 'entries.id')
             ->where('tags.id', '=', $id)
             ->orderBy('date', 'desc')
-            ->get(['name', 'date']);
+            ->get(['date']);
     }
 
     public function getNamesForEntry($id)
