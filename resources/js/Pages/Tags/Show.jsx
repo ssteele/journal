@@ -6,7 +6,6 @@ import 'react-calendar-heatmap/dist/styles.css';
 import '@/../css/react-calendar-heatmap.css';
 
 export default function Show({ auth, errors, tag, timeline }) {
-    console.log('timeline:', timeline);
     function getTimelineFrequency(timeline) {
         let timehash = {};
         timeline.forEach((time) => {
@@ -23,6 +22,7 @@ export default function Show({ auth, errors, tag, timeline }) {
             };
         });
     }
+    const timelineFrequency = getTimelineFrequency(timeline);
     
     return (
         <Authenticated
@@ -45,7 +45,7 @@ export default function Show({ auth, errors, tag, timeline }) {
                                 endDate={new Date('2016-12-31')}
                                 horizontal={true}
                                 showWeekdayLabels={false}
-                                values={getTimelineFrequency(timeline)}
+                                values={timelineFrequency}
                                 classForValue={(value) => {
                                     if (!value) {
                                     return 'color-empty';
@@ -62,7 +62,7 @@ export default function Show({ auth, errors, tag, timeline }) {
                                 horizontal={true}
                                 showMonthLabels={false}
                                 showWeekdayLabels={false}
-                                values={getTimelineFrequency(timeline)}
+                                values={timelineFrequency}
                                 classForValue={(value) => {
                                     if (!value) {
                                     return 'color-empty';
@@ -79,7 +79,7 @@ export default function Show({ auth, errors, tag, timeline }) {
                                 horizontal={true}
                                 showMonthLabels={false}
                                 showWeekdayLabels={false}
-                                values={getTimelineFrequency(timeline)}
+                                values={timelineFrequency}
                                 classForValue={(value) => {
                                     if (!value) {
                                     return 'color-empty';
@@ -96,7 +96,7 @@ export default function Show({ auth, errors, tag, timeline }) {
                                 horizontal={true}
                                 showMonthLabels={false}
                                 showWeekdayLabels={false}
-                                values={getTimelineFrequency(timeline)}
+                                values={timelineFrequency}
                                 classForValue={(value) => {
                                     if (!value) {
                                     return 'color-empty';
@@ -113,7 +113,7 @@ export default function Show({ auth, errors, tag, timeline }) {
                                 horizontal={true}
                                 showMonthLabels={false}
                                 showWeekdayLabels={false}
-                                values={getTimelineFrequency(timeline)}
+                                values={timelineFrequency}
                                 classForValue={(value) => {
                                     if (!value) {
                                     return 'color-empty';
@@ -130,7 +130,7 @@ export default function Show({ auth, errors, tag, timeline }) {
                                 horizontal={true}
                                 showMonthLabels={false}
                                 showWeekdayLabels={false}
-                                values={getTimelineFrequency(timeline)}
+                                values={timelineFrequency}
                                 classForValue={(value) => {
                                     if (!value) {
                                     return 'color-empty';
@@ -147,7 +147,7 @@ export default function Show({ auth, errors, tag, timeline }) {
                                 horizontal={true}
                                 showMonthLabels={false}
                                 showWeekdayLabels={false}
-                                values={getTimelineFrequency(timeline)}
+                                values={timelineFrequency}
                                 classForValue={(value) => {
                                     if (!value) {
                                     return 'color-empty';
