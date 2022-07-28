@@ -1,5 +1,6 @@
 import Authenticated from '@/Layouts/Authenticated';
-import { Head, Link } from '@inertiajs/inertia-react';
+import { FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
+import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
@@ -17,10 +18,10 @@ export default function Show({ auth, errors, tag, timeline }) {
         });
 
         return Object.keys(timehash).map(date => {
-            let dateObj = new Date(date);           // @hack: address an off-by-one-day bug in react-calendar-heatmap
-            dateObj.setDate(dateObj.getDate() + 1); // https://github.com/kevinsqi/react-calendar-heatmap/issues/112
+            // let dateObj = new Date(date);           // @hack: address an off-by-one-day bug in react-calendar-heatmap
+            // dateObj.setDate(dateObj.getDate() - 2); // https://github.com/kevinsqi/react-calendar-heatmap/issues/112
             return {
-                date: dateObj,
+                date: new Date(date),
                 count: timehash[date]?.count,
                 entryId: timehash[date]?.entryId,
             };
@@ -66,15 +67,22 @@ export default function Show({ auth, errors, tag, timeline }) {
                                             horizontal={true}
                                             showMonthLabels={year === timelineYears[0]}
                                             showWeekdayLabels={false}
-                                            values={timelineFrequency}
-                                            onClick={(timelineDate) => {
-                                                window.location.href = route('entries.show', timelineDate?.entryId)
-                                            }}
-                                            classForValue={(value) => {
-                                                if (!value) {
-                                                return 'color-empty';
+                                            titleForValue={(day) => {
+                                                if (day) {
+                                                    return `${FormatDateWeekdayLong(day?.date)}, ${FormatDateForTitle(day?.date)}`;
                                                 }
-                                                return `color-scale-${value.count}`;
+                                            }}
+                                            values={timelineFrequency}
+                                            onClick={(day) => {
+                                                if (day) {
+                                                    window.location.href = route('entries.show', day?.entryId)
+                                                }
+                                            }}
+                                            classForValue={(day) => {
+                                                if (!day) {
+                                                    return 'color-empty';
+                                                }
+                                                return `color-scale-${day.count}`;
                                             }}
                                         />
                                     </div>
