@@ -9,8 +9,11 @@ export default function Show({ auth, errors, tag, timeline }) {
     function getTimelineFrequency(timeline) {
         let timehash = {};
         timeline.forEach((time) => {
-            const { date } = time;
-            timehash[date] = (timehash[date] || 0) + 1;
+            const { date, entryId } = time;
+            timehash[date] = {
+                count: (timehash[date]?.count || 0) + 1,
+                entryId,
+            }
         });
 
         return Object.keys(timehash).map(date => {
@@ -18,7 +21,8 @@ export default function Show({ auth, errors, tag, timeline }) {
             dateObj.setDate(dateObj.getDate() + 1); // https://github.com/kevinsqi/react-calendar-heatmap/issues/112
             return {
                 date: dateObj,
-                count: timehash[date],
+                count: timehash[date]?.count,
+                entryId: timehash[date]?.entryId,
             };
         });
     }
@@ -63,6 +67,9 @@ export default function Show({ auth, errors, tag, timeline }) {
                                             showMonthLabels={year === timelineYears[0]}
                                             showWeekdayLabels={false}
                                             values={timelineFrequency}
+                                            onClick={(timelineDate) => {
+                                                window.location.href = route('entries.show', timelineDate?.entryId)
+                                            }}
                                             classForValue={(value) => {
                                                 if (!value) {
                                                 return 'color-empty';
