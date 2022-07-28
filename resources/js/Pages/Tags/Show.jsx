@@ -18,8 +18,6 @@ export default function Show({ auth, errors, tag, timeline }) {
         });
 
         return Object.keys(timehash).map(date => {
-            // let dateObj = new Date(date);           // @hack: address an off-by-one-day bug in react-calendar-heatmap
-            // dateObj.setDate(dateObj.getDate() - 2); // https://github.com/kevinsqi/react-calendar-heatmap/issues/112
             return {
                 date: new Date(date),
                 count: timehash[date]?.count,
