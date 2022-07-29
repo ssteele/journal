@@ -42,7 +42,7 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
                 if (group) {
                     const { count } = group[0]
                     return (
-                        <ul>
+                        <ul key={count}>
                             {`[${count}] `}
                             {group.map((tag, i) => {
                                 return (
