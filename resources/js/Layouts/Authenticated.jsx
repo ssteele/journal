@@ -24,7 +24,7 @@ export default function Authenticated({ auth, header, children }) {
             case 'entries.edit':
                 const entryId = history?.state?.props?.entry?.id;
                 if (entryId) {
-                    return route('entries.show', id);
+                    return route('entries.show', entryId);
                 }
             case 'mentions.index':
             case 'tags.index':
