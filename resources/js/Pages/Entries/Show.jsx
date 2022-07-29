@@ -7,10 +7,6 @@ import React from 'react';
 export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentions, tags }) {
     const { id, date, tempo, entry } = dbEntry;
 
-    function renderMentions(mentions) {
-        return mentions.map(m => m.name).join(', ');
-    }
-
     function groupTagsByCount(tags) {
         let tagsHash = {};
         let groupedByCount = {};
@@ -48,9 +44,9 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
                     return (
                         <ul>
                             {`[${count}] `}
-                            {group.map(tag => {
+                            {group.map((tag, i) => {
                                 return (
-                                    <li className="inline-block pr-2">
+                                    <li className="inline-block pr-1.5" key={i}>
                                         <Link
                                             href={route('tags.show', tag?.id)}
                                         >
@@ -63,6 +59,20 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
                     );
                 }
             })
+    }
+
+    function renderMentions(mentions) {
+        return mentions.map((mention, i) => {
+            return (
+                <li className="inline-block pr-1.5" key={i}>
+                    <Link
+                        href={route('mentions.show', mention?.id)}
+                    >
+                        {mention?.name}
+                    </Link>
+                </li>
+            );
+        })
     }
 
     return (

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
-use App\Repositories\TagRepository;
+use App\Models\Mention;
+use App\Repositories\MentionRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class TagController extends Controller
+class MentionController extends Controller
 {
-    private $tagRepository;
+    private $mentionRepository;
 
     /**
      * Create a new controller instance
@@ -17,11 +17,11 @@ class TagController extends Controller
      * @return void
      */
     public function __construct(
-        TagRepository $tagRepository,
+        MentionRepository $mentionRepository,
     )
     {
         $this->middleware('auth');
-        $this->tagRepository = $tagRepository;
+        $this->mentionRepository = $mentionRepository;
     }
 
     /**
@@ -31,9 +31,9 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = $this->tagRepository->getSortedByFrequency();
-        return Inertia::render('Tags/Index')
-            ->with('tags', $tags);
+        $mentions = $this->mentionRepository->getSortedByFrequency();
+        return Inertia::render('Mentions/Index')
+            ->with('mentions', $mentions);
     }
 
     /**
@@ -44,10 +44,10 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        $tag = Tag::find($id);
-        $timeline = $this->tagRepository->getTimeline($id);
-        return Inertia::render('Tags/Show')
-            ->with('tag', $tag)
+        $mention = Mention::find($id);
+        $timeline = $this->mentionRepository->getTimeline($id);
+        return Inertia::render('Mentions/Show')
+            ->with('mention', $mention)
             ->with('timeline', $timeline);
     }
 
