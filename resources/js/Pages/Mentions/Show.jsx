@@ -59,7 +59,7 @@ export default function Show({ auth, errors, mention, timeline }) {
                             timelineYears.map((year, i) => {
                                 return (
                                     <div className="mt-3 sm:mt-4 md:mt-6" key={i}>
-                                        <span className="text-sm sm:text-base lg:text-lg">
+                                        <span className="text-sm sm:text-base lg:text-lg text-gray-500">
                                             {year}
                                         </span>
 
