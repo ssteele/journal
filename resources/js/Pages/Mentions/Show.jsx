@@ -64,7 +64,7 @@ export default function Show({ auth, errors, mention, timeline }) {
                                         </span>
 
                                         <CalendarHeatmap
-                                            startDate={new Date(`${year}-01-01`)}
+                                            startDate={new Date(`${year - 1}-12-31`)}
                                             endDate={new Date(`${year}-12-31`)}
                                             horizontal={true}
                                             showMonthLabels={year === timelineYears[0]}
