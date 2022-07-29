@@ -8,16 +8,31 @@ import { Link } from '@inertiajs/inertia-react';
 
 export default function Authenticated({ auth, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-    const doRenderBackArrow = ['entries.create', 'entries.show', 'entries.edit', 'entries.create-upload'].includes(route().current());
+    const doRenderBackArrow = [
+        'entries.create',
+        'entries.show',
+        'entries.edit',
+        'entries.create-upload',
+        'mentions.index',
+        'mentions.show',
+        'tags.index',
+        'tags.show',
+    ].includes(route().current());
     
     function routeBackArrow(currentRoute) {
         switch(currentRoute) {
             case 'entries.edit':
-                const { id } = history?.state?.props?.entry;
-                if (id) {
+                const entryId = history?.state?.props?.entry?.id;
+                if (entryId) {
                     return route('entries.show', id);
                 }
-                break;
+            case 'mentions.index':
+            case 'tags.index':
+                return route('entries.index');
+            case 'mentions.show':
+                return route('mentions.index');
+            case 'tags.show':
+                return route('tags.index');
         }
         return route('entries.index');
     }
