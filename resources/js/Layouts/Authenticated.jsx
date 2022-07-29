@@ -76,6 +76,18 @@ export default function Authenticated({ auth, header, children }) {
                                     Upload
                                 </NavLink>
                             </div>
+
+                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <NavLink href={route('tags.index')} active={route().current('tags.index')}>
+                                    Tags
+                                </NavLink>
+                            </div>
+
+                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <NavLink href={route('mentions.index')} active={route().current('mentions.index')}>
+                                    Mentions
+                                </NavLink>
+                            </div>
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ml-6">
@@ -150,6 +162,18 @@ export default function Authenticated({ auth, header, children }) {
                     <div className="pb-1">
                         <ResponsiveNavLink href={route('entries.create')} active={route().current('entries.create')}>
                             Create
+                        </ResponsiveNavLink>
+                    </div>
+
+                    <div className="pb-1">
+                        <ResponsiveNavLink href={route('tags.index')} active={route().current('tags.index')}>
+                            Tags
+                        </ResponsiveNavLink>
+                    </div>
+
+                    <div className="pb-1">
+                        <ResponsiveNavLink href={route('mentions.index')} active={route().current('mentions.index')}>
+                            Mentions
                         </ResponsiveNavLink>
                     </div>
 
