@@ -11,11 +11,9 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
         return mentions.map(m => m.name).join(', ');
     }
 
-    function renderTags(tags) {
-        let res = '';
+    function groupTagsByCount(tags) {
         let tagsHash = {};
         let groupedByCount = {};
-        let maxCount = 0;
 
         tags.map(t => {
             tagsHash[t.id] = tagsHash[t.id] ? tagsHash[t.id] + 1 : 1;
@@ -30,7 +28,6 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
         })
         .map(t => {
             const { count } = t;
-            maxCount = (count > maxCount) ? count : maxCount;
             if (!groupedByCount[count]) {
                 groupedByCount[count] = [t];
             } else {
@@ -38,19 +35,34 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
             }
         });
 
-        for (let i=maxCount; i>0; i--) {
-            const group = groupedByCount[i];
-            if (!group) {
-                continue;
-            }
-            const { count } = group[0]
-            res += '<div>';
-            res += `[${count}] `;
-            res += group.map(g => g.name).join(', ');
-            res += '</div>';
-        }
+        return groupedByCount;
+    }
 
-        return res;
+    function renderTags(groupedTags) {
+        return Object.keys(groupedTags)
+            .reverse()
+            .map((tagCount) => {
+                const group = groupedTags[tagCount];
+                if (group) {
+                    const { count } = group[0]
+                    return (
+                        <ul>
+                            {`[${count}] `}
+                            {group.map(tag => {
+                                return (
+                                    <li className="inline-block pr-2">
+                                        <Link
+                                            href={route('tags.show', tag?.id)}
+                                        >
+                                            {tag?.name}
+                                        </Link>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    );
+                }
+            })
     }
 
     return (
@@ -112,8 +124,8 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
                                 <label>Tags</label>
                                 <div
                                     className="p-4 border border-gray-100 bg-gray-100"
-                                    dangerouslySetInnerHTML={{__html: renderTags(tags)}}
                                 >
+                                    { renderTags(groupTagsByCount(tags)) }
                                 </div>
                             </div>
                         }
