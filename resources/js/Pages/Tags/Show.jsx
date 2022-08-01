@@ -9,6 +9,7 @@ const FullTimeline = React.lazy(() => import('../../Components/Annotation/Timeli
 export default function Show({ auth, errors, tag, timeline }) {
     const timelineFrequency = getTimelineFrequency(timeline);
     const timelineYears = getTimelineYears(timelineFrequency);
+    // const mostRecentTimelineYear = [timelineYears[0]];
     const mostRecentTimelineYear = [timelineYears[timelineYears.length - 1]];
 
     return (
