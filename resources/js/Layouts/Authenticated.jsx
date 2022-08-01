@@ -30,8 +30,10 @@ export default function Authenticated({ auth, header, children }) {
             case 'tags.index':
                 return route('entries.index');
             case 'mentions.show':
+                // @todo: use cookies to store previous url, then nav back
                 return route('mentions.index');
             case 'tags.show':
+                // @todo: use cookies to store previous url, then nav back
                 return route('tags.index');
         }
         return route('entries.index');
