@@ -1,40 +1,11 @@
 import Timeline from '@/Components/Annotation/Timeline';
 import Authenticated from '@/Layouts/Authenticated';
+import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Show({ auth, errors, mention, timeline }) {
-    function getTimelineFrequency(timeline) {
-        let timehash = {};
-        timeline.forEach((time) => {
-            const { date, entryId } = time;
-            timehash[date] = {
-                count: (timehash[date]?.count || 0) + 1,
-                entryId,
-            }
-        });
-
-        return Object.keys(timehash).map(date => {
-            return {
-                date: new Date(date),
-                count: timehash[date]?.count,
-                entryId: timehash[date]?.entryId,
-            };
-        });
-    }
     const timelineFrequency = getTimelineFrequency(timeline);
-
-    function getTimelineYears(timelineFrequency) {
-        const { date: timelineStart } = timelineFrequency[timelineFrequency.length - 1];
-        const { date: timelineEnd } = timelineFrequency[0];
-        const timelineStartYear = timelineStart.getFullYear();
-        const timelineEndYear = timelineEnd.getFullYear();
-        let timelineYears = [];
-        for (let i=timelineStartYear; i<=timelineEndYear; i++) {
-            timelineYears.push(i);
-        }
-        return timelineYears;
-    }
     const timelineYears = getTimelineYears(timelineFrequency);
 
     return (
