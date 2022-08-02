@@ -23,8 +23,7 @@ export function getTimelineYears(timelineFrequency) {
     const timelineStartYear = timelineStart.getFullYear();
     const timelineEndYear = timelineEnd.getFullYear();
     let timelineYears = [];
-    for (let i=timelineStartYear; i<=timelineEndYear; i++) {
-    // for (let i=timelineEndYear; i>=timelineStartYear; i--) {
+    for (let i=timelineEndYear; i>=timelineStartYear; i--) {
         timelineYears.push(i);
     }
     return timelineYears;

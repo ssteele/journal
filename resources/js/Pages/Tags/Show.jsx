@@ -48,17 +48,17 @@ export default function Show({ auth, errors, tag, timeline }) {
 
                         {doShowLoadMore && (
                             <>
-                                <button
-                                    className="inline-block w-full text-center text-sm text-blue-400"
-                                    onClick={() => handleLoadMore()}
-                                >
-                                    Load more
-                                </button>
-
                                 <Timeline
                                     timelineFrequency={timelineFrequencyAbridged}
                                     timelineYears={timelineYearsAbridged}
                                 ></Timeline>
+
+                                <button
+                                    className="w-full mt-8 text-center text-sm text-blue-400"
+                                    onClick={() => handleLoadMore()}
+                                >
+                                    Load more
+                                </button>
                             </>
                         )}
                     </div>
