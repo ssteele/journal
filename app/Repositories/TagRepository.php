@@ -27,13 +27,13 @@ class TagRepository
             ->pluck('name');
     }
 
-    public function getRecentNamesSortedByFrequency($date = null, $limit = null)
+    public function getRecentNamesSortedByFrequency($date = null, $dayLimit = null)
     {
         if (!$date) {
             $date = Carbon::today();
         }
-        $limit = $limit ?: config('constants.date_limit');
-        $pastDate = $date->copy()->subDay($limit);
+        $dayLimit = $dayLimit ?: config('constants.day_limit_recent_tags');
+        $pastDate = $date->copy()->subDay($dayLimit);
         return DB::table('tags')
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
             ->join('entries', 'entry_has_tags.entry_id', '=', 'entries.id')
