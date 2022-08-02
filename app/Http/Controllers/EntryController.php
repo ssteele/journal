@@ -50,7 +50,7 @@ class EntryController extends Controller
      */
     public function index()
     {
-        $entries = $this->entryRepository->getRecentWithMentions(config('constants.date_limit'));
+        $entries = $this->entryRepository->getRecentWithMentions(config('constants.day_limit'));
         return Inertia::render('Entries/Index')
             ->with('entries', $entries);
     }
@@ -64,7 +64,7 @@ class EntryController extends Controller
     {
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
-        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), config('constants.date_limit'));
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), config('constants.day_limit_recent_tags'));
         return Inertia::render('Entries/Create')
             ->with('mentions', $mentions)
             ->with('recentTags', $recentTags)
@@ -135,7 +135,7 @@ class EntryController extends Controller
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
-        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.date_limit'));
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
         return Inertia::render('Entries/Edit')
             ->with('currentTags', $currentTags)
             ->with('entry', $entry)

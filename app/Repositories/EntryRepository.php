@@ -7,19 +7,19 @@ use Illuminate\Support\Facades\DB;
 
 class EntryRepository
 {
-    public function getRecent($limit = null)
+    public function getRecent($dayLimit = null)
     {
         return DB::table('entries')
             ->orderBy('date', 'desc')
-            ->limit($limit ?: config('constants.date_limit'))
+            ->limit($dayLimit ?: config('constants.day_limit'))
             ->get();
     }
 
-    public function getRecentWithMentions($limit = null)
+    public function getRecentWithMentions($dayLimit = null)
     {
         return Entry::with(['entryHasMention.mention'])
             ->orderBy('date', 'desc')
-            ->limit($limit ?: config('constants.date_limit'))
+            ->limit($dayLimit ?: config('constants.day_limit'))
             ->get();
     }
 }
