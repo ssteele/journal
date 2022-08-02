@@ -2,15 +2,26 @@ import Timeline from '@/Components/Annotation/Timeline';
 import Authenticated from '@/Layouts/Authenticated';
 import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
-import React, { Suspense } from "react";
-
-const FullTimeline = React.lazy(() => import('../../Components/Annotation/Timeline'));
+import React from "react";
 
 export default function Show({ auth, errors, tag, timeline }) {
+    let doShowLoadMore = false;
+
     const timelineFrequency = getTimelineFrequency(timeline);
     const timelineYears = getTimelineYears(timelineFrequency);
-    // const mostRecentTimelineYear = [timelineYears[0]];
-    const mostRecentTimelineYear = [timelineYears[timelineYears.length - 1]];
+
+    const tagLimitForPageLoad = 250;
+    let timelineFrequencyAbridged = [];
+    let timelineYearsAbridged = timelineYears;
+    if (timelineFrequency.length > tagLimitForPageLoad) {
+        doShowLoadMore = true;
+        timelineFrequencyAbridged = timelineFrequency.slice(0, tagLimitForPageLoad);
+        timelineYearsAbridged = getTimelineYears(timelineFrequencyAbridged);
+    }
+
+    function handleLoadMore() {
+        doShowLoadMore = false;
+    }
 
     return (
         <Authenticated
@@ -27,17 +38,28 @@ export default function Show({ auth, errors, tag, timeline }) {
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div className="mt-12 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div className="p-6 bg-white">
-                        <Suspense fallback={
+                        {!doShowLoadMore && (
                             <Timeline
                                 timelineFrequency={timelineFrequency}
-                                timelineYears={mostRecentTimelineYear}
-                            ></Timeline>
-                        }>
-                            <FullTimeline
-                                timelineFrequency={timelineFrequency}
                                 timelineYears={timelineYears}
-                            ></FullTimeline>
-                        </Suspense>
+                            ></Timeline>
+                        )}
+
+                        {doShowLoadMore && (
+                            <>
+                                <button
+                                    className="inline-block w-full text-center text-sm text-blue-400"
+                                    onClick={() => handleLoadMore()}
+                                >
+                                    Load more
+                                </button>
+
+                                <Timeline
+                                    timelineFrequency={timelineFrequencyAbridged}
+                                    timelineYears={timelineYearsAbridged}
+                                ></Timeline>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
