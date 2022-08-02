@@ -2,10 +2,10 @@ import Timeline from '@/Components/Annotation/Timeline';
 import Authenticated from '@/Layouts/Authenticated';
 import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
-import React from "react";
+import React, { useState } from "react";
 
 export default function Show({ auth, errors, tag, timeline }) {
-    let doShowLoadMore = false;
+    let doShowLoadMoreInit = false;
 
     const timelineFrequency = getTimelineFrequency(timeline);
     const timelineYears = getTimelineYears(timelineFrequency);
@@ -14,13 +14,14 @@ export default function Show({ auth, errors, tag, timeline }) {
     let timelineFrequencyAbridged = [];
     let timelineYearsAbridged = timelineYears;
     if (timelineFrequency.length > tagLimitForPageLoad) {
-        doShowLoadMore = true;
+        doShowLoadMoreInit = true;
         timelineFrequencyAbridged = timelineFrequency.slice(0, tagLimitForPageLoad);
         timelineYearsAbridged = getTimelineYears(timelineFrequencyAbridged);
     }
+    const [doShowLoadMore, setDoShowLoadMore] = useState(doShowLoadMoreInit);
 
     function handleLoadMore() {
-        doShowLoadMore = false;
+        setDoShowLoadMore(false);
     }
 
     return (
