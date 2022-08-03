@@ -1,8 +1,19 @@
 import Authenticated from '@/Layouts/Authenticated';
 import { Head, Link } from '@inertiajs/inertia-react';
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Index({ auth, errors, mentions }) {
+    const [filteredMentions, setFilteredMentions] = useState(mentions);
+
+    function searchMentions(e) {
+        const searchTerm = e?.target?.value;
+        if (searchTerm) {
+            setFilteredMentions(mentions.filter(({ name }) => -1 !== name.indexOf(searchTerm)));
+        } else {
+            setFilteredMentions(mentions);
+        }
+    }
+
     return (
         <Authenticated
             auth={auth}
@@ -19,7 +30,18 @@ export default function Index({ auth, errors, mentions }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white">
-                            {mentions.map((mention, i) => {
+                            <input
+                                className="w-full p-4 border border-gray-200"
+                                label="Search"
+                                name="search"
+                                onChange={e => searchMentions(e)}
+                                placeholder='Search mentions'
+                                type="input"
+                            />
+                        </div>
+
+                        <div className="p-6 pt-0 bg-white">
+                            {filteredMentions.map((mention, i) => {
                                 return (
                                     <Link
                                         href={route('mentions.show', mention?.id)}
