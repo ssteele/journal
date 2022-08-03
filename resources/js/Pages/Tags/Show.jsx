@@ -3,7 +3,7 @@ import LoadingSpinner from '@/Components/LoadingSpinner';
 import Authenticated from '@/Layouts/Authenticated';
 import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Show({ auth, errors, tag, timeline }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -22,11 +22,17 @@ export default function Show({ auth, errors, tag, timeline }) {
     }
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
 
+    useEffect(() => {
+        if (isLoading && !isMoreToLoad) {
+            setIsLoading(false);
+        }
+    }, [isLoading, isMoreToLoad]);
+
     function handleLoadMore() {
-        setIsLoading(true);
         setTimeout(() => {
             setIsMoreToLoad(false);
         });
+        setIsLoading(true);
     }
 
     return (
@@ -61,7 +67,7 @@ export default function Show({ auth, errors, tag, timeline }) {
                         <div className="w-full mt-8 flex flex-col items-center">
                             {isMoreToLoad && !isLoading && (
                                 <button
-                                    className="text-sm text-blue-400"
+                                    className="py-4 text-sm text-blue-400"
                                     onClick={() => handleLoadMore()}
                                 >
                                     Load more
@@ -69,7 +75,9 @@ export default function Show({ auth, errors, tag, timeline }) {
                             )}
 
                             {isLoading && (
-                                <LoadingSpinner></LoadingSpinner>
+                                <div className="py-px">
+                                    <LoadingSpinner />
+                                </div>
                             )}
                         </div>
                     </div>
