@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 export default function Index({ auth, errors, tags }) {
     const [filteredTags, setFilteredTags] = useState(tags);
-    
+
     function searchTags(e) {
         const searchTerm = e?.target?.value;
         if (searchTerm) {
