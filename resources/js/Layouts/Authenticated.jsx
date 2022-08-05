@@ -67,28 +67,92 @@ export default function Authenticated({ auth, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('entries.create')} active={route().current('entries.create')}>
-                                    Create
-                                </NavLink>
+                            <div className="hidden space-x-8 sm:-my-px sm:ml-8 sm:flex items-center">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <span className="inline-flex rounded-md">
+                                            <button
+                                                type="button"
+                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                            >
+                                                Entry
+
+                                                <svg
+                                                    className="ml-2 -mr-0.5 h-4 w-4"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20"
+                                                    fill="currentColor"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </Dropdown.Trigger>
+
+                                    <Dropdown.Content>
+                                        {/*
+                                        <Dropdown.Link href={route('search.index')} as="button" method="get">
+                                            Search
+                                        </Dropdown.Link>
+                                        */}
+
+                                        <Dropdown.Link href={route('entries.create')} as="button" method="get">
+                                            Create
+                                        </Dropdown.Link>
+
+                                        <Dropdown.Link href={route('entries.create-upload')} as="button" method="get">
+                                            Upload
+                                        </Dropdown.Link>
+                                    </Dropdown.Content>
+                                </Dropdown>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('entries.create-upload')} active={route().current('entries.create-upload')}>
-                                    Upload
-                                </NavLink>
-                            </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ml-2 sm:flex items-center">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <span className="inline-flex rounded-md">
+                                            <button
+                                                type="button"
+                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                            >
+                                                Annotations
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('tags.index')} active={route().current('tags.index')}>
-                                    Tags
-                                </NavLink>
-                            </div>
+                                                <svg
+                                                    className="ml-2 -mr-0.5 h-4 w-4"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20"
+                                                    fill="currentColor"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </Dropdown.Trigger>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('mentions.index')} active={route().current('mentions.index')}>
-                                    Mentions
-                                </NavLink>
+                                    <Dropdown.Content>
+                                        <Dropdown.Link href={route('tags.index')} as="button" method="get">
+                                            Tags
+                                        </Dropdown.Link>
+
+                                        <Dropdown.Link href={route('mentions.index')} as="button" method="get">
+                                            Mentions
+                                        </Dropdown.Link>
+
+                                        {/*
+                                        <Dropdown.Link href={route('markers.index')} as="button" method="get">
+                                            Markers
+                                        </Dropdown.Link>
+                                        */}
+                                    </Dropdown.Content>
+                                </Dropdown>
                             </div>
                         </div>
 
