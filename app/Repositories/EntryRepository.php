@@ -22,4 +22,13 @@ class EntryRepository
             ->limit($dayLimit ?: config('constants.day_limit'))
             ->get();
     }
+
+    public function getMoreWithMentions($lastFetchedId, $dayLimit = null)
+    {
+        return Entry::with(['entryHasMention.mention'])
+            ->where('id', '<', $lastFetchedId)
+            ->orderBy('date', 'desc')
+            ->limit($dayLimit ?: config('constants.day_limit'))
+            ->get();
+    }
 }

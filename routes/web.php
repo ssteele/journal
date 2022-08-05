@@ -21,6 +21,7 @@ use Inertia\Inertia;
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/entries/upload', [EntryController::class, 'createUpload'])->name('entries.create-upload');
     Route::post('/entries/upload', [EntryController::class, 'storeUpload'])->name('entries.store-upload');
+    Route::get('/entries/more/{id}',[EntryController::class, 'moreEntries'])->name('entries.more');
 });
 Route::resource('entries', EntryController::class);
 
