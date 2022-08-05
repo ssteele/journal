@@ -1,30 +1,21 @@
 import Card from '@/Components/Entry/Card';
 import LoadingSpinner from '@/Components/LoadingSpinner';
 import Authenticated from '@/Layouts/Authenticated';
-import { Head, Link, useForm } from '@inertiajs/inertia-react';
-import React, { useEffect, useState } from 'react';
+import { Head, Link } from '@inertiajs/inertia-react';
+import React, { useState } from 'react';
 
 export default function Index({ auth, entries: dbEntries, errors }) {
     const [entries, setEntries] = useState(dbEntries);
-    const initialState = {
-        lastFetchedId: entries[entries.length - 1]?.id,
-    };
-    const { data, setData } = useForm(initialState);
+    const [lastEntryId, setLastEntryId] = useState(entries[entries.length - 1]?.id);
     const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        if (isLoading) {
-            setIsLoading(false);
-        }
-    }, [entries]);
 
     async function handleLoadMore() {
         setIsLoading(true);
-        await axios(route('entries.more', data.lastFetchedId))
+        await axios(route('entries.more', lastEntryId))
             .then((response) => response?.data)
             .then((more) => {
                 setEntries([...entries, ...more]);
-                setData('lastFetchedId', more[more.length - 1]?.id);
+                setLastEntryId(more[more.length - 1]?.id);
             });
         setIsLoading(false);
     }
