@@ -19,7 +19,7 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
         tempo,
         entry,
     };
-    const { data, errors: formErrors, post, put, setData } = useForm(initialState);
+    const { data, errors, post, put, setData } = useForm(initialState);
     const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
     const [isAnnotatingStart, setIsAnnotatingStart] = useState(false);
     const [isAnnotating, setIsAnnotating] = useState(false);
@@ -234,7 +234,7 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
                                 value={data.date}
                             />
                             <span className="text-red-600">
-                                {formErrors.date}
+                                {errors.date}
                             </span>
                         </div>
 
@@ -249,7 +249,7 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
                                 value={data.tempo}
                             />
                             <span className="text-red-600">
-                                {formErrors.tempo}
+                                {errors.tempo}
                             </span>
                         </div>
 
@@ -277,7 +277,7 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
                                 <label>Entry</label>
                                 <textarea
                                     className="w-full h-[32rem] p-4 border-gray-200"
-                                    errors={formErrors.entry}
+                                    errors={errors.entry}
                                     label="entry"
                                     name="entry"
                                     onChange={e => setData('entry', e?.target?.value)}
@@ -289,7 +289,7 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
                                     value={data.entry}
                                 />
                                 <span className="text-red-600">
-                                    {formErrors.entry}
+                                    {errors.entry}
                                 </span>
                             </div>
 
