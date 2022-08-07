@@ -150,15 +150,6 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, marker
                             </Link>
                         </div>
 
-                        {markers.length > 0 && 
-                            <div className="mt-6">
-                                <label>Markers</label>
-                                <div>
-                                    { renderMarkers(markers) }
-                                </div>
-                            </div>
-                        }
-
                         {mentions.length > 0 && 
                             <div className="mt-6">
                                 <label>Mentions</label>
@@ -173,6 +164,15 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, marker
                                 <label>Tags</label>
                                 <div className="p-4 border border-gray-100 bg-gray-100">
                                     { renderTags(groupTagsByCount(tags)) }
+                                </div>
+                            </div>
+                        }
+
+                        {markers.length > 0 && 
+                            <div className="mt-6">
+                                <label>Markers</label>
+                                <div>
+                                    { renderMarkers(markers) }
                                 </div>
                             </div>
                         }
