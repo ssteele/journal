@@ -20,10 +20,10 @@ use Inertia\Inertia;
 class EntryController extends Controller
 {
     private $entryRepository;
-    private $tagRepository;
-    private $mentionRepository;
     private $markerCategoryRepository;
     private $markerRepository;
+    private $mentionRepository;
+    private $tagRepository;
 
     // /** @var float */
     // private $average = 0;
@@ -37,18 +37,18 @@ class EntryController extends Controller
      */
     public function __construct(
         EntryRepository $entryRepository,
-        TagRepository $tagRepository,
-        MentionRepository $mentionRepository,
         MarkerCategoryRepository $markerCategoryRepository,
         MarkerRepository $markerRepository,
+        MentionRepository $mentionRepository,
+        TagRepository $tagRepository,
     )
     {
         $this->middleware('auth');
         $this->entryRepository = $entryRepository;
-        $this->tagRepository = $tagRepository;
-        $this->mentionRepository = $mentionRepository;
         $this->markerCategoryRepository = $markerCategoryRepository;
         $this->markerRepository = $markerRepository;
+        $this->mentionRepository = $mentionRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -82,9 +82,9 @@ class EntryController extends Controller
      */
     public function create()
     {
-        $tags = $this->tagRepository->getNamesSortedByFrequency();
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), config('constants.day_limit_recent_tags'));
+        $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Entries/Create')
             ->with('mentions', $mentions)
             ->with('recentTags', $recentTags)
@@ -129,14 +129,14 @@ class EntryController extends Controller
     public function show($id)
     {
         $entry = Entry::find($id);
-        $markerCategories = $this->markerCategoryRepository->get();
-        $markers = $this->markerRepository->getForEntry($entry->id);
-        $mentions = $this->mentionRepository->getIdNamePairsForEntry($entry->id);
-        $tags = $this->tagRepository->getIdNamePairsForEntry($entry->id);
         $idsPrevNext = [
             'prev' => Entry::where('id', '<', $id)->max('id'),
             'next' => Entry::where('id', '>', $id)->min('id'),
         ];
+        $markerCategories = $this->markerCategoryRepository->get();
+        $markers = $this->markerRepository->getForEntry($id);
+        $mentions = $this->mentionRepository->getIdNamePairsForEntry($id);
+        $tags = $this->tagRepository->getIdNamePairsForEntry($id);
         return Inertia::render('Entries/Show')
             ->with('entry', $entry)
             ->with('idsPrevNext', $idsPrevNext)
@@ -158,7 +158,7 @@ class EntryController extends Controller
         $entryDate = Carbon::parse($entry['date']);
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
-        $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
+        $currentTags = $this->tagRepository->getNamesForEntry($id);
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
         return Inertia::render('Entries/Edit')
             ->with('currentTags', $currentTags)
