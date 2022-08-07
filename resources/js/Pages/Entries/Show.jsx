@@ -16,7 +16,16 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, marker
         return markers.map((marker, i) => {
             const categoryName = getMarkerCategory(markerCategories, marker?.marker_category_id)
             return (
-                <div className={`p-4 rounded-lg ${MarkerColorMap[marker?.marker_category_id]} || bg-gray-200`} key={i}>
+                <div
+                    className={`
+                        mt-4
+                        first:mt-0
+                        p-4
+                        ${MarkerColorMap[marker?.marker_category_id] || bg-gray-200}
+                        rounded-lg
+                    `}
+                    key={i}
+                >
                     <div>
                         <span className="font-bold">
                             {categoryName}
