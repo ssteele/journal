@@ -1,11 +1,46 @@
+import { MarkerColorMap } from '@/Constants/MarkerColorMap';
 import Authenticated from '@/Layouts/Authenticated';
 import { FormatDateForInputField, FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import MarkupEntry from '@/Utils/MarkupEntry';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentions, tags }) {
+export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, markerCategories, markers, mentions, tags }) {
     const { id, date, tempo, entry } = dbEntry;
+
+    function getMarkerCategory(markerCategories, id) {
+        return markerCategories.find((category) => category?.id === id)?.name;
+    }
+
+    function renderMarkers(markers) {
+        return markers.map((marker, i) => {
+            const categoryName = getMarkerCategory(markerCategories, marker?.marker_category_id)
+            return (
+                <div className={`p-4 rounded-lg ${MarkerColorMap[marker?.marker_category_id]} || bg-gray-200`} key={i}>
+                    <div>
+                        <span className="font-bold">
+                            {categoryName}
+                        </span>
+                    </div>
+                    {marker?.marker}
+                </div>
+            );
+        })
+    }
+
+    function renderMentions(mentions) {
+        return mentions.map((mention, i) => {
+            return (
+                <li className="inline-block pr-1.5" key={i}>
+                    <Link
+                        href={route('mentions.show', mention?.id)}
+                    >
+                        {mention?.name}
+                    </Link>
+                </li>
+            );
+        })
+    }
 
     function groupTagsByCount(tags) {
         let tagsHash = {};
@@ -61,20 +96,6 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
             })
     }
 
-    function renderMentions(mentions) {
-        return mentions.map((mention, i) => {
-            return (
-                <li className="inline-block pr-1.5" key={i}>
-                    <Link
-                        href={route('mentions.show', mention?.id)}
-                    >
-                        {mention?.name}
-                    </Link>
-                </li>
-            );
-        })
-    }
-
     return (
         <Authenticated
             auth={auth}
@@ -120,6 +141,15 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
                             </Link>
                         </div>
 
+                        {markers.length > 0 && 
+                            <div className="mt-6">
+                                <label>Markers</label>
+                                <div>
+                                    { renderMarkers(markers) }
+                                </div>
+                            </div>
+                        }
+
                         {mentions.length > 0 && 
                             <div className="mt-6">
                                 <label>Mentions</label>
@@ -132,9 +162,7 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, mentio
                         {tags.length > 0 && 
                             <div className="mt-6">
                                 <label>Tags</label>
-                                <div
-                                    className="p-4 border border-gray-100 bg-gray-100"
-                                >
+                                <div className="p-4 border border-gray-100 bg-gray-100">
                                     { renderTags(groupTagsByCount(tags)) }
                                 </div>
                             </div>

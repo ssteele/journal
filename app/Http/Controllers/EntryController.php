@@ -8,6 +8,8 @@ use App\Http\Requests\UploadEntryRequest;
 use App\Models\Entry;
 use App\Services\Annotation\Handler;
 use App\Repositories\EntryRepository;
+use App\Repositories\MarkerCategoryRepository;
+use App\Repositories\MarkerRepository;
 use App\Repositories\MentionRepository;
 use App\Repositories\TagRepository;
 use Carbon\Carbon;
@@ -20,6 +22,8 @@ class EntryController extends Controller
     private $entryRepository;
     private $tagRepository;
     private $mentionRepository;
+    private $markerCategoryRepository;
+    private $markerRepository;
 
     // /** @var float */
     // private $average = 0;
@@ -35,12 +39,16 @@ class EntryController extends Controller
         EntryRepository $entryRepository,
         TagRepository $tagRepository,
         MentionRepository $mentionRepository,
+        MarkerCategoryRepository $markerCategoryRepository,
+        MarkerRepository $markerRepository,
     )
     {
         $this->middleware('auth');
         $this->entryRepository = $entryRepository;
         $this->tagRepository = $tagRepository;
         $this->mentionRepository = $mentionRepository;
+        $this->markerCategoryRepository = $markerCategoryRepository;
+        $this->markerRepository = $markerRepository;
     }
 
     /**
@@ -121,8 +129,10 @@ class EntryController extends Controller
     public function show($id)
     {
         $entry = Entry::find($id);
-        $tags = $this->tagRepository->getIdNamePairsForEntry($entry->id);
+        $markerCategories = $this->markerCategoryRepository->get();
+        $markers = $this->markerRepository->getForEntry($entry->id);
         $mentions = $this->mentionRepository->getIdNamePairsForEntry($entry->id);
+        $tags = $this->tagRepository->getIdNamePairsForEntry($entry->id);
         $idsPrevNext = [
             'prev' => Entry::where('id', '<', $id)->max('id'),
             'next' => Entry::where('id', '>', $id)->min('id'),
@@ -130,6 +140,8 @@ class EntryController extends Controller
         return Inertia::render('Entries/Show')
             ->with('entry', $entry)
             ->with('idsPrevNext', $idsPrevNext)
+            ->with('markerCategories', $markerCategories)
+            ->with('markers', $markers)
             ->with('mentions', $mentions)
             ->with('tags', $tags);
     }
