@@ -212,6 +212,16 @@ class Handler
     }
 
     /**
+     * Clear entry markers on entry update
+     */
+    private function clearEntryMarkers($entryId)
+    {
+        \DB::table('markers')
+            ->where('entry_id', $entryId)
+            ->delete();
+    }
+
+    /**
      * Clear annotations on entry update
      * @return void
      */
@@ -219,5 +229,6 @@ class Handler
     {
         $this->clearEntryMentions($this->entryId);
         $this->clearEntryTags($this->entryId);
+        $this->clearEntryMarkers($this->entryId);
     }
 }
