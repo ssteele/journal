@@ -50,12 +50,25 @@ export default function Index({ auth, entries: dbEntries, errors }) {
 
                         <div className="w-full mt-8 flex flex-col items-center">
                             {!isLoading && (
-                                <button
-                                    className="py-4 text-sm text-blue-400"
-                                    onClick={() => handleLoadMore()}
-                                >
-                                    Load more
-                                </button>
+                                <>
+                                    {!!entries.length && (
+                                        <button
+                                            className="py-4 text-sm text-blue-400"
+                                            onClick={() => handleLoadMore()}
+                                        >
+                                            Load more
+                                        </button>
+                                    )}
+
+                                    {!entries.length && (
+                                        <Link
+                                            href={route('entries.create')}
+                                            className="py-4 text-sm text-blue-400"
+                                        >
+                                            Create entry
+                                        </Link>
+                                    )}
+                                </>
                             )}
 
                             {isLoading && (
