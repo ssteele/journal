@@ -83,7 +83,7 @@ class MarkerCategorySeeder extends Seeder
             ],
             [
                 'user_id' => 1,
-                'name' => 'kid',
+                'name' => 'kids',
                 'shorthand' => 'k',
                 'is_default' => '0',
             ],
