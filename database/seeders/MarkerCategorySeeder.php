@@ -87,6 +87,12 @@ class MarkerCategorySeeder extends Seeder
                 'shorthand' => 'k',
                 'is_default' => '0',
             ],
+            [
+                'user_id' => 1,
+                'name' => 'work',
+                'shorthand' => 'w',
+                'is_default' => '0',
+            ],
         ];
 
         \DB::table('marker_categories')->insert($markerCategories);
