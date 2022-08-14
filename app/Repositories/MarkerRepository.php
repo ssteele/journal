@@ -11,7 +11,7 @@ class MarkerRepository
         return DB::table('markers')
             ->select('marker_category_id', 'entry_id', 'marker')
             ->orderBy('entry_id', 'desc')
-            ->limit($limit ?: config('constants.marker_limit'))
+            // ->limit($limit ?: config('constants.marker_limit'))
             ->get();
     }
 
