@@ -8,12 +8,12 @@ import React, { useState } from 'react';
 export default function Index({ auth, errors, markerCategories, markers }) {
     const [filteredMarkers, setFilteredMarkers] = useState(markers);
 
-    // function searchTags(e) {
-    //     const searchTerm = e?.target?.value;
-    //     if (searchTerm) {
-    //         setFilteredTags(tags.filter(({ name }) => -1 !== name.indexOf(searchTerm)));
+    // function filterMarkers(e) {
+    //     const filterTerm = e?.target?.value;
+    //     if (filterTerm) {
+    //         setFilteredMarkers(markers.filter(({ name }) => -1 !== name.indexOf(filterTerm)));
     //     } else {
-    //         setFilteredTags(tags);
+    //         setFilteredMarkers(markers);
     //     }
     // }
 
@@ -38,8 +38,8 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                                 className="w-full p-4 border border-gray-200"
                                 label="Search"
                                 name="search"
-                                onChange={e => searchTags(e)}
-                                placeholder='Search tags'
+                                onChange={e => filterMarkers(e)}
+                                placeholder='Search markers'
                                 type="input"
                             />
                         </div>
