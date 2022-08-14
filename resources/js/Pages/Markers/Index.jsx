@@ -8,14 +8,14 @@ import React, { useState } from 'react';
 export default function Index({ auth, errors, markerCategories, markers }) {
     const [filteredMarkers, setFilteredMarkers] = useState(markers);
 
-    // function filterMarkers(e) {
-    //     const filterTerm = e?.target?.value;
-    //     if (filterTerm) {
-    //         setFilteredMarkers(markers.filter(({ name }) => -1 !== name.indexOf(filterTerm)));
-    //     } else {
-    //         setFilteredMarkers(markers);
-    //     }
-    // }
+    function filterMarkerCategory(e) {
+        const categoryId = parseInt(e?.target?.value);
+        if (categoryId) {
+            setFilteredMarkers(markers.filter(({ marker_category_id }) => marker_category_id === categoryId));
+        } else {
+            setFilteredMarkers(markers);
+        }
+    }
 
     return (
         <Authenticated
@@ -33,6 +33,16 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 mt-2 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white">
+                            <select
+                                defaultValue={0} 
+                                onChange={e => filterMarkerCategory(e)}
+                            >
+                                <option value="0">All</option>
+                                <option value="1">Feeling</option>
+                                <option value="2">Health</option>
+                                <option value="3">Milestone</option>
+                                <option value="4">Event</option>
+                            </select>
                         {/*
                             <input
                                 className="w-full p-4 border border-gray-200"
@@ -45,7 +55,7 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                         */}
                         </div>
 
-                        <div className="md:col-span-2 p-6 bg-white">
+                        <div className="md:col-span-2 p-2 bg-white">
                             {
                                 filteredMarkers.map((marker, i) => {
                                     const categoryName = GetMarkerCategory(markerCategories, marker?.marker_category_id);
