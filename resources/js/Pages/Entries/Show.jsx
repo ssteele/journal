@@ -1,5 +1,6 @@
 import { MarkerColorMap } from '@/Constants/MarkerColorMap';
 import Authenticated from '@/Layouts/Authenticated';
+import GetMarkerCategory from '@/Utils/GetMarkerCategory';
 import { FormatDateForInputField, FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import MarkupEntry from '@/Utils/MarkupEntry';
 import { Head, Link } from '@inertiajs/inertia-react';
@@ -8,13 +9,9 @@ import React from 'react';
 export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, markerCategories, markers, mentions, tags }) {
     const { id, date, tempo, entry } = dbEntry;
 
-    function getMarkerCategory(markerCategories, id) {
-        return markerCategories.find((category) => category?.id === id)?.name;
-    }
-
     function renderMarkers(markers) {
         return markers.map((marker, i) => {
-            const categoryName = getMarkerCategory(markerCategories, marker?.marker_category_id);
+            const categoryName = GetMarkerCategory(markerCategories, marker?.marker_category_id);
             return (
                 <div
                     className={`
