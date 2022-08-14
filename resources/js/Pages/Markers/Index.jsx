@@ -33,7 +33,12 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 mt-2 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white">
+                            <div>
+                                <label>Filter Category</label>
+                            </div>
+
                             <select
+                                className="w-full mt-2"
                                 defaultValue={0} 
                                 onChange={e => filterMarkerCategory(e)}
                             >
@@ -55,7 +60,7 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                         */}
                         </div>
 
-                        <div className="md:col-span-2 p-2 bg-white">
+                        <div className="md:col-span-2 p-6 pt-2 bg-white">
                             {
                                 filteredMarkers.map((marker, i) => {
                                     const categoryName = GetMarkerCategory(markerCategories, marker?.marker_category_id);
