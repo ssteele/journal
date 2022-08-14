@@ -14,7 +14,7 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, marker
 
     function renderMarkers(markers) {
         return markers.map((marker, i) => {
-            const categoryName = getMarkerCategory(markerCategories, marker?.marker_category_id)
+            const categoryName = getMarkerCategory(markerCategories, marker?.marker_category_id);
             return (
                 <div
                     className={`

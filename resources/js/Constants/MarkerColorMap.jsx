@@ -10,6 +10,6 @@ export const MarkerColorMap = {
     9: 'bg-yellow-200',
     10: 'bg-gray-200',
     11: 'bg-yellow-200',
-    12: 'bg-blue-200',
+    12: 'bg-pink-200',
     13: 'bg-purple-100',
 };
