@@ -1,5 +1,6 @@
 import { MarkerColorMap } from '@/Constants/MarkerColorMap';
 import Authenticated from '@/Layouts/Authenticated';
+import { FormatDateForInputField, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import GetMarkerCategory from '@/Utils/GetMarkerCategory';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
@@ -60,13 +61,19 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                                             `}
                                             key={i}
                                         >
-                                            <div>
+                                            <div className="flex justify-between">
                                                 <span className="font-bold">
                                                     {categoryName}
                                                 </span>
+
+                                                <span
+                                                    dangerouslySetInnerHTML={
+                                                        {__html: `${FormatDateWeekdayLong(marker?.date)} &#8211; ${FormatDateForInputField(marker?.date)}`}
+                                                    }
+                                                ></span>
                                             </div>
 
-                                            <div>
+                                            <div className='mt-4'>
                                                 {marker?.marker}
                                             </div>
                                         </Link>

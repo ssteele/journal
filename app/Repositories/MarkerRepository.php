@@ -9,7 +9,8 @@ class MarkerRepository
     public function get($limit = null)
     {
         return DB::table('markers')
-            ->select('marker_category_id', 'entry_id', 'marker')
+            ->join('entries', 'markers.entry_id', '=', 'entries.id')
+            ->select('marker_category_id', 'entry_id', 'marker', 'date')
             ->orderBy('entry_id', 'desc')
             // ->limit($limit ?: config('constants.marker_limit'))
             ->get();
