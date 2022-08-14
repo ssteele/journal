@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EntryController;
+use App\Http\Controllers\MarkerController;
 use App\Http\Controllers\MentionController;
 use App\Http\Controllers\TagController;
 use Illuminate\Foundation\Application;
@@ -30,6 +31,8 @@ Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 
 Route::get('/mentions', [MentionController::class, 'index'])->name('mentions.index');
 Route::get('/mentions/{mention}', [MentionController::class, 'show'])->name('mentions.show');
+
+Route::get('/markers', [MarkerController::class, 'index'])->name('markers.index');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
