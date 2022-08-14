@@ -31,9 +31,9 @@ export default function Index({ auth, errors, markerCategories, markers }) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        {/*
+                    <div className="grid grid-cols-1 md:grid-cols-3 mt-2 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white">
+                        {/*
                             <input
                                 className="w-full p-4 border border-gray-200"
                                 label="Search"
@@ -42,10 +42,10 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                                 placeholder='Search markers'
                                 type="input"
                             />
-                        </div>
                         */}
+                        </div>
 
-                        <div className="p-6 pt-0 bg-white">
+                        <div className="md:col-span-2 p-6 bg-white">
                             {
                                 filteredMarkers.map((marker, i) => {
                                     const categoryName = GetMarkerCategory(markerCategories, marker?.marker_category_id);
