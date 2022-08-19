@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --port 6060",
         "build": "vite build"
     },
     "devDependencies": {
