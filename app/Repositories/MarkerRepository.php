@@ -12,7 +12,7 @@ class MarkerRepository
             ->join('entries', 'markers.entry_id', '=', 'entries.id')
             ->select('marker_category_id', 'entry_id', 'marker', 'date')
             ->orderBy('entry_id', 'desc')
-            // ->limit($limit ?: config('constants.marker_limit'))
+            // ->limit($limit ?: config('constants.marker_limit')) // @todo: improve page load speed
             ->get();
     }
 
