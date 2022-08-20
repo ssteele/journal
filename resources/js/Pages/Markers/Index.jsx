@@ -8,6 +8,21 @@ import React, { useState } from 'react';
 export default function Index({ auth, errors, markerCategories, markers }) {
     const [filteredMarkers, setFilteredMarkers] = useState(markers);
 
+    function renderMarkerCategoryOptions(markerCategories) {
+        return markerCategories.map((markerCategory, i) => {
+            const { name } = markerCategory;
+            const category = `${name[0].toUpperCase()}${name.slice(1)}`
+            return (
+                <option
+                    key={i}
+                    value={markerCategory?.id}
+                >
+                    {category}
+                </option>
+            );
+        });
+    }
+
     function filterMarkerCategory(e) {
         const categoryId = parseInt(e?.target?.value);
         if (categoryId) {
@@ -43,20 +58,7 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                                 onChange={e => filterMarkerCategory(e)}
                             >
                                 <option value="0">All</option>
-                                {
-                                    markerCategories.map((markerCategory, i) => {
-                                        const { name } = markerCategory;
-                                        const category = `${name[0].toUpperCase()}${name.slice(1)}`
-                                        return (
-                                            <option
-                                                key={i}
-                                                value={markerCategory?.id}
-                                            >
-                                                {category}
-                                            </option>
-                                        );
-                                    })
-                                }
+                                { renderMarkerCategoryOptions(markerCategories) }
                             </select>
                         </div>
 
