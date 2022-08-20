@@ -43,21 +43,21 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                                 onChange={e => filterMarkerCategory(e)}
                             >
                                 <option value="0">All</option>
-                                <option value="1">Feeling</option>
-                                <option value="2">Health</option>
-                                <option value="3">Milestone</option>
-                                <option value="4">Event</option>
+                                {
+                                    markerCategories.map((markerCategory, i) => {
+                                        const { name } = markerCategory;
+                                        const category = `${name[0].toUpperCase()}${name.slice(1)}`
+                                        return (
+                                            <option
+                                                key={i}
+                                                value={markerCategory?.id}
+                                            >
+                                                {category}
+                                            </option>
+                                        );
+                                    })
+                                }
                             </select>
-                        {/*
-                            <input
-                                className="w-full p-4 border border-gray-200"
-                                label="Search"
-                                name="search"
-                                onChange={e => filterMarkers(e)}
-                                placeholder='Search markers'
-                                type="input"
-                            />
-                        */}
                         </div>
 
                         <div className="md:col-span-2 p-6 pt-2 bg-white">
