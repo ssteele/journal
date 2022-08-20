@@ -13,6 +13,7 @@ export default function Authenticated({ auth, header, children }) {
         'entries.show',
         'entries.edit',
         'entries.create-upload',
+        'markers.index',
         'mentions.index',
         'mentions.show',
         'tags.index',
@@ -26,6 +27,7 @@ export default function Authenticated({ auth, header, children }) {
                 if (entryId) {
                     return route('entries.show', entryId);
                 }
+            case 'markers.index':
             case 'mentions.index':
             case 'tags.index':
                 return route('entries.index');
@@ -146,11 +148,9 @@ export default function Authenticated({ auth, header, children }) {
                                             Mentions
                                         </Dropdown.Link>
 
-                                        {/*
                                         <Dropdown.Link href={route('markers.index')} as="button" method="get">
                                             Markers
                                         </Dropdown.Link>
-                                        */}
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
@@ -240,6 +240,12 @@ export default function Authenticated({ auth, header, children }) {
                     <div className="pb-1">
                         <ResponsiveNavLink href={route('mentions.index')} active={route().current('mentions.index')}>
                             Mentions
+                        </ResponsiveNavLink>
+                    </div>
+
+                    <div className="pb-1">
+                        <ResponsiveNavLink href={route('markers.index')} active={route().current('markers.index')}>
+                            Markers
                         </ResponsiveNavLink>
                     </div>
 
