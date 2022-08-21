@@ -1,12 +1,32 @@
+import LoadingSpinner from '@/Components/LoadingSpinner';
 import { MarkerColorMap } from '@/Constants/MarkerColorMap';
 import Authenticated from '@/Layouts/Authenticated';
 import { FormatDateForInputField, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import GetMarkerCategory from '@/Utils/GetMarkerCategory';
 import { Head, Link } from '@inertiajs/inertia-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Index({ auth, errors, markerCategories, markers }) {
-    const [filteredMarkers, setFilteredMarkers] = useState(markers);
+    const initialMarkerLimit = 100;
+    const abridgedMarkers = markers.slice(0, initialMarkerLimit);
+    const [filterCategory, setFilterCategory] = useState(null);
+    const [filteredMarkers, setFilteredMarkers] = useState(abridgedMarkers);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isMoreToLoad, setIsMoreToLoad] = useState(true);
+
+    useEffect(() => {
+        if (isLoading && !isMoreToLoad) {
+            setIsLoading(false);
+        }
+    }, [isLoading, isMoreToLoad]);
+
+    function handleLoadMore() {
+        setTimeout(() => {
+            filterMarkerCategory(markers, filterCategory);
+            setIsMoreToLoad(false);
+        });
+        setIsLoading(true);
+    }
 
     function renderMarkerCategoryOptions(markerCategories) {
         return markerCategories.map((markerCategory, i) => {
@@ -23,12 +43,21 @@ export default function Index({ auth, errors, markerCategories, markers }) {
         });
     }
 
-    function filterMarkerCategory(e) {
-        const categoryId = parseInt(e?.target?.value);
+    function filterMarkerCategory(markers = [], categoryId = null) {
         if (categoryId) {
             setFilteredMarkers(markers.filter(({ marker_category_id }) => marker_category_id === categoryId));
         } else {
             setFilteredMarkers(markers);
+        }
+    }
+
+    function triggerFilterMarkerCategory(e) {
+        const categoryId = parseInt(e?.target?.value);
+        setFilterCategory(categoryId);
+        if (isMoreToLoad) {
+            filterMarkerCategory(abridgedMarkers, categoryId);
+        } else {
+            filterMarkerCategory(markers, categoryId);
         }
     }
 
@@ -55,7 +84,7 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                             <select
                                 className="w-full mt-2"
                                 defaultValue={0} 
-                                onChange={e => filterMarkerCategory(e)}
+                                onChange={e => triggerFilterMarkerCategory(e)}
                             >
                                 <option value="0">All</option>
                                 { renderMarkerCategoryOptions(markerCategories) }
@@ -97,6 +126,23 @@ export default function Index({ auth, errors, markerCategories, markers }) {
                                     );
                                 })
                             }
+
+                            <div className="w-full mt-8 flex flex-col items-center">
+                                {isMoreToLoad && !isLoading && (
+                                    <button
+                                        className="py-4 text-sm text-blue-400"
+                                        onClick={() => handleLoadMore()}
+                                    >
+                                        Load more
+                                    </button>
+                                )}
+
+                                {isLoading && (
+                                    <div className="py-px">
+                                        <LoadingSpinner />
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
