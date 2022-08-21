@@ -63,11 +63,13 @@ export default function Authenticated({ auth, header, children }) {
                                 </div>
                             )}
 
+                            {/*
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink href={route('entries.index')} active={route().current('entries.index')}>
                                     View
                                 </NavLink>
                             </div>
+                            */}
 
                             <div className="hidden space-x-8 sm:-my-px sm:ml-8 sm:flex items-center">
                                 <Dropdown>
@@ -101,6 +103,10 @@ export default function Authenticated({ auth, header, children }) {
                                             Search
                                         </Dropdown.Link>
                                         */}
+
+                                        <Dropdown.Link href={route('entries.index')} as="button" method="get">
+                                            View
+                                        </Dropdown.Link>
 
                                         <Dropdown.Link href={route('entries.create')} as="button" method="get">
                                             Create
