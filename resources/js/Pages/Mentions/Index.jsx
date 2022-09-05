@@ -31,6 +31,7 @@ export default function Index({ auth, errors, mentions }) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white">
                             <input
+                                autoComplete='off'
                                 className="w-full p-4 border border-gray-200"
                                 label="Search"
                                 name="search"
