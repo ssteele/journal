@@ -9,24 +9,30 @@ export default function Show({ auth, errors, tags, timelines }) {
     const [isLoading, setIsLoading] = useState(false);
     let doShowLoadMore = false;
 
-    let timelineFrequencies = [];
-    let timelineYears = [];
-    let timelineFrequenciesAbridged = [];
-    let timelineYearsAbridged = [];
+    let timelinesFrequency = [];
+    let timelinesYears = [];
+    let timelinesFrequencyAbridged = [];
+    let timelinesYearsAbridged = [];
+
     const tagLimitForPageLoad = 250;
     timelines.forEach((timeline, i) => {
-        timelineFrequencies[i] = getTimelineFrequency(timeline);
-        timelineYears[i] = getTimelineYears(timelineFrequencies[i]);
+        const timelineFrequency = getTimelineFrequency(timeline);
+        const timelineYears = getTimelineYears(timelineFrequency);
 
-        timelineFrequenciesAbridged[i] = [];
-        timelineYearsAbridged[i] = timelineYears;
-        if (timelineFrequencies[i].length > tagLimitForPageLoad) {
+        let timelineFrequencyAbridged = [];
+        let timelineYearsAbridged = timelineYears;
+        if (timelineFrequency.length > tagLimitForPageLoad) {
             doShowLoadMore = true;
-            timelineFrequenciesAbridged[i] = timelineFrequencies[i].slice(0, tagLimitForPageLoad);
-            timelineYearsAbridged[i] = getTimelineYears(timelineFrequencyAbridged);
+            timelineFrequencyAbridged = timelineFrequency.slice(0, tagLimitForPageLoad);
+            timelineYearsAbridged = getTimelineYears(timelineFrequencyAbridged);
         }
+
+        timelinesFrequency.push(...timelineFrequency);
+        timelinesYears.push(...timelineYears);
+        timelinesFrequencyAbridged.push(...timelineFrequencyAbridged);
+        timelinesYearsAbridged.push(...timelineYearsAbridged);
     });
-    const tmpIndex = 1;
+    timelinesYears = [...new Set(timelinesYears)];
 
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
 
@@ -60,15 +66,15 @@ export default function Show({ auth, errors, tags, timelines }) {
                     <div className="p-6 bg-white">
                         {!isMoreToLoad && (
                             <Timeline
-                                timelineFrequency={timelineFrequencies[tmpIndex]}
-                                timelineYears={timelineYears[tmpIndex]}
+                                timelineFrequency={timelinesFrequency}
+                                timelineYears={timelinesYears}
                             ></Timeline>
                         )}
 
                         {isMoreToLoad && (
                             <Timeline
-                                timelineFrequency={timelineFrequenciesAbridged[tmpIndex]}
-                                timelineYears={timelineYearsAbridged[tmpindex]}
+                                timelineFrequency={timelinesFrequencyAbridged}
+                                timelineYears={timelinesYearsAbridged}
                             ></Timeline>
                         )}
 
