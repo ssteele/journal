@@ -1,7 +1,30 @@
 // @todo: extract to db?
-export const DailyTags = [
+export const WeekdayTags = [
+    [
+        'harvipickup',
+        'adapickup',
+        'harvihomefromschool',
+        'adahomefromschool',
+    ],
+    [
+        'workundertime',
+        'headsdown',
+        'stressed',
+        'productiveday',
+        'aliworkslate',
+        'aliworksevening',
+    ],
+];
+
+export const WeekendTags = [
     [
         'harviday',
+        'adaday',
+    ],
+];
+
+export const EverydayTags = [
+    [
         'fatherharvi',
         'harviscience',
         'harviart',
@@ -23,7 +46,6 @@ export const DailyTags = [
         'harvionenap',
     ],
     [
-        'adaday',
         'fatherada',
         'adascience',
         'adaart',
@@ -41,26 +63,13 @@ export const DailyTags = [
         'adatantrum',
         'adainconsolable',
         'adatesting',
-        'adarestless',
-        'adaonenap',
-    ],
-    [
-        'harvipickup',
-        'adapickup',
-        'harvihomefromschool',
-        'adahomefromschool',
+        // 'adarestless',
+        'adanonenap',
     ],
     [
         'aligives',
+        'alitakes',
         'alidrunk',
-        'aliworkslate',
-        'aliworksevening',
-    ],
-    [
-        'workundertime',
-        'headsdown',
-        'stressed',
-        'productiveday',
     ],
     [
         'sick',
