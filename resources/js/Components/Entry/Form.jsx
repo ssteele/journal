@@ -10,7 +10,7 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
     const {
         id,
         date = defaultDate,
-        tempo = '',
+        tempo = '0',
         entry = '',
     } = dbEntry;
     const isExistingEntry = !!id;
