@@ -83,10 +83,12 @@ class EntryController extends Controller
     public function create()
     {
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
+        $nextDate = $this->entryRepository->getDateFollowing();
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), config('constants.day_limit_recent_tags'));
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Entries/Create')
             ->with('mentions', $mentions)
+            ->with('nextDate', $nextDate)
             ->with('recentTags', $recentTags)
             ->with('tags', $tags);
     }
