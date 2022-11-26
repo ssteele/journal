@@ -49,7 +49,7 @@ class TagRepository
         return DB::table('tags')
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
             ->join('entries', 'entry_has_tags.entry_id', '=', 'entries.id')
-            ->select('date', 'entries.id as entryId', 'tags.id as tagId')
+            ->select('date', 'entries.id as entryId')
             ->where('tags.id', '=', $id)
             ->orderBy('date', 'desc')
             ->get();
