@@ -51,25 +51,6 @@ class TagController extends Controller
             ->with('timeline', $timeline);
     }
 
-    /**
-     * Display two specified resources.
-     *
-     * @param  int  $id1
-     * @param  int  $id2
-     * @return \Illuminate\Http\Response
-     */
-    public function showTwo($id1, $id2)
-    {
-        $tags = [Tag::find($id1), Tag::find($id2)];
-        $timelines = [
-            $this->tagRepository->getTimeline($id1),
-            $this->tagRepository->getTimeline($id2),
-        ];
-        return Inertia::render('Tags/ShowTwo')
-            ->with('tags', $tags)
-            ->with('timelines', $timelines);
-    }
-
     // /**
     //  * Show the form for editing the specified resource.
     //  *
