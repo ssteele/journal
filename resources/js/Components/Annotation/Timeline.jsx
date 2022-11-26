@@ -37,14 +37,21 @@ export default function Timeline({ annotationMap, timelineFrequency, timelineYea
                                         return 'color-empty';
                                     }
                                     const { counts } = day;
+                                    console.log('annotationMap:', annotationMap);
+                                    console.log('counts:', counts);
                                     const keys = Object.keys(counts);
+                                    console.log('keys:', keys);
                                     let color;
                                     let count;
                                     if (1 === keys.length) {
                                         const key = parseInt(keys[0]);
+                                        console.log('key:', key);
                                         color = annotationMap.indexOf(key);
+                                        console.log('color:', color);
                                         count = counts[key];
                                     }
+                                    const foo =  `color-${color}-scale-${count}`;
+                                    console.log('foo:', foo);
                                     return `color-${color}-scale-${count}`;
                                 }}
                             />
