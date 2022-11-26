@@ -54,7 +54,7 @@ export const EverydayTags = [
         'adahappy',
         'adamontessori',
         'adaimpressive',
-        'adaautonomous',
+        // 'adaautonomous',
         'adaindependent',
         'adagrowthspurt',
         'adadaddysgirl',
