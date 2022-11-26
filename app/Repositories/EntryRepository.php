@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Entry;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class EntryRepository
@@ -30,5 +31,15 @@ class EntryRepository
             ->orderBy('date', 'desc')
             ->limit($dayLimit ?: config('constants.day_limit'))
             ->get();
+    }
+
+    public function getDateFollowing()
+    {
+        $entry = DB::table('entries')
+            ->orderBy('date', 'desc')
+            ->limit(1)
+            ->get('date');
+        $date = Carbon::parse($entry[0]->date);
+        return $date->addDay()->toDateString();
     }
 }

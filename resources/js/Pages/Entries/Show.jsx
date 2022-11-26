@@ -129,6 +129,12 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, marker
                             <button className="px-2 font-bold text-white bg-gray-400 rounded">&raquo;</button>
                         </Link>
                     )}
+
+                    {!idsPrevNext?.next && (
+                        <Link href={route('entries.create')}>
+                            <button className="px-2 font-bold text-white bg-green-400 rounded">&raquo;</button>
+                        </Link>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 mt-2 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">

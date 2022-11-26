@@ -1,16 +1,15 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
-import { DailyTags, DailyTagsColors } from '@/Constants/DailyAnnotations';
+import { DailyTagsColors, EverydayTags, WeekdayTags, WeekendTags } from '@/Constants/DailyAnnotations';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Form({ dbEntry = {}, currentTags = [], mentions, recentTags, tags }) {
-    const defaultDate = new Date().toISOString().slice(0, 10);
+export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDate, recentTags, tags }) {
     const recentTagsCount = 25;
     const {
         id,
-        date = defaultDate,
-        tempo = '',
+        date = nextDate || new Date().toISOString().slice(0, 10),
+        tempo = '0',
         entry = '',
     } = dbEntry;
     const isExistingEntry = !!id;
@@ -27,6 +26,7 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
     const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
     const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = UseFocus();
+    const dailyTags = buildDailyTags(date, EverydayTags, WeekdayTags, WeekendTags);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -45,6 +45,21 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
                 },
             });
         }
+    }
+
+    function buildDailyTags(date, EverydayTags, WeekdayTags, WeekendTags) {
+        let tags = EverydayTags;
+        const day = new Date(date.split('-')).getDay();
+        switch (day) {
+            case 0:
+            case 6:
+                tags = [...tags, ...WeekendTags];
+                break;
+            default:
+                tags = [...tags, ...WeekdayTags];
+                break;
+        }
+        return tags;
     }
 
     function getAnnotationState() {
@@ -195,15 +210,15 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
         }
     }
 
-    function getFilteredDailyTags(DailyTags, currentTags) {
-        const filteredTags = DailyTags.map((group) => {
+    function getFilteredDailyTags(dailyTags, currentTags) {
+        const filteredTags = dailyTags.map((group) => {
             return group.filter(a => !currentTags.includes(a));
         });
         return filteredTags;
     }
 
-    function getFilteredRecentTags(recentTags, DailyTags, currentTags) {
-        const flatDailyTags = DailyTags.flat();
+    function getFilteredRecentTags(recentTags, dailyTags, currentTags) {
+        const flatDailyTags = dailyTags.flat();
         const visibleTags = [...new Set([...currentTags, ...flatDailyTags])];
         let filteredTags = [];
         for (let i=0; i<=recentTags.length; i++) {
@@ -313,7 +328,7 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
                                 className="w-full p-4 border border-gray-200"
                             >
                                 {
-                                    getFilteredDailyTags(DailyTags, currentTags).map((group, i) => {
+                                    getFilteredDailyTags(dailyTags, currentTags).map((group, i) => {
                                         const colorIndex = i % DailyTagsColors.length;
                                         const color = DailyTagsColors[colorIndex];
                                         return group.map((annotation, j) => {
@@ -339,7 +354,7 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, recentT
                                 className="w-full p-4 border border-gray-200"
                             >
                                 {
-                                    getFilteredRecentTags(recentTags, DailyTags, currentTags)
+                                    getFilteredRecentTags(recentTags, dailyTags, currentTags)
                                         .map((annotation, i) => {
                                             return <AutoAnnotation
                                                 callback={populateTag}

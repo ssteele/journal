@@ -1,5 +1,34 @@
 // @todo: extract to db?
-export const DailyTags = [
+export const WeekdayTags = [
+    [
+        'harvipickup',
+        'adapickup',
+        'harvihomefromschool',
+        'adahomefromschool',
+    ],
+    [
+        'workundertime',
+        'headsdown',
+        'stressed',
+        'productiveday',
+        'aliworkslate',
+        'aliworksevening',
+    ],
+];
+
+export const WeekendTags = [
+    [
+        'harviday',
+        'adaday',
+    ],
+];
+
+export const EverydayTags = [
+    [
+        'fatherharvi',
+        'harviscience',
+        'harviart',
+    ],
     [
         'harvihappy',
         'harvimontessori',
@@ -12,45 +41,48 @@ export const DailyTags = [
     [
         'harvitantrum',
         'harviinconsolable',
-        'harviregression',
         'harvitesting',
         'harvirestless',
         'harvionenap',
     ],
     [
-        'harvidropoff',
-        'harvipickup',
-        'harvihomefromschool',
+        'fatherada',
+        'adascience',
+        'adaart',
     ],
     [
-        'harviday',
-        'fatherharvi',
-        'harviscience',
-        'harviart',
+        'adahappy',
+        'adamontessori',
+        'adaimpressive',
+        // 'adaautonomous',
+        'adaindependent',
+        'adagrowthspurt',
+        'adadaddysgirl',
+    ],
+    [
+        'adatantrum',
+        'adainconsolable',
+        'adatesting',
+        // 'adarestless',
+        'adanonenap',
     ],
     [
         'aligives',
+        'alitakes',
         'alidrunk',
-        'aliworkslate',
-    ],
-    [
-        'workundertime',
-        'headsdown',
-        'stressed',
-        'productiveday',
-        'inoffice',
     ],
     [
         'sick',
-        'sugarsnack',
+        'cook',
         'eattoomuch',
+        'sugarsnack',
         'masturbate',
+        'separatetv',
         'flossteeth',
-        'temper',
     ],
     [
-        'cook',
         'gogogo',
+        'temper',
         'vulnerable',
         'needtotalk',
         'greatday',
