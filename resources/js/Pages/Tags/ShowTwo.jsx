@@ -33,7 +33,6 @@ export default function Show({ auth, errors, tags, timelines }) {
         timelinesYearsAbridged.push(...timelineYearsAbridged);
     });
     timelinesYears = [...new Set(timelinesYears)];
-    timelinesYearsAbridged = [...new Set(timelinesYearsAbridged)];
 
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
 
