@@ -24,7 +24,15 @@ export function getTimelineYears(timelineFrequency) {
     const timelineEndYear = timelineEnd.getFullYear();
     let timelineYears = [];
     for (let i=timelineEndYear; i>=timelineStartYear; i--) {
-        timelineYears.push(i);
+        timelineYears.push({
+            year: i,
+            count: timelineFrequency.reduce((acc, cur) => {
+                if (cur?.date?.getFullYear() === i) {
+                    acc += 1;
+                }
+                return acc;
+            }, 0),
+        });
     }
     return timelineYears;
 }

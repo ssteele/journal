@@ -8,18 +8,19 @@ export default function Timeline({ timelineFrequency, timelineYears }) {
     return (
         <>
             {
-                timelineYears.map((year, i) => {
+                timelineYears.map((timelineYear, i) => {
                     return (
                         <div className="mt-3 sm:mt-4 md:mt-6" key={i}>
                             <span className="text-sm sm:text-base lg:text-lg">
-                                {year}
+                                {timelineYear?.year}
                             </span>
+                            <span className="text-xs font-thin"> ({timelineYear?.count})</span>
 
                             <CalendarHeatmap
-                                startDate={new Date(`${year - 1}-12-31`)}
-                                endDate={new Date(`${year}-12-31`)}
+                                startDate={new Date(`${timelineYear?.year - 1}-12-31`)}
+                                endDate={new Date(`${timelineYear?.year}-12-31`)}
                                 horizontal={true}
-                                showMonthLabels={year === timelineYears[0]}
+                                showMonthLabels={timelineYear?.year === timelineYears[0]?.year}
                                 showWeekdayLabels={false}
                                 titleForValue={(day) => {
                                     if (day) {

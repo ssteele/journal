@@ -14,7 +14,7 @@ export default function Show({ auth, errors, mention, timeline }) {
             errors={errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    {mention.name}
+                    {mention.name} <span className="text-xs font-thin">({timeline.length})</span>
                 </h2>
             }
         >
