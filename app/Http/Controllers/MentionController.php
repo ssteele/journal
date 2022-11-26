@@ -25,7 +25,7 @@ class MentionController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of mentions.
      *
      * @return \Illuminate\Http\Response
      */
@@ -37,7 +37,7 @@ class MentionController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified mention.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -52,7 +52,7 @@ class MentionController extends Controller
     }
 
     // /**
-    //  * Show the form for editing the specified resource.
+    //  * Show the form for editing the specified mention.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response
@@ -63,7 +63,7 @@ class MentionController extends Controller
     // }
 
     // /**
-    //  * Update the specified resource in storage.
+    //  * Update the specified mention in storage.
     //  *
     //  * @param  \Illuminate\Http\Request  $request
     //  * @param  int  $id
@@ -75,7 +75,7 @@ class MentionController extends Controller
     // }
 
     // /**
-    //  * Remove the specified resource from storage.
+    //  * Remove the specified mention from storage.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response
