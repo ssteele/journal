@@ -25,7 +25,7 @@ class TagController extends Controller
     }
 
     /**
-     * Display a listing of tags.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -37,7 +37,7 @@ class TagController extends Controller
     }
 
     /**
-     * Display the specified tag.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -52,7 +52,7 @@ class TagController extends Controller
     }
 
     /**
-     * Display two tags.
+     * Display two specified resources.
      *
      * @param  int  $id1
      * @param  int  $id2
@@ -65,13 +65,13 @@ class TagController extends Controller
             $this->tagRepository->getTimeline($id1),
             $this->tagRepository->getTimeline($id2),
         ];
-        return Inertia::render('Tags/ShowMultiple')
+        return Inertia::render('Tags/ShowTwo')
             ->with('tags', $tags)
             ->with('timelines', $timelines);
     }
 
     // /**
-    //  * Show the form for editing the specified tag.
+    //  * Show the form for editing the specified resource.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response
@@ -82,7 +82,7 @@ class TagController extends Controller
     // }
 
     // /**
-    //  * Update the specified tag in storage.
+    //  * Update the specified resource in storage.
     //  *
     //  * @param  \Illuminate\Http\Request  $request
     //  * @param  int  $id
@@ -94,7 +94,7 @@ class TagController extends Controller
     // }
 
     // /**
-    //  * Remove the specified tag from storage.
+    //  * Remove the specified resource from storage.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response

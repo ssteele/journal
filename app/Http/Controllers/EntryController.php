@@ -52,7 +52,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Display a listing of entries.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -76,7 +76,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Show the form for creating a new entry.
+     * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -92,7 +92,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Store a newly created entry in storage.
+     * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreEntryRequest  $request
      * @return \Illuminate\Http\Response
@@ -121,7 +121,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Display the specified entry.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -147,7 +147,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified entry.
+     * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -169,7 +169,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Update the specified entry in storage.
+     * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateEntryRequest  $request
      * @param  int  $id
@@ -209,7 +209,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Remove the specified entry from storage.
+     * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

@@ -29,7 +29,7 @@ class MarkerController extends Controller
     }
 
     /**
-     * Display a listing of markers.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -43,7 +43,7 @@ class MarkerController extends Controller
     }
 
     // /**
-    //  * Display the specified marker.
+    //  * Display the specified resource.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response
@@ -56,7 +56,7 @@ class MarkerController extends Controller
     // }
 
     // /**
-    //  * Show the form for editing the specified marker.
+    //  * Show the form for editing the specified resource.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response
@@ -67,7 +67,7 @@ class MarkerController extends Controller
     // }
 
     // /**
-    //  * Update the specified marker in storage.
+    //  * Update the specified resource in storage.
     //  *
     //  * @param  \Illuminate\Http\Request  $request
     //  * @param  int  $id
@@ -79,7 +79,7 @@ class MarkerController extends Controller
     // }
 
     // /**
-    //  * Remove the specified marker from storage.
+    //  * Remove the specified resource from storage.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response
