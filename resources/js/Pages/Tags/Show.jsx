@@ -19,6 +19,7 @@ export default function Show({ auth, errors, tag, timeline }) {
         doShowLoadMore = true;
         timelineFrequencyAbridged = timelineFrequency.slice(0, tagLimitForPageLoad);
         timelineYearsAbridged = getTimelineYears(timelineFrequencyAbridged);
+        timelineYearsAbridged[timelineYearsAbridged.length - 1].count += '+';
     }
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
 
