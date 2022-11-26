@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 
 export default function ShowMultiple({ auth, errors, tags, timelines }) {
     const [isLoading, setIsLoading] = useState(false);
-    const annotationMap = tags.map(tag => tag.id);
     let doShowLoadMore = false;
 
     let timelinesFrequency = [];
@@ -68,7 +67,6 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
                     <div className="p-6 bg-white">
                         {!isMoreToLoad && (
                             <Timeline
-                                annotationMap={annotationMap}
                                 timelineFrequency={timelinesFrequency}
                                 timelineYears={timelinesYears}
                             ></Timeline>
@@ -76,7 +74,6 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
 
                         {isMoreToLoad && (
                             <Timeline
-                                annotationMap={annotationMap}
                                 timelineFrequency={timelinesFrequencyAbridged}
                                 timelineYears={timelinesYearsAbridged}
                             ></Timeline>

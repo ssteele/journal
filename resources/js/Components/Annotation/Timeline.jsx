@@ -4,7 +4,7 @@ import React from 'react';
 import 'react-calendar-heatmap/dist/styles.css';
 import '@/../css/react-calendar-heatmap.css';
 
-export default function Timeline({ annotationMap, timelineFrequency, timelineYears }) {
+export default function Timeline({ timelineFrequency, timelineYears }) {
     return (
         <>
             {
@@ -36,16 +36,7 @@ export default function Timeline({ annotationMap, timelineFrequency, timelineYea
                                     if (!day) {
                                         return 'color-empty';
                                     }
-                                    const { counts } = day;
-                                    const keys = Object.keys(counts);
-                                    let color;
-                                    let count;
-                                    if (1 === keys.length) {
-                                        const key = parseInt(keys[0]);
-                                        color = annotationMap.indexOf(key);
-                                        count = counts[key];
-                                    }
-                                    return `color-${color}-scale-${count}`;
+                                    return `color-scale-${day.count}`;
                                 }}
                             />
                         </div>
