@@ -73,7 +73,7 @@ export const EverydayTags = [
     ],
     [
         'sick',
-        'poop;',
+        'poop',
         'cook',
         'eattoomuch',
         'sugarsnack',
