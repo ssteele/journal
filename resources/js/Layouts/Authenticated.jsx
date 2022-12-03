@@ -9,6 +9,7 @@ import { Link } from '@inertiajs/inertia-react';
 export default function Authenticated({ auth, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const doRenderBackArrow = [
+        'daily-tags.index',
         'entries.create',
         'entries.show',
         'entries.edit',
@@ -34,6 +35,7 @@ export default function Authenticated({ auth, header, children }) {
             case 'mentions.show':
                 // @todo: use cookies to store previous url, then nav back
                 return route('mentions.index');
+            case 'daily-tags.index':
             case 'tags.show':
                 // @todo: use cookies to store previous url, then nav back
                 return route('tags.index');
@@ -156,6 +158,10 @@ export default function Authenticated({ auth, header, children }) {
 
                                         <Dropdown.Link href={route('markers.index')} as="button" method="get">
                                             Markers
+                                        </Dropdown.Link>
+
+                                        <Dropdown.Link href={route('daily-tags.index')} as="button" method="get">
+                                            Daily Tags
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
