@@ -42,6 +42,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
     // const [reset, setReset] = useState(null);
     // const [inputRef, setInputFocus] = UseFocus();
     // const dailyTags = buildDailyTags(date, EverydayTags, WeekdayTags, WeekendTags);
+    const dayAbbreviations = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -167,32 +168,24 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                 <div>
                                     <label
                                         className="mr-2"
-                                        // onClick="toggleAllDays"
+                                        // onClick="toggleAllDays"  // @todo
                                     >
                                         Days
                                     </label>
 
-                                    <label>
-                                        U
-                                        <input
-                                            checked={isDayChecked(0)}
-                                            className="mx-1"
-                                            // onChange={e => setData('days.0', e?.target?.checked)}
-                                            onChange={e => handleUpdateDay(0, e?.target?.checked)}
-                                            type="checkbox"
-                                        />
-                                    </label>
-
-                                    <label>
-                                        M
-                                        <input
-                                            checked={isDayChecked(1)}
-                                            className="mx-1"
-                                            // onChange={e => setData('days.1', e?.target?.checked)}
-                                            onChange={e => handleUpdateDay(1, e?.target?.checked)}
-                                            type="checkbox"
-                                        />
-                                    </label>
+                                    {dayAbbreviations.map((dayAbbreviation, i) => {
+                                        return (
+                                            <label key={i}>
+                                                { dayAbbreviation }
+                                                <input
+                                                    checked={isDayChecked(i)}
+                                                    className="mx-1"
+                                                    onChange={e => handleUpdateDay(i, e?.target?.checked)}
+                                                    type="checkbox"
+                                                />
+                                            </label>
+                                        )
+                                    })}
                                 </div>
                             </div>
                         </div>
