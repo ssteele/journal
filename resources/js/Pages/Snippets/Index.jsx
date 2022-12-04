@@ -20,11 +20,11 @@ export default function Index({ auth, errors, tags }) {
             errors={errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Daily Tags
+                    Snippets
                 </h2>
             }
         >
-            <Head title="Daily Tags" />
+            <Head title="Snippets" />
 
             <div className="py-12">
                 { console.log('SHS tags:', tags) }

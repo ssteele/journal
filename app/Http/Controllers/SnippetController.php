@@ -7,7 +7,7 @@ use App\Repositories\TagRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class DailyTagController extends Controller
+class SnippetController extends Controller
 {
     private $tagRepository;
 
@@ -25,14 +25,14 @@ class DailyTagController extends Controller
     }
 
     /**
-     * Display a listing of daily tags.
+     * Display a listing of snippets.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $tags = $this->tagRepository->getSortedByFrequency();
-        return Inertia::render('DailyTags/Index')
+        return Inertia::render('Snippets/Index')
             ->with('tags', $tags);
     }
 }
