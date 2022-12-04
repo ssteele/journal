@@ -10,7 +10,7 @@ export default function Create({ auth, errors, mentions = [], nextDate, recentTa
             errors={errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Create
+                    Create Entry
                 </h2>
             }
         >

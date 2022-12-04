@@ -25,8 +25,7 @@ class StoreEntryRequest extends FormRequest
     public function rules()
     {
         return [
-            'date'  => 'required | date',
-            // 'date'  => 'required | date | unique:entries', // @todo
+            'date'  => 'required | date | unique:entries',
             'tempo' => 'required | numeric',
             'entry' => 'required',
         ];
