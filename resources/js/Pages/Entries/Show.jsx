@@ -6,7 +6,7 @@ import MarkupEntry from '@/Utils/MarkupEntry';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, markerCategories, markers, mentions, tags }) {
+export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, markerCategories = [], markers = [], mentions = [], tags = [] }) {
     const { id, date, tempo, entry } = dbEntry;
 
     function renderMarkers(markers) {

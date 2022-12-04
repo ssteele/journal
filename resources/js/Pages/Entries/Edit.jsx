@@ -4,7 +4,7 @@ import { FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Edit({ auth, currentTags, entry, errors, mentions, recentTags, tags }) {
+export default function Edit({ auth, currentTags = [], entry, errors, mentions = [], recentTags = [], tags = [] }) {
     return (
         <Authenticated
             auth={auth}

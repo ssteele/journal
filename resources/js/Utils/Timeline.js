@@ -1,4 +1,4 @@
-export function getTimelineFrequency(timeline) {
+export function getTimelineFrequency(timeline = []) {
     let timehash = {};
     timeline.forEach((time) => {
         const { date, entryId } = time;
