@@ -2,7 +2,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
 
-export default function Index({ auth, errors, tags }) {
+export default function Index({ auth, snippets = [], errors, tags = [] }) {
     // const [filteredTags, setFilteredTags] = useState(tags);
 
     // function searchTags(e) {
@@ -27,7 +27,36 @@ export default function Index({ auth, errors, tags }) {
             <Head title="Snippets" />
 
             <div className="py-12">
-                { console.log('SHS tags:', tags) }
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        {snippets.map((snippet, i) => {
+                            return (
+                                <Link
+                                    href={route('snippets.show', snippet?.id)}
+                                    key={i}
+                                >
+                                    { console.log('SHS snippet:', snippet) }
+                                    {/*
+                                    <Card
+                                        snippet={snippet}
+                                    ></Card>
+                                    */}
+                                </Link>
+                            );
+                        })}
+
+                        <div className="w-full mt-8 flex flex-col items-center">
+                            {!snippets.length && (
+                                <Link
+                                    href={route('snippets.create')}
+                                    className="py-4 text-sm text-blue-400"
+                                >
+                                    Create snippet
+                                </Link>
+                            )}
+                        </div>
+                    </div>
+                </div>
             </div>
         </Authenticated>
     );

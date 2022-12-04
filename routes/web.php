@@ -27,6 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 Route::resource('entries', EntryController::class);
 
+Route::resource('snippets', SnippetController::class);
+
 Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
 Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 
@@ -34,8 +36,6 @@ Route::get('/mentions', [MentionController::class, 'index'])->name('mentions.ind
 Route::get('/mentions/{mention}', [MentionController::class, 'show'])->name('mentions.show');
 
 Route::get('/markers', [MarkerController::class, 'index'])->name('markers.index');
-
-Route::get('/snippets', [SnippetController::class, 'index'])->name('snippets.index');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
