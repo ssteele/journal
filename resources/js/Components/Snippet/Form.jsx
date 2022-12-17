@@ -157,6 +157,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                     <select
                                         className="w-full border border-gray-200"
                                         onChange={e => setData('type', e?.target?.value)}
+                                        value={data.type}
                                     >
                                         {snippetTypeEnum.map((option, index) => {
                                             return (
