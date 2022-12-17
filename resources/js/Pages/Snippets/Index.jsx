@@ -46,14 +46,12 @@ export default function Index({ auth, snippets = [], errors, tags = [] }) {
                         })}
 
                         <div className="w-full mt-8 flex flex-col items-center">
-                            {!snippets.length && (
-                                <Link
-                                    href={route('snippets.create')}
-                                    className="py-4 text-sm text-blue-400"
-                                >
-                                    Create snippet
-                                </Link>
-                            )}
+                            <Link
+                                href={route('snippets.create')}
+                                className="py-4 text-sm text-blue-400"
+                            >
+                                Create snippet
+                            </Link>
                         </div>
                     </div>
                 </div>
