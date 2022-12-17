@@ -139,33 +139,33 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                     <div className="px-6 bg-white">
                         <div className="mt-6">
                             <div className="grid grid-cols-1 sm:grid-cols-2 pb-4 bg-white">
-                                <div className="grid grid-cols-1 sm:grid-cols-3 bg-white">
-                                    <div>
-                                        <select
-                                            // className="border-gray-200 focus:border-indigo-200 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-xl shadow-sm sm:text-sm"
-                                            className="border border-gray-200"
-                                            // className="w-full p-4 border border-gray-200"
-                                            // name={name}
-                                            // required={required}
-                                            // id={id}
-                                            // onChange={onChange}
-                                        >
-                                            <option>Hello</option>
-                                            <option>There</option>
-                                            {/*
-                                            <option>{placeholder}</option>
-                                            {options.map((option, index) => {
-                                                return (
-                                                    <option key={index} value={option.value}>
-                                                        {option.label}
-                                                    </option>
-                                                );
-                                            })}
-                                            */}
-                                        </select>
-                                    </div>
+                                <div className="pb-4">
+                                    <select
+                                        // className="border-gray-200 focus:border-indigo-200 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-xl shadow-sm sm:text-sm"
+                                        className="w-full border border-gray-200"
+                                        // className="w-full p-4 border border-gray-200"
+                                        // name={name}
+                                        // required={required}
+                                        // id={id}
+                                        // onChange={onChange}
+                                    >
+                                        <option>Hello</option>
+                                        <option>There</option>
+                                        {/*
+                                        <option>{placeholder}</option>
+                                        {options.map((option, index) => {
+                                            return (
+                                                <option key={index} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            );
+                                        })}
+                                        */}
+                                    </select>
+                                </div>
 
-                                    <div className="p-2">
+                                <div className="grid grid-cols-2 sm:justify-self-end bg-white">
+                                    <div className="pt-3">
                                         <label>
                                             Enabled
                                             <input
@@ -177,7 +177,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                         </label>
                                     </div>
 
-                                    <div className="p-2">
+                                    <div className="pt-3">
                                         <label>
                                             Repeating
                                             <input
@@ -189,8 +189,10 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                         </label>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="p-2 justify-self-start sm:justify-self-end">
+                            <div className="grid grid-cols-1 pb-4 bg-white">
+                                <div className="pt-3 sm:justify-self-end">
                                     <label
                                         className="mr-2"
                                         // onClick="toggleAllDays"  // @todo
