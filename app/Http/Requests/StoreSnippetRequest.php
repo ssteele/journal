@@ -26,7 +26,8 @@ class StoreSnippetRequest extends FormRequest
     {
         return [
             'description'  => 'required | string',
-            'type'  => 'required | string',                         // @todo: enum
+            'type'  => 'required | string',                         
+            // 'type'  => 'required | in:tag,entry,mention',           // @todo: enum
             'body' => 'required | json',
         ];
     }
