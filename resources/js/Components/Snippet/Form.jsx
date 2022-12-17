@@ -43,6 +43,20 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
     // const [inputRef, setInputFocus] = UseFocus();
     // const dailyTags = buildDailyTags(date, EverydayTags, WeekdayTags, WeekendTags);
     const dayAbbreviations = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
+    const snippetTypeEnum = [
+        {
+            label: 'Tag',
+            value: 'tag',
+        },
+        {
+            label: 'Entry',
+            value: 'entry',
+        },
+        {
+            label: 'Mention',
+            value: 'mention',
+        },
+    ];
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -141,26 +155,16 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                             <div className="grid grid-cols-1 sm:grid-cols-2 pb-4 bg-white">
                                 <div className="pb-4">
                                     <select
-                                        // className="border-gray-200 focus:border-indigo-200 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-xl shadow-sm sm:text-sm"
                                         className="w-full border border-gray-200"
-                                        // className="w-full p-4 border border-gray-200"
-                                        // name={name}
-                                        // required={required}
-                                        // id={id}
-                                        // onChange={onChange}
+                                        onChange={e => setData('type', e?.target?.value)}
                                     >
-                                        <option>Hello</option>
-                                        <option>There</option>
-                                        {/*
-                                        <option>{placeholder}</option>
-                                        {options.map((option, index) => {
+                                        {snippetTypeEnum.map((option, index) => {
                                             return (
                                                 <option key={index} value={option.value}>
                                                     {option.label}
                                                 </option>
                                             );
                                         })}
-                                        */}
                                     </select>
                                 </div>
 
