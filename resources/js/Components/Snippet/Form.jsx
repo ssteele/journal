@@ -1,24 +1,13 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
-import { EverydayTags, WeekdayTags, WeekendTags } from '@/Constants/DailyAnnotations';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
 export default function Form({ dbSnippet = {}, tags = [] }) {
-    // const recentTagsCount = 25;
     const {
         id,
         body = '',
-        // days = {
-        //     0: true,
-        //     1: true,
-        //     2: true,
-        //     3: true,
-        //     4: true,
-        //     5: true,
-        //     6: true,
-        // },
         days = [0, 1, 2, 3, 4, 5, 6],
         description = '',
         enabled = true,
