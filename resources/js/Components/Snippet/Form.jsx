@@ -1,6 +1,5 @@
-import AutoAnnotation from '@/Components/AutoAnnotation';
-import { DailyTagsColors, EverydayTags, WeekdayTags, WeekendTags } from '@/Constants/DailyAnnotations';
-import UseFocus from '@/Utils/UseFocus';
+import { EverydayTags, WeekdayTags, WeekendTags } from '@/Constants/DailyAnnotations';
+import { SnippetTypes } from '@/Constants/SnippetTypes';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
@@ -43,20 +42,6 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
     // const [inputRef, setInputFocus] = UseFocus();
     // const dailyTags = buildDailyTags(date, EverydayTags, WeekdayTags, WeekendTags);
     const dayAbbreviations = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
-    const snippetTypeEnum = [
-        {
-            label: 'Tag',
-            value: 'tag',
-        },
-        {
-            label: 'Entry',
-            value: 'entry',
-        },
-        {
-            label: 'Mention',
-            value: 'mention',
-        },
-    ];
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -159,7 +144,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                         onChange={e => setData('type', e?.target?.value)}
                                         value={data.type}
                                     >
-                                        {snippetTypeEnum.map((option, index) => {
+                                        {SnippetTypes.map((option, index) => {
                                             return (
                                                 <option key={index} value={option.value}>
                                                     {option.label}
