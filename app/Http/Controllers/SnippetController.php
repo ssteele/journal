@@ -49,7 +49,7 @@ class SnippetController extends Controller
      */
     public function create()
     {
-        $tags = $this->tagRepository->getSortedByFrequency(); // @todo: getNamesSortedByFrequency?
+        $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Snippets/Create')
             ->with('tags', $tags);
     }

@@ -1,5 +1,7 @@
+import AutoAnnotation from '@/Components/AutoAnnotation';
 import { EverydayTags, WeekdayTags, WeekendTags } from '@/Constants/DailyAnnotations';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
+import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
@@ -33,14 +35,13 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         repeating,
     };
     const { data, errors, post, put, setData } = useForm(initialState);
-    // const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
-    // const [isAnnotatingStart, setIsAnnotatingStart] = useState(false);
-    // const [isAnnotating, setIsAnnotating] = useState(false);
-    // const [searchTerm, setSearchTerm] = useState('');
-    // const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
-    // const [reset, setReset] = useState(null);
-    // const [inputRef, setInputFocus] = UseFocus();
-    // const dailyTags = buildDailyTags(date, EverydayTags, WeekdayTags, WeekendTags);
+    const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
+    const [isAnnotatingStart, setIsAnnotatingStart] = useState(false);
+    const [isAnnotating, setIsAnnotating] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
+    const [reset, setReset] = useState(null);
+    const [inputRef, setInputFocus] = UseFocus();
     const dayAbbreviations = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
 
     function handleSubmit(e) {
@@ -81,38 +82,143 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         setData('days', days);
     }
 
-    // function populateTag(text) {
-    //     const { snippet } = getAnnotationState();
-    //     populateAnnotation({
-    //         annotationStartIndex: snippet.length,
-    //         snippet,
-    //         searchTerm: '',
-    //         text: `#${text} `,
-    //     });
-    // }
+    function getAnnotationState() {
+        return {
+            annotationStartIndex,
+            searchTerm,
+            snippet: data?.snippet,
+            suggestedAnnotations,
+        }
+    }
 
-    // function getFilteredDailyTags(dailyTags, currentTags) {
-    //     const filteredTags = dailyTags.map((group) => {
-    //         return group.filter(a => !currentTags.includes(a));
-    //     });
-    //     return filteredTags;
-    // }
+    useEffect(() => {
+        suggestAnnotations(searchTerm);
+    }, [searchTerm]);
 
-    // function getFilteredRecentTags(recentTags, dailyTags, currentTags) {
-    //     const flatDailyTags = dailyTags.flat();
-    //     const visibleTags = [...new Set([...currentTags, ...flatDailyTags])];
-    //     let filteredTags = [];
-    //     for (let i=0; i<=recentTags.length; i++) {
-    //         const recentTag = recentTags[i];
-    //         if (!visibleTags.includes(recentTag)) {
-    //             filteredTags.push(recentTag);
-    //             if (filteredTags.length >= recentTagsCount) {
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     return filteredTags;
-    // }
+    useEffect(() => {
+        if (isAnnotatingStart) {
+            setReset(null);
+            setIsAnnotatingStart(false);
+            const { snippet } = getAnnotationState();
+            let regex;
+            if ('tag' === isAnnotating) {
+                regex = /(?<=\s|^)#\w(?=[^0-9a-zA-Z]|$)/
+            } else if ('mention' === isAnnotating) {
+                regex = /(?<=\s|^)@\w(?=[^0-9a-zA-Z]|$)/
+            }
+            const annotationStartIndex = snippet.search(regex) + 1;
+            setAnnotationStartIndex(annotationStartIndex);
+        }
+    }, [data?.snippet]);
+
+    useEffect(() => {
+        if (null !== reset) {
+            setInputFocus(reset);
+            setAnnotationStartIndex(0);
+            setIsAnnotating(false);
+            setSearchTerm('');
+            setSuggestedAnnotations([]);
+        }
+    }, [reset]);
+
+    function populateAnnotation({
+        annotationStartIndex,
+        searchTerm,
+        snippet,
+        text,
+    }) {
+        const pre = snippet.substring(0, annotationStartIndex);
+        const post = snippet.substring(annotationStartIndex + searchTerm.length);
+        snippet = `${pre}${text}${post}`;
+        setData('snippet', snippet);
+
+        const annotationEndIndex = annotationStartIndex + text.length;
+        setReset(annotationEndIndex);
+    }
+
+    function populateSuggestedAnnotation(text) {
+        populateAnnotation({
+            ...getAnnotationState(),
+            text,
+        });
+    }
+
+    function isValidKey(key) {
+        let isValid = false;
+        if (1 === key.length) {
+            if (/[0-9a-zA-Z]/.test(key)) {
+                isValid = true;
+            }
+        }
+        return isValid;
+    }
+
+    function suggestAnnotations(searchTerm = '') {
+        if (!searchTerm.length) {
+            return;
+        }
+        let suggestions = [];
+        if ('tag' === isAnnotating) {
+            suggestions = tags.filter((a) => a.includes(searchTerm));
+        } else if ('mention' === isAnnotating) {
+            suggestions = mentions.filter((a) => a.startsWith(searchTerm));
+        }
+        setSuggestedAnnotations(suggestions);
+    }
+
+    function listenForTab(e) {
+        const { key } = e;
+        const { suggestedAnnotations } = getAnnotationState();
+
+        if (isAnnotating) {
+            switch (key) {
+                case 'Tab':
+                    e.preventDefault();
+                    populateSuggestedAnnotation(suggestedAnnotations[0]);
+                    break;
+            }
+        }
+    }
+
+    function listenForAnnotation(e) {
+        const { key } = e;
+        const { searchTerm } = getAnnotationState();
+
+        if (isAnnotating) {
+            if (isValidKey(key)) {
+                setSearchTerm(`${searchTerm}${key}`);
+            } else {
+                switch (key) {
+                    case 'Backspace':
+                        if (searchTerm.length) {
+                            setSearchTerm(searchTerm.slice(0, -1));
+                        } else {
+                            setReset();
+                        }
+                        break;
+                    case 'Escape':
+                    case 'Enter':
+                    case 'ArrowUp':
+                    case 'ArrowDown':
+                    case 'ArrowLeft':
+                    case 'ArrowRight':
+                    case ' ':
+                        setReset();
+                        break;
+                }
+            }
+        }
+
+        if ('#' === key) {
+            setIsAnnotatingStart(true);
+            setIsAnnotating('tag');
+        }
+
+        if ('@' === key) {
+            setIsAnnotatingStart(true);
+            setIsAnnotating('mention');
+        }
+    }
 
     return (
         <div className="max-w-7xl mx-auto mt-12 sm:px-6 lg:px-8">
@@ -208,35 +314,56 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                         </div>
                     </div>
 
-                    <div className="px-6 bg-white">
-                        <div className="mt-6">
-                            <div>
-                                <label>Snippet</label>
-                                <textarea
-                                    className="w-full h-[32rem] p-4 border-gray-200"
-                                    errors={errors.snippet}
-                                    label="snippet"
-                                    name="snippet"
-                                    onChange={e => setData('snippet', e?.target?.value)}
-                                    // onClick={_ => setReset()}
-                                    // onKeyDown={e => listenForTab(e)}
-                                    // onKeyUp={e => listenForAnnotation(e)}
-                                    // ref={inputRef}
-                                    type="text"
-                                    value={data.snippet}
-                                />
-                                <span className="text-red-600">
-                                    {errors.snippet}
-                                </span>
+                    <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-t-lg">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Suggested</label>
+                                <div className={`
+                                    h-20 md:h-72 p-2 overflow-auto border border-green-200 ${(isAnnotating) && 'bg-green-50'}
+                                `}>
+                                    {
+                                        suggestedAnnotations.map((annotation, i) => {
+                                            return <AutoAnnotation
+                                                callback={populateSuggestedAnnotation}
+                                                key={i}
+                                                type="button"
+                                            >{annotation}</AutoAnnotation>
+                                        })
+                                    }
+                                </div>
                             </div>
+                        </div>
 
-                            <div className="mt-6 flex justify-end">
-                                <button
-                                    type="submit"
-                                    className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
-                                >
-                                    {isExistingSnippet ? 'Update' : 'Create'}
-                                </button>
+                        <div className="md:col-span-2 px-6 bg-white">
+                            <div className="flex flex-col">
+                                <div className="mt-6">
+                                    <label>Snippet</label>
+                                    <textarea
+                                        className="w-full h-[32rem] p-4 border-gray-200"
+                                        errors={errors.snippet}
+                                        label="snippet"
+                                        name="snippet"
+                                        onChange={e => setData('snippet', e?.target?.value)}
+                                        onClick={_ => setReset()}
+                                        onKeyDown={e => listenForTab(e)}
+                                        onKeyUp={e => listenForAnnotation(e)}
+                                        ref={inputRef}
+                                        type="text"
+                                        value={data.snippet}
+                                    />
+                                    <span className="text-red-600">
+                                        {errors.snippet}
+                                    </span>
+                                </div>
+
+                                <div className="mt-6 flex justify-end">
+                                    <button
+                                        type="submit"
+                                        className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
+                                    >
+                                        {isExistingSnippet ? 'Update' : 'Create'}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
