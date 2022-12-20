@@ -4,10 +4,12 @@ import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
+const InitialDays =  '0,1,2,3,4,5,6';
+
 export default function Form({ dbSnippet = {}, tags = [] }) {
     const {
         id,
-        days = '0,1,2,3,4,5,6',
+        days = InitialDays,
         description = '',
         enabled = true,
         repeating = true,
@@ -71,6 +73,17 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
             daysArray = daysArray.filter(d => d !== dayIndexString);
         }
         setData('days', daysArray.join(','));
+    }
+
+    function toggleAllDays() {
+        const { days } = data;
+        const daysArray = days.split(',');
+        const initialDaysArray = InitialDays.split(',');
+        if (daysArray.length === initialDaysArray.length) {
+            setData('days', '');
+        } else {
+            setData('days', InitialDays);
+        }
     }
 
     function getAnnotationState() {
@@ -282,7 +295,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                 <div className="pt-3 sm:justify-self-end">
                                     <label
                                         className="mr-2"
-                                        // onClick="toggleAllDays"  // @todo
+                                        onClick={_ => toggleAllDays()}
                                     >
                                         Days
                                     </label>
