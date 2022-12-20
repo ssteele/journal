@@ -17,7 +17,7 @@ class Snippet extends Model
     protected $fillable = [
         'description',
         'type',
-        'body',
+        'snippet',
         'days',
         'repeating',
         'enabled',
@@ -38,4 +38,12 @@ class Snippet extends Model
     // protected $hidden = [
     //     'date',
     // ];
+
+    /**
+     * Define the relationship between two eloquent models: Snippet & User
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

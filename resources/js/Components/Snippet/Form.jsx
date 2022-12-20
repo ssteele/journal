@@ -7,21 +7,21 @@ import React, { useEffect, useState } from 'react';
 export default function Form({ dbSnippet = {}, tags = [] }) {
     const {
         id,
-        body = '',
-        days = [0, 1, 2, 3, 4, 5, 6],
+        days = '0,1,2,3,4,5,6',
         description = '',
         enabled = true,
         repeating = true,
+        snippet = '',
         type = 'tag',
     } = dbSnippet;
     const isExistingSnippet = !!id;
     const initialState = {
-        body,
         days,
         description,
         enabled,
-        type,
         repeating,
+        snippet,
+        type,
     };
     const { data, errors, post, put, setData } = useForm(initialState);
     const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
@@ -45,30 +45,32 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         } else {
             console.log('SHS post');
             console.log('SHS data:', data);
-            // post(route('snippets.store'), {
-            //     onSuccess: () => {
-            //         // @todo: flash notify
-            //         console.log('Snippet added');
-            //     },
-            // });
+            post(route('snippets.store'), {
+                onSuccess: () => {
+                    // @todo: flash notify
+                    console.log('Snippet added');
+                },
+            });
         }
     }
 
     function isDayChecked(dayIndex) {
         const { days } = data;
-        return days.includes(dayIndex);
+        return days.split(',').includes(dayIndex.toString());
     }
 
     function handleUpdateDay(dayIndex, isChecked) {
+        const dayIndexString = dayIndex.toString();
         let { days } = data;
+        let daysArray = days.split(',');
         if (isChecked) {
-            if (!days.includes(dayIndex)) {
-                days.push(dayIndex);
+            if (!daysArray.includes(dayIndexString)) {
+                daysArray.push(dayIndexString);
             }
         } else {
-            days = days.filter(d => d !== dayIndex);
+            daysArray = daysArray.filter(d => d !== dayIndexString);
         }
-        setData('days', days);
+        setData('days', daysArray.join(','));
     }
 
     function getAnnotationState() {

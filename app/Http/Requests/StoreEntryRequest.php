@@ -27,7 +27,7 @@ class StoreEntryRequest extends FormRequest
         return [
             'date'  => 'required | date | unique:entries',
             'tempo' => 'required | numeric',
-            'entry' => 'required',
+            'entry' => 'required | string',
         ];
     }
 }

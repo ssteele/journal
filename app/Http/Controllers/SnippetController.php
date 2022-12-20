@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
+use App\Http\Requests\StoreSnippetRequest;
+use App\Models\Snippet;
 use App\Repositories\SnippetRepository;
 use App\Repositories\TagRepository;
 use Illuminate\Http\Request;
@@ -60,9 +61,16 @@ class SnippetController extends Controller
      * @param  \App\Http\Requests\StoreSnippetRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSnippetRequest $request, Handler $annotationHandler)
+    public function store(StoreSnippetRequest $request)
     {
+        // get authenticated user
+        $user = \Auth::user();
 
+        // save snippet
+        $snippet = new Snippet($request->all());
+        $entity = $user->snippet()->save($snippet);
+
+        return redirect()->route('snippets.show', $entity->id);
     }
 
     /**
@@ -73,7 +81,9 @@ class SnippetController extends Controller
      */
     public function show($id)
     {
-
+        $snippet = Snippet::find($id);
+        return Inertia::render('Snippets/Show')
+            ->with('snippet', $snippet);
     }
 
     /**
@@ -90,11 +100,11 @@ class SnippetController extends Controller
     /**
      * Update the specified snippet in storage.
      *
-     * @param  \App\Http\Requests\UpdateEntryRequest  $request
+     * @param  \App\Http\Requests\UpdateSnippetRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEntryRequest $request, $id, Handler $annotationHandler)
+    public function update(UpdateSnippetRequest $request, $id)
     {
 
     }
