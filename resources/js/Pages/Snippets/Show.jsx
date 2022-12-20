@@ -1,20 +1,9 @@
 import Authenticated from '@/Layouts/Authenticated';
 import { Head, Link } from '@inertiajs/inertia-react';
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] }) {
     const { description, id } = dbSnippet;
-
-    // const [filteredTags, setFilteredTags] = useState(tags);
-
-    // function searchTags(e) {
-    //     const searchTerm = e?.target?.value;
-    //     if (searchTerm) {
-    //         setFilteredTags(tags.filter(({ name }) => -1 !== name.indexOf(searchTerm)));
-    //     } else {
-    //         setFilteredTags(tags);
-    //     }
-    // }
 
     return (
         <Authenticated
