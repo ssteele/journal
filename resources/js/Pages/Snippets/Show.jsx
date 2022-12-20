@@ -1,9 +1,10 @@
+import { SnippetTypes } from '@/Constants/SnippetTypes';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] }) {
-    const { description, id } = dbSnippet;
+    const { description, id, type } = dbSnippet;
 
     return (
         <Authenticated
@@ -28,26 +29,16 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                         </div>
                     </div>
 
-                    {/*
                     <div className="px-6 bg-white">
                         <div className="mt-6">
                             <div className="grid grid-cols-1 sm:grid-cols-2 pb-4 bg-white">
                                 <div className="pb-4">
-                                    <select
-                                        className="w-full border border-gray-200"
-                                        onChange={e => setData('type', e?.target?.value)}
-                                        value={data.type}
-                                    >
-                                        {SnippetTypes.map((option, index) => {
-                                            return (
-                                                <option key={index} value={option.value}>
-                                                    {option.label}
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
+                                    <Link href={route('snippets.edit', id)}>
+                                        <div className="px-3 py-2 border border-gray-100 bg-gray-100">{ SnippetTypes.find((s) => s?.value === type)?.label }</div>
+                                    </Link>
                                 </div>
 
+                    {/*
                                 <div className="grid grid-cols-2 sm:justify-self-end bg-white">
                                     <div className="pt-3">
                                         <label>
@@ -73,8 +64,10 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                                         </label>
                                     </div>
                                 </div>
+                    */}
                             </div>
 
+                            {/*
                             <div className="grid grid-cols-1 pb-4 bg-white">
                                 <div className="pt-3 sm:justify-self-end">
                                     <label
@@ -99,9 +92,11 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                                     })}
                                 </div>
                             </div>
+                            */}
                         </div>
                     </div>
 
+                    {/*
                     <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-t-lg">
                         <div className="px-6 bg-white">
                             <div className="mt-6">
