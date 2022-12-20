@@ -4,7 +4,7 @@ import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] }) {
-    const { description, id, type } = dbSnippet;
+    const { description, enabled, id, type } = dbSnippet;
 
     return (
         <Authenticated
@@ -38,20 +38,22 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                                     </Link>
                                 </div>
 
-                    {/*
                                 <div className="grid grid-cols-2 sm:justify-self-end bg-white">
                                     <div className="pt-3">
-                                        <label>
-                                            Enabled
-                                            <input
-                                                checked={data.enabled}
-                                                className="mx-1"
-                                                onChange={e => setData('enabled', e?.target?.checked)}
-                                                type="checkbox"
-                                            />
-                                        </label>
+                                        <Link href={route('snippets.edit', id)}>
+                                            <label>
+                                                Enabled
+                                                <input
+                                                    checked={enabled}
+                                                    className="mx-1 text-gray-400"
+                                                    disabled="disabled"
+                                                    type="checkbox"
+                                                />
+                                            </label>
+                                        </Link>
                                     </div>
 
+                                    {/*
                                     <div className="pt-3">
                                         <label>
                                             Repeating
@@ -63,8 +65,8 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                                             />
                                         </label>
                                     </div>
+                                    */}
                                 </div>
-                    */}
                             </div>
 
                             {/*
