@@ -4,7 +4,7 @@ import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] }) {
-    const { days, description, enabled, id, repeating, type } = dbSnippet;
+    const { days, description, enabled, id, repeating, snippet, type } = dbSnippet;
     const dayAbbreviations = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
 
     function isDayChecked(dayIndex) {
@@ -100,26 +100,8 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                         </div>
                     </div>
 
-                    {/*
                     <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-t-lg">
-                        <div className="px-6 bg-white">
-                            <div className="mt-6">
-                                <label>Suggested</label>
-                                <div className={`
-                                    h-20 md:h-72 p-2 overflow-auto border border-green-200 ${(isAnnotating) && 'bg-green-50'}
-                                `}>
-                                    {
-                                        suggestedAnnotations.map((annotation, i) => {
-                                            return <AutoAnnotation
-                                                callback={populateSuggestedAnnotation}
-                                                key={i}
-                                                type="button"
-                                            >{annotation}</AutoAnnotation>
-                                        })
-                                    }
-                                </div>
-                            </div>
-                        </div>
+                        <div></div>
 
                         <div className="md:col-span-2 px-6 bg-white">
                             <div className="flex flex-col">
@@ -127,34 +109,16 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                                     <label>Snippet</label>
                                     <textarea
                                         className="w-full h-[32rem] p-4 border-gray-200"
-                                        errors={errors.snippet}
                                         label="snippet"
                                         name="snippet"
-                                        onChange={e => setData('snippet', e?.target?.value)}
-                                        onClick={_ => setReset()}
-                                        onKeyDown={e => listenForTab(e)}
-                                        onKeyUp={e => listenForAnnotation(e)}
-                                        ref={inputRef}
+                                        readOnly="readOnly"
                                         type="text"
-                                        value={data.snippet}
+                                        value={snippet}
                                     />
-                                    <span className="text-red-600">
-                                        {errors.snippet}
-                                    </span>
-                                </div>
-
-                                <div className="mt-6 flex justify-end">
-                                    <button
-                                        type="submit"
-                                        className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
-                                    >
-                                        {isExistingSnippet ? 'Update' : 'Create'}
-                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    */}
                 </div>
             </div>
         </Authenticated>
