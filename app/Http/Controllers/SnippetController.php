@@ -94,7 +94,11 @@ class SnippetController extends Controller
      */
     public function edit($id)
     {
-
+        $snippet = Snippet::find($id);
+        $tags = $this->tagRepository->getNamesSortedByFrequency();
+        return Inertia::render('Snippets/Edit')
+            ->with('snippet', $snippet)
+            ->with('tags', $tags);
     }
 
     /**
