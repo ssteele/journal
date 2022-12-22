@@ -4,7 +4,12 @@ import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] }) {
-    const { description, enabled, id, repeating, type } = dbSnippet;
+    const { days, description, enabled, id, repeating, type } = dbSnippet;
+    const dayAbbreviations = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
+
+    function isDayChecked(dayIndex) {
+        return days.split(',').includes(dayIndex.toString());
+    }
 
     return (
         <Authenticated
@@ -69,12 +74,10 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                                 </div>
                             </div>
 
-                            {/*
                             <div className="grid grid-cols-1 pb-4 bg-white">
                                 <div className="pt-3 sm:justify-self-end">
                                     <label
                                         className="mr-2"
-                                        onClick={_ => toggleAllDays()}
                                     >
                                         Days
                                     </label>
@@ -85,8 +88,8 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                                                 { dayAbbreviation }
                                                 <input
                                                     checked={isDayChecked(i)}
-                                                    className="mx-1"
-                                                    onChange={e => handleUpdateDay(i, e?.target?.checked)}
+                                                    className="mx-1 text-gray-400"
+                                                    readOnly="readOnly"
                                                     type="checkbox"
                                                 />
                                             </label>
@@ -94,7 +97,6 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                                     })}
                                 </div>
                             </div>
-                            */}
                         </div>
                     </div>
 
