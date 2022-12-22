@@ -76,45 +76,56 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
 
                             <div className="grid grid-cols-1 pb-4 bg-white">
                                 <div className="pt-3 sm:justify-self-end">
-                                    <label
-                                        className="mr-2"
-                                    >
-                                        Days
-                                    </label>
+                                    <Link href={route('snippets.edit', id)}>
+                                        <label
+                                            className="mr-2"
+                                        >
+                                            Days
+                                        </label>
 
-                                    {dayAbbreviations.map((dayAbbreviation, i) => {
-                                        return (
-                                            <label key={i}>
-                                                { dayAbbreviation }
-                                                <input
-                                                    checked={isDayChecked(i)}
-                                                    className="mx-1 text-gray-400"
-                                                    readOnly="readOnly"
-                                                    type="checkbox"
-                                                />
-                                            </label>
-                                        )
-                                    })}
+                                        {dayAbbreviations.map((dayAbbreviation, i) => {
+                                            return (
+                                                <label key={i}>
+                                                    { dayAbbreviation }
+                                                    <input
+                                                        checked={isDayChecked(i)}
+                                                        className="mx-1 text-gray-400"
+                                                        readOnly="readOnly"
+                                                        type="checkbox"
+                                                    />
+                                                </label>
+                                            )
+                                        })}
+                                    </Link>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-t-lg">
-                        <div></div>
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <Link href={route('snippets.edit', id)}>
+                                    <label>Suggested</label>
+                                    <div className="h-20 md:h-72 p-2 overflow-auto border border-gray-100 bg-gray-100"></div>
+                                </Link>
+                            </div>
+                        </div>
 
                         <div className="md:col-span-2 px-6 bg-white">
                             <div className="flex flex-col">
                                 <div className="mt-6">
-                                    <label>Snippet</label>
-                                    <textarea
-                                        className="w-full h-[32rem] p-4 border-gray-200"
-                                        label="snippet"
-                                        name="snippet"
-                                        readOnly="readOnly"
-                                        type="text"
-                                        value={snippet}
-                                    />
+                                    <Link href={route('snippets.edit', id)}>
+                                        <label>Snippet</label>
+                                        <textarea
+                                            className="w-full h-[32rem] p-4 border-gray-200"
+                                            label="snippet"
+                                            name="snippet"
+                                            readOnly="readOnly"
+                                            type="text"
+                                            value={snippet}
+                                        />
+                                    </Link>
                                 </div>
                             </div>
                         </div>
