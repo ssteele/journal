@@ -51,7 +51,7 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                                                 <input
                                                     checked={enabled}
                                                     className="mx-1 text-gray-400"
-                                                    disabled="disabled"
+                                                    readOnly="readOnly"
                                                     type="checkbox"
                                                 />
                                             </label>
@@ -65,7 +65,7 @@ export default function Show({ auth, errors, snippet: dbSnippet = '', tags = [] 
                                                 <input
                                                     checked={repeating}
                                                     className="mx-1 text-gray-400"
-                                                    disabled="disabled"
+                                                    readOnly="readOnly"
                                                     type="checkbox"
                                                 />
                                             </label>
