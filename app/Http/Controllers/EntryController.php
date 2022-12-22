@@ -179,7 +179,7 @@ class EntryController extends Controller
      */
     public function update(UpdateEntryRequest $request, $id, Handler $annotationHandler)
     {
-        // get/create the things
+        // get the things
         $user = \Auth::user();
         $entry = Entry::find($id);
         $update = new Entry($request->all());

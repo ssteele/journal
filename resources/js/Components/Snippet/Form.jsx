@@ -38,15 +38,13 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
     function handleSubmit(e) {
         e.preventDefault();
         if (isExistingSnippet) {
-            // put(route('snippets.update', id), {
-            //     onSuccess: () => {
-            //         // @todo: flash notify
-            //         console.log('Snippet updated');
-            //     },
-            // });
+            put(route('snippets.update', id), {
+                onSuccess: () => {
+                    // @todo: flash notify
+                    console.log('Snippet updated');
+                },
+            });
         } else {
-            console.log('SHS post');
-            console.log('SHS data:', data);
             post(route('snippets.store'), {
                 onSuccess: () => {
                     // @todo: flash notify

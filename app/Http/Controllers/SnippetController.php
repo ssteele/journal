@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSnippetRequest;
+use App\Http\Requests\UpdateSnippetRequest;
 use App\Models\Snippet;
 use App\Repositories\SnippetRepository;
 use App\Repositories\TagRepository;
@@ -110,7 +111,21 @@ class SnippetController extends Controller
      */
     public function update(UpdateSnippetRequest $request, $id)
     {
+        // get the things
+        $user = \Auth::user();
+        $snippet = Snippet::find($id);
+        $update = new Snippet($request->all());
 
+        // update fillable fields (except user_id), then save
+        $fillable = array_filter($update->getFillable(), function ($prop) {
+            return $prop != 'user_id';
+        });
+        foreach ($fillable as $prop) {
+            $snippet->$prop = $update->$prop;
+        }
+        $snippet->save();
+
+        return redirect()->route('snippets.show', $id);
     }
 
     /**
