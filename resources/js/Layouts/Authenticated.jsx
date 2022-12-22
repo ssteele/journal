@@ -16,6 +16,9 @@ export default function Authenticated({ auth, header, children }) {
         'markers.index',
         'mentions.index',
         'mentions.show',
+        'snippets.create',
+        'snippets.show',
+        'snippets.edit',
         'snippets.index',
         'tags.index',
         'tags.show',
@@ -28,11 +31,14 @@ export default function Authenticated({ auth, header, children }) {
                 if (entryId) {
                     return route('entries.show', entryId);
                 }
-            case 'markers.index':
-            case 'mentions.index':
-            case 'snippets.index':
-            case 'tags.index':
-                return route('entries.index');
+            case 'snippets.create':
+            case 'snippets.show':
+                return route('snippets.index');
+            case 'snippets.edit':
+                const snippetId = history?.state?.props?.snippet?.id;
+                if (snippetId) {
+                    return route('snippets.show', snippetId);
+                }
             case 'mentions.show':
                 // @todo: use cookies to store previous url, then nav back
                 return route('mentions.index');
