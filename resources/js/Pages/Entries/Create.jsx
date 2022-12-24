@@ -3,7 +3,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Create({ auth, errors, mentions = [], nextDate, recentTags = [], tags = [] }) {
+export default function Create({ auth, dbMentions = [], dbNextDate, dbRecentTags = [], dbTags = [], errors }) {
     return (
         <Authenticated
             auth={auth}
@@ -17,10 +17,10 @@ export default function Create({ auth, errors, mentions = [], nextDate, recentTa
             <Head title="Create Entry" />
 
             <Form
-                mentions={mentions}
-                nextDate={nextDate}
-                recentTags={recentTags}
-                tags={tags}
+                mentions={dbMentions}
+                nextDate={dbNextDate}
+                recentTags={dbRecentTags}
+                tags={dbTags}
             />
         </Authenticated>
     );

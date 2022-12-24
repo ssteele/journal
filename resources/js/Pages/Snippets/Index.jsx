@@ -3,7 +3,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Index({ auth, snippets = [], errors, tags = [] }) {
+export default function Index({ auth, dbSnippets = [], errors }) {
     return (
         <Authenticated
             auth={auth}
@@ -19,14 +19,14 @@ export default function Index({ auth, snippets = [], errors, tags = [] }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        {snippets.map((snippet, i) => {
+                        {dbSnippets.map((dbSnippet, i) => {
                             return (
                                 <Link
-                                    href={route('snippets.edit', snippet?.id)}
+                                    href={route('snippets.edit', dbSnippet?.id)}
                                     key={i}
                                 >
                                     <Card
-                                        dbSnippet={snippet}
+                                        dbSnippet={dbSnippet}
                                     ></Card>
                                 </Link>
                             );

@@ -3,7 +3,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Create({ auth, errors, tags = [] }) {
+export default function Create({ auth, dbTags = [], errors }) {
     return (
         <Authenticated
             auth={auth}
@@ -17,7 +17,7 @@ export default function Create({ auth, errors, tags = [] }) {
             <Head title="Create Snippet" />
 
             <Form
-                tags={tags}
+                tags={dbTags}
             />
         </Authenticated>
     );

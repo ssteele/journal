@@ -38,10 +38,8 @@ class SnippetController extends Controller
     public function index()
     {
         $snippets = $this->snippetRepository->get();
-        $tags = $this->tagRepository->getSortedByFrequency();
         return Inertia::render('Snippets/Index')
-            ->with('snippets', $snippets)
-            ->with('tags', $tags);
+            ->with('dbSnippets', $snippets);
     }
 
     /**
@@ -53,7 +51,7 @@ class SnippetController extends Controller
     {
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Snippets/Create')
-            ->with('tags', $tags);
+            ->with('dbTags', $tags);
     }
 
     /**
@@ -85,8 +83,8 @@ class SnippetController extends Controller
         $snippet = Snippet::find($id);
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Snippets/Edit')
-            ->with('snippet', $snippet)
-            ->with('tags', $tags);
+            ->with('dbSnippet', $snippet)
+            ->with('dbTags', $tags);
     }
 
     /**

@@ -3,7 +3,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Edit({ auth, errors, snippet, tags = [] }) {
+export default function Edit({ auth, dbSnippet, dbTags = [], errors }) {
     return (
         <Authenticated
             auth={auth}
@@ -11,7 +11,7 @@ export default function Edit({ auth, errors, snippet, tags = [] }) {
             header={
                 <h2
                     className="font-semibold text-xl text-gray-800 leading-tight"
-                    dangerouslySetInnerHTML={{__html: snippet?.description}}
+                    dangerouslySetInnerHTML={{__html: dbSnippet?.description}}
                 >
                 </h2>
             }
@@ -19,8 +19,8 @@ export default function Edit({ auth, errors, snippet, tags = [] }) {
             <Head title="Update Snippet" />
 
             <Form
-                dbSnippet={snippet}
-                tags={tags}
+                dbSnippet={dbSnippet}
+                tags={dbTags}
             />
         </Authenticated>
     );
