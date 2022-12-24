@@ -71,20 +71,7 @@ class SnippetController extends Controller
         $snippet = new Snippet($request->all());
         $entity = $user->snippet()->save($snippet);
 
-        return redirect()->route('snippets.show', $entity->id);
-    }
-
-    /**
-     * Display the specified snippet.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $snippet = Snippet::find($id);
-        return Inertia::render('Snippets/Show')
-            ->with('snippet', $snippet);
+        return redirect()->route('snippets.index');
     }
 
     /**
@@ -125,7 +112,7 @@ class SnippetController extends Controller
         }
         $snippet->save();
 
-        return redirect()->route('snippets.show', $id);
+        return redirect()->route('snippets.index');
     }
 
     /**

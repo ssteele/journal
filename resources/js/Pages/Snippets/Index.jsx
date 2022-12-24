@@ -22,7 +22,7 @@ export default function Index({ auth, snippets = [], errors, tags = [] }) {
                         {snippets.map((snippet, i) => {
                             return (
                                 <Link
-                                    href={route('snippets.show', snippet?.id)}
+                                    href={route('snippets.edit', snippet?.id)}
                                     key={i}
                                 >
                                     <Card
