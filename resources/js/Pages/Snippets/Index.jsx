@@ -1,3 +1,4 @@
+import Card from '@/Components/Snippet/Card';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
@@ -24,12 +25,9 @@ export default function Index({ auth, snippets = [], errors, tags = [] }) {
                                     href={route('snippets.show', snippet?.id)}
                                     key={i}
                                 >
-                                    { console.log('SHS snippet:', snippet) }
-                                    {/*
                                     <Card
-                                        snippet={snippet}
+                                        dbSnippet={snippet}
                                     ></Card>
-                                    */}
                                 </Link>
                             );
                         })}
