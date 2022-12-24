@@ -9,32 +9,28 @@ export default function Card({ dbSnippet }) {
     }
 
     return (
-        <div className="grid grid-cols-12 items-center p-6 bg-white border-b border-gray-200">
-            <div className="col-start-1 col-span-4">
-                <span>{ description }</span>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-12 items-center p-6 bg-white border-b border-gray-200">
+            <span className="sm:col-span-4">{ description }</span>
 
-            <div className="col-start-5 col-span-7">
-                <span>
-                    {dayAbbreviations.map((dayAbbreviation, i) => {
-                        return (
-                            <label key={i}>
-                                { dayAbbreviation }
-                                <input
-                                    checked={isDayChecked(i)}
-                                    className="mx-1 text-gray-400"
-                                    readOnly="readOnly"
-                                    type="checkbox"
-                                />
-                            </label>
-                        )
-                    })}
-                </span>
-            </div>
+            <span className="pt-4 text-center sm:col-span-6 sm:pt-0 sm:text-left">
+                {dayAbbreviations.map((dayAbbreviation, i) => {
+                    return (
+                        <label key={i}>
+                            { dayAbbreviation }
+                            <input
+                                checked={isDayChecked(i)}
+                                className="mx-1 text-gray-400"
+                                readOnly="readOnly"
+                                type="checkbox"
+                            />
+                        </label>
+                    )
+                })}
+            </span>
 
-            <div className="col-start-12 text-right">
-                <span>{ (enabled) ? 'Enabled' : 'Disabled' }</span>
-            </div>
+            <span className="text-sm text-center italic pt-2 sm:col-span-2 sm:pt-0 sm:text-right">
+                { (enabled) ? 'Enabled' : 'Disabled' }
+            </span>
         </div>
     );
 }
