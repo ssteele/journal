@@ -123,6 +123,20 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         }
     }, [reset]);
 
+    function setSnippet(snippet) {
+        let jsonSnippet;
+        try {
+            jsonSnippet = JSON.parse(snippet);
+        } catch (error) {
+            if (error instanceof SyntaxError) {
+                console.warn('Syntax error:', error);
+            } else {
+                throw error;
+            }
+        }
+        setData('snippet', JSON.stringify(jsonSnippet));
+    }
+
     function populateAnnotation({
         annotationStartIndex,
         searchTerm,
@@ -132,7 +146,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         const pre = snippet.substring(0, annotationStartIndex);
         const post = snippet.substring(annotationStartIndex + searchTerm.length);
         snippet = `${pre}${text}${post}`;
-        setData('snippet', snippet);
+        setSnippet(snippet);
 
         const annotationEndIndex = annotationStartIndex + text.length;
         setReset(annotationEndIndex);
@@ -345,7 +359,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                         errors={errors.snippet}
                                         label="snippet"
                                         name="snippet"
-                                        onChange={e => setData('snippet', e?.target?.value)}
+                                        onChange={e => setSnippet(e?.target?.value)}
                                         onClick={_ => setReset()}
                                         onKeyDown={e => listenForTab(e)}
                                         onKeyUp={e => listenForAnnotation(e)}
