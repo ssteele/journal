@@ -124,6 +124,11 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
     }, [reset]);
 
     function setSnippet(snippet) {
+        if ('tag' !== type) {
+            setData('snippet', snippet);
+            return;
+        }
+
         let jsonSnippet;
         try {
             jsonSnippet = JSON.parse(snippet);

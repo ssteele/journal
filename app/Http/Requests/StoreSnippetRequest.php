@@ -27,7 +27,7 @@ class StoreSnippetRequest extends FormRequest
         return [
             'description'  => 'required | string',
             'type'  => 'required | in:tag,entry,mention',
-            'snippet' => 'required | json',
+            'snippet' => 'required | string',
         ];
     }
 }
