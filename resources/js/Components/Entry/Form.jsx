@@ -4,7 +4,7 @@ import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDate, recentTags, tags }) {
+export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], mentions, nextDate, recentTags, tags }) {
     const recentTagsCount = 25;
     const {
         id,
@@ -26,7 +26,8 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
     const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
     const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = UseFocus();
-    const dailyTags = buildDailyTags(date, EverydayTags, WeekdayTags, WeekendTags);
+    const tagSnippets = dbSnippets.filter((snippet) => 'tag' === snippet.type);
+    const dailyTags = buildDailyTags(date, tagSnippets);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -47,18 +48,14 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
         }
     }
 
-    function buildDailyTags(date, EverydayTags, WeekdayTags, WeekendTags) {
-        let tags = EverydayTags;
+    function buildDailyTags(date, tagSnippets) {
+        let tags = [];
         const day = new Date(date.split('-')).getDay();
-        switch (day) {
-            case 0:
-            case 6:
-                tags = [...tags, ...WeekendTags];
-                break;
-            default:
-                tags = [...tags, ...WeekdayTags];
-                break;
-        }
+        tagSnippets
+            .filter(({ days }) => days.includes(day))
+            .map(({ snippet }) => {
+                tags = [...tags, ...JSON.parse(snippet)];
+            })
         return tags;
     }
 

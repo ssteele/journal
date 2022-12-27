@@ -11,6 +11,7 @@ use App\Repositories\EntryRepository;
 use App\Repositories\MarkerCategoryRepository;
 use App\Repositories\MarkerRepository;
 use App\Repositories\MentionRepository;
+use App\Repositories\SnippetRepository;
 use App\Repositories\TagRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class EntryController extends Controller
     private $markerCategoryRepository;
     private $markerRepository;
     private $mentionRepository;
+    private $snippetRepository;
     private $tagRepository;
 
     // /** @var float */
@@ -40,6 +42,7 @@ class EntryController extends Controller
         MarkerCategoryRepository $markerCategoryRepository,
         MarkerRepository $markerRepository,
         MentionRepository $mentionRepository,
+        SnippetRepository $snippetRepository,
         TagRepository $tagRepository,
     )
     {
@@ -48,6 +51,7 @@ class EntryController extends Controller
         $this->markerCategoryRepository = $markerCategoryRepository;
         $this->markerRepository = $markerRepository;
         $this->mentionRepository = $mentionRepository;
+        $this->snippetRepository = $snippetRepository;
         $this->tagRepository = $tagRepository;
     }
 
@@ -158,6 +162,7 @@ class EntryController extends Controller
     {
         $entry = Entry::find($id);
         $entryDate = Carbon::parse($entry['date']);
+        $snippets = $this->snippetRepository->get();
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $currentTags = $this->tagRepository->getNamesForEntry($id);
@@ -167,6 +172,7 @@ class EntryController extends Controller
             ->with('dbEntry', $entry)
             ->with('dbMentions', $mentions)
             ->with('dbRecentTags', $recentTags)
+            ->with('dbSnippets', $snippets)
             ->with('dbTags', $tags);
     }
 
