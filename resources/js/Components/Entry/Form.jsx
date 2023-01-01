@@ -53,7 +53,7 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
         let tags = [];
         const day = new Date(date.split('-')).getDay();
         tagSnippets
-            .filter(({ days }) => days.includes(day))
+            .filter(({ days, enabled }) => enabled && days.includes(day))
             .map(({ snippet }) => {
                 tags = [...tags, ...JSON.parse(removeHashes(snippet))];
             })
