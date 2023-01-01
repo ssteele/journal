@@ -25,7 +25,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         snippet,
         type,
     };
-    const { data, errors, post, put, setData } = useForm(initialState);
+    const { clearErrors, data, errors, hasErrors, post, put, setData, setError } = useForm(initialState);
     const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
     const [isAnnotatingStart, setIsAnnotatingStart] = useState(false);
     const [isAnnotating, setIsAnnotating] = useState(false);
@@ -37,6 +37,10 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
 
     function handleSubmit(e) {
         e.preventDefault();
+        if (hasErrors) {
+            return;
+        }
+
         if (isExistingSnippet) {
             put(route('snippets.update', id), {
                 onSuccess: () => {
@@ -134,11 +138,15 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
             jsonSnippet = JSON.parse(snippet);
         } catch (error) {
             if (error instanceof SyntaxError) {
-                console.warn('Syntax error:', error);
+                setError('snippet', 'Tag snippet type should be valid JSON')
             } else {
+                setError('snippet', 'An error occurred')
                 throw error;
             }
+            setData('snippet', snippet);
+            return;
         }
+        clearErrors('snippet');
         setData('snippet', JSON.stringify(jsonSnippet));
     }
 
