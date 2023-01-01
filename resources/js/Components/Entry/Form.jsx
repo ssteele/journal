@@ -1,5 +1,6 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
-import { DailyTagsColors, EverydayTags, WeekdayTags, WeekendTags } from '@/Constants/DailyAnnotations';
+import { DailyTagsColors } from '@/Constants/DailyAnnotations';
+import { removeHashes } from '@/Utils/Snippet';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
@@ -54,7 +55,7 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
         tagSnippets
             .filter(({ days }) => days.includes(day))
             .map(({ snippet }) => {
-                tags = [...tags, ...JSON.parse(snippet)];
+                tags = [...tags, ...JSON.parse(removeHashes(snippet))];
             })
         return tags;
     }

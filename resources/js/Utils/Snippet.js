@@ -19,3 +19,7 @@ export function expandJsonSnippet(snippet) {
     }
     return formatted;
 }
+
+export function removeHashes(snippet) {
+    return snippet.replaceAll('#', '');
+}
