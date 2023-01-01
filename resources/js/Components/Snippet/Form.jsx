@@ -13,16 +13,16 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         description = '',
         enabled = true,
         repeating = true,
-        snippet = '',
         type = 'tag',
     } = dbSnippet;
+    let { snippet = '' } = dbSnippet;
     const isExistingSnippet = !!id;
     const initialState = {
         days,
         description,
         enabled,
         repeating,
-        snippet,
+        snippet: formatSnippet(snippet, type),
         type,
     };
     const { clearErrors, data, errors, hasErrors, post, put, setData, setError } = useForm(initialState);
@@ -75,6 +75,19 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
             setData('snippet', JSON.stringify(jsonSnippet));
         }
         setDoSubmit(true);
+    }
+
+    function formatSnippet(snippet, type) {
+        let formatted = snippet;
+        if ('tag' === type) {
+            try {
+                formatted = JSON.stringify(JSON.parse(snippet), null, 4) || '';
+            } catch (error) {
+                console.warn('Syntax error:', error);
+                return;
+            }
+        }
+        return formatted;
     }
 
     function isDayChecked(dayIndex) {
