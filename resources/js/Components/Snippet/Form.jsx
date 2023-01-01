@@ -105,14 +105,8 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         if (isAnnotatingStart) {
             setReset(null);
             setIsAnnotatingStart(false);
-            const { snippet } = getAnnotationState();
-            let regex;
-            if ('tag' === isAnnotating) {
-                regex = /(?<=\s|^)#\w(?=[^0-9a-zA-Z]|$)/
-            } else if ('mention' === isAnnotating) {
-                regex = /(?<=\s|^)@\w(?=[^0-9a-zA-Z]|$)/
-            }
-            const annotationStartIndex = snippet.search(regex) + 1;
+            const snippetEl = document.getElementById('snippet');
+            const annotationStartIndex = snippetEl.selectionStart - 1;
             setAnnotationStartIndex(annotationStartIndex);
         }
     }, [data?.snippet]);
@@ -370,6 +364,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                     <textarea
                                         className="w-full h-[32rem] p-4 border-gray-200"
                                         errors={errors.snippet}
+                                        id="snippet"
                                         label="snippet"
                                         name="snippet"
                                         onChange={e => setSnippet(e?.target?.value)}
