@@ -23,7 +23,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         description,
         enabled,
         repeating,
-        snippet: ('tag' === type) ? expandJsonSnippet(snippet) : snippet,
+        snippet: (!!snippet && 'tag' === type) ? expandJsonSnippet(snippet) : snippet,
         type,
     };
     const { clearErrors, data, errors, hasErrors, post, put, setData, setError } = useForm(initialState);
