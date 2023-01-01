@@ -1,5 +1,6 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
+import { expandJsonSnippet, minifyJsonSnippet } from '@/Utils/Snippet';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
@@ -22,7 +23,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         description,
         enabled,
         repeating,
-        snippet: formatSnippet(snippet, type),
+        snippet: ('tag' === type) ? expandJsonSnippet(snippet) : snippet,
         type,
     };
     const { clearErrors, data, errors, hasErrors, post, put, setData, setError } = useForm(initialState);
@@ -63,31 +64,10 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         if (hasErrors) {
             return;
         }
-
         if ('tag' === type) {
-            let jsonSnippet;
-            try {
-                jsonSnippet = JSON.parse(data?.snippet);
-            } catch (error) {
-                console.warn('Syntax error:', error);
-                return;
-            }
-            setData('snippet', JSON.stringify(jsonSnippet));
+            setData('snippet', minifyJsonSnippet(data?.snippet));
         }
         setDoSubmit(true);
-    }
-
-    function formatSnippet(snippet, type) {
-        let formatted = snippet;
-        if ('tag' === type) {
-            try {
-                formatted = JSON.stringify(JSON.parse(snippet), null, 4) || '';
-            } catch (error) {
-                console.warn('Syntax error:', error);
-                return;
-            }
-        }
-        return formatted;
     }
 
     function isDayChecked(dayIndex) {
