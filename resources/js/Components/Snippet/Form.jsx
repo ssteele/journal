@@ -86,7 +86,10 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         } else {
             daysArray = daysArray.filter(d => d !== dayIndexString);
         }
-        setData('days', daysArray.join(','));
+        const daysString = daysArray
+            .filter(d => !!d)
+            .join(',');
+        setData('days', daysString);
     }
 
     function toggleAllDays() {
