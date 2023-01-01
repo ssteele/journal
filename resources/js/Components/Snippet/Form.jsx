@@ -31,9 +31,32 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
     const [isAnnotating, setIsAnnotating] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
+    const [doSubmit, setDoSubmit] = useState(false);
     const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = UseFocus();
     const dayAbbreviations = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
+
+    // handle submit
+    useEffect(() => {
+        if (doSubmit) {
+            if (isExistingSnippet) {
+                put(route('snippets.update', id), {
+                    onSuccess: () => {
+                        // @todo: flash notify
+                        console.log('Snippet updated');
+                    },
+                });
+            } else {
+                post(route('snippets.store'), {
+                    onSuccess: () => {
+                        // @todo: flash notify
+                        console.log('Snippet added');
+                    },
+                });
+            }
+        }
+        setDoSubmit(false);
+    }, [doSubmit]);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -41,21 +64,17 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
             return;
         }
 
-        if (isExistingSnippet) {
-            put(route('snippets.update', id), {
-                onSuccess: () => {
-                    // @todo: flash notify
-                    console.log('Snippet updated');
-                },
-            });
-        } else {
-            post(route('snippets.store'), {
-                onSuccess: () => {
-                    // @todo: flash notify
-                    console.log('Snippet added');
-                },
-            });
+        if ('tag' === type) {
+            let jsonSnippet;
+            try {
+                jsonSnippet = JSON.parse(data?.snippet);
+            } catch (error) {
+                console.warn('Syntax error:', error);
+                return;
+            }
+            setData('snippet', JSON.stringify(jsonSnippet));
         }
+        setDoSubmit(true);
     }
 
     function isDayChecked(dayIndex) {
