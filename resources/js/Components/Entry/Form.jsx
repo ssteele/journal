@@ -117,11 +117,12 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
 
     function populateTag(text) {
         const { entry } = getAnnotationState();
+        const entryEl = document.getElementById('entry');
         populateAnnotation({
-            annotationStartIndex: entry.length,
+            annotationStartIndex: (entryEl?.selectionStart) ?? entry.length,
             entry,
             searchTerm: '',
-            text: `#${text} `,
+            text: `#${text}`,
         });
     }
 
