@@ -64,7 +64,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
         if (hasErrors) {
             return;
         }
-        if ('tag' === type) {
+        if ('tag' === data?.type) {
             setData('snippet', minifyJsonSnippet(data?.snippet));
         }
         setDoSubmit(true);
@@ -134,7 +134,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
     }, [reset]);
 
     function setSnippet(snippet) {
-        if ('tag' !== type) {
+        if ('tag' !== data?.type) {
             setData('snippet', snippet);
             return;
         }
@@ -268,10 +268,10 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                 name="description"
                                 onChange={e => setData('description', e?.target?.value)}
                                 type="description"
-                                value={data.description}
+                                value={data?.description}
                             />
                             <span className="text-red-600">
-                                {errors.description}
+                                {errors?.description}
                             </span>
                         </div>
                     </div>
@@ -283,7 +283,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                     <select
                                         className="w-full border border-gray-200"
                                         onChange={e => setData('type', e?.target?.value)}
-                                        value={data.type}
+                                        value={data?.type}
                                     >
                                         {SnippetTypes.map((option, index) => {
                                             return (
@@ -300,7 +300,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                         <label>
                                             Enabled
                                             <input
-                                                checked={data.enabled}
+                                                checked={data?.enabled}
                                                 className="mx-1"
                                                 onChange={e => setData('enabled', e?.target?.checked)}
                                                 type="checkbox"
@@ -312,7 +312,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                         <label>
                                             Repeating
                                             <input
-                                                checked={data.repeating}
+                                                checked={data?.repeating}
                                                 className="mx-1"
                                                 onChange={e => setData('repeating', e?.target?.checked)}
                                                 type="checkbox"
@@ -375,7 +375,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                     <label>Snippet</label>
                                     <textarea
                                         className="w-full h-[32rem] p-4 border-gray-200"
-                                        errors={errors.snippet}
+                                        errors={errors?.snippet}
                                         id="snippet"
                                         label="snippet"
                                         name="snippet"
@@ -385,10 +385,10 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
                                         onKeyUp={e => listenForAnnotation(e)}
                                         ref={inputRef}
                                         type="text"
-                                        value={data.snippet}
+                                        value={data?.snippet}
                                     />
                                     <span className="text-red-600">
-                                        {errors.snippet}
+                                        {errors?.snippet}
                                     </span>
                                 </div>
 

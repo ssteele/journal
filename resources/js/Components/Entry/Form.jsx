@@ -239,10 +239,10 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
                                 name="date"
                                 onChange={e => setData('date', e?.target?.value)}
                                 type="date"
-                                value={data.date}
+                                value={data?.date}
                             />
                             <span className="text-red-600">
-                                {errors.date}
+                                {errors?.date}
                             </span>
                         </div>
 
@@ -254,10 +254,10 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
                                 name="tempo"
                                 onChange={e => setData('tempo', e?.target?.value)}
                                 type="number"
-                                value={data.tempo}
+                                value={data?.tempo}
                             />
                             <span className="text-red-600">
-                                {errors.tempo}
+                                {errors?.tempo}
                             </span>
                         </div>
 
@@ -285,7 +285,7 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
                                 <label>Entry</label>
                                 <textarea
                                     className="w-full h-[32rem] p-4 border-gray-200"
-                                    errors={errors.entry}
+                                    errors={errors?.entry}
                                     id="entry"
                                     label="entry"
                                     name="entry"
@@ -295,10 +295,10 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
                                     onKeyUp={e => listenForAnnotation(e)}
                                     ref={inputRef}
                                     type="text"
-                                    value={data.entry}
+                                    value={data?.entry}
                                 />
                                 <span className="text-red-600">
-                                    {errors.entry}
+                                    {errors?.entry}
                                 </span>
                             </div>
 
