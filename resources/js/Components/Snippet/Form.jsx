@@ -147,7 +147,7 @@ export default function Form({ dbSnippet = {}, tags = [] }) {
             return;
         }
         clearErrors('snippet');
-        setData('snippet', JSON.stringify(jsonSnippet));
+        setData('snippet', JSON.stringify(jsonSnippet, null, 4));
     }
 
     function populateAnnotation({
