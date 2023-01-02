@@ -89,11 +89,13 @@ class EntryController extends Controller
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $nextDate = $this->entryRepository->getDateFollowing();
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), config('constants.day_limit_recent_tags'));
+        $snippets = $this->snippetRepository->get();
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Entries/Create')
             ->with('dbMentions', $mentions)
             ->with('dbNextDate', $nextDate)
             ->with('dbRecentTags', $recentTags)
+            ->with('dbSnippets', $snippets)
             ->with('dbTags', $tags);
     }
 
@@ -162,11 +164,12 @@ class EntryController extends Controller
     {
         $entry = Entry::find($id);
         $entryDate = Carbon::parse($entry['date']);
+
+        $currentTags = $this->tagRepository->getNamesForEntry($id);
+        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
         $snippets = $this->snippetRepository->get();
         $tags = $this->tagRepository->getNamesSortedByFrequency();
-        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
-        $currentTags = $this->tagRepository->getNamesForEntry($id);
-        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
         return Inertia::render('Entries/Edit')
             ->with('dbCurrentTags', $currentTags)
             ->with('dbEntry', $entry)

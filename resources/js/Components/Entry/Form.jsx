@@ -27,6 +27,8 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
     const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
     const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = UseFocus();
+    
+    // populate snippet tags
     const tagSnippets = dbSnippets.filter((snippet) => 'tag' === snippet.type);
     const dailyTags = buildDailyTags(date, tagSnippets);
 
@@ -60,6 +62,17 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
         return tags;
     }
 
+    function buildDailyEntries(date, entrySnippets) {
+        let entries = [];
+        const day = new Date(date.split('-')).getDay();
+        entrySnippets
+            .filter(({ days, enabled }) => enabled && days.includes(day))
+            .map(({ snippet }) => {
+                entries += snippet;
+            })
+        return entries;
+    }
+
     function getAnnotationState() {
         return {
             annotationStartIndex,
@@ -68,6 +81,16 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
             suggestedAnnotations,
         }
     }
+
+    // populate snippet entries
+    useEffect(() => {
+        if (!data?.entry) {
+            const entrySnippets = dbSnippets.filter((snippet) => 'entry' === snippet.type);
+            if (entrySnippets.length) {
+                setData('entry', buildDailyEntries(date, entrySnippets));
+            }
+        }
+    }, []);
 
     useEffect(() => {
         suggestAnnotations(searchTerm);
