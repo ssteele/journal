@@ -167,7 +167,7 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
         if ('tag' === isAnnotating) {
             suggestions = tags.filter((a) => a.includes(searchTerm));
         } else if ('mention' === isAnnotating) {
-            suggestions = mentions.filter((a) => a.startsWith(searchTerm));
+            suggestions = mentions.filter((a) => a.includes(searchTerm));
         }
         setSuggestedAnnotations(suggestions);
     }
