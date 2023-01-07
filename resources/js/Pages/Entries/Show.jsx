@@ -6,10 +6,10 @@ import MarkupEntry from '@/Utils/MarkupEntry';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, markerCategories, markers, mentions, tags }) {
+export default function Show({ auth, dbEntry, dbIdsPrevNext, dbMarkerCategories = [], dbMarkers = [], dbMentions = [], dbTags = [], errors }) {
     const { id, date, tempo, entry } = dbEntry;
 
-    function renderMarkers(markers) {
+    function renderMarkers(markers, markerCategories) {
         return markers.map((marker, i) => {
             const categoryName = GetMarkerCategory(markerCategories, marker?.marker_category_id);
             return (
@@ -118,19 +118,19 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, marker
 
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div className="flex justify-between mt-2 px-6 text-2xl">
-                    {idsPrevNext?.prev && (
-                        <Link href={route('entries.show', idsPrevNext?.prev)}>
+                    {dbIdsPrevNext?.prev && (
+                        <Link href={route('entries.show', dbIdsPrevNext?.prev)}>
                             <button className="px-2 font-bold text-white bg-gray-400 rounded">&laquo;</button>
                         </Link>
                     )}
 
-                    {idsPrevNext?.next && (
-                        <Link href={route('entries.show', idsPrevNext?.next)}>
+                    {dbIdsPrevNext?.next && (
+                        <Link href={route('entries.show', dbIdsPrevNext?.next)}>
                             <button className="px-2 font-bold text-white bg-gray-400 rounded">&raquo;</button>
                         </Link>
                     )}
 
-                    {!idsPrevNext?.next && (
+                    {!dbIdsPrevNext?.next && (
                         <Link href={route('entries.create')}>
                             <button className="px-2 font-bold text-white bg-green-400 rounded">&raquo;</button>
                         </Link>
@@ -153,29 +153,29 @@ export default function Show({ auth, entry: dbEntry, errors, idsPrevNext, marker
                             </Link>
                         </div>
 
-                        {mentions.length > 0 && 
+                        {dbMentions.length > 0 && 
                             <div className="mt-6">
                                 <label>Mentions</label>
                                 <div className="p-4 border border-gray-100 bg-gray-100">
-                                    { renderMentions(mentions) }
+                                    { renderMentions(dbMentions) }
                                 </div>
                             </div>
                         }
 
-                        {tags.length > 0 && 
+                        {dbTags.length > 0 && 
                             <div className="mt-6">
                                 <label>Tags</label>
                                 <div className="p-4 border border-gray-100 bg-gray-100">
-                                    { renderTags(groupTagsByCount(tags)) }
+                                    { renderTags(groupTagsByCount(dbTags)) }
                                 </div>
                             </div>
                         }
 
-                        {markers.length > 0 && 
+                        {dbMarkers.length > 0 && 
                             <div className="mt-6">
                                 <label>Markers</label>
                                 <div>
-                                    { renderMarkers(markers) }
+                                    { renderMarkers(dbMarkers, dbMarkerCategories) }
                                 </div>
                             </div>
                         }

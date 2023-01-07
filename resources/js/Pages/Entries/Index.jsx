@@ -4,7 +4,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
 
-export default function Index({ auth, entries: dbEntries, errors }) {
+export default function Index({ auth, dbEntries = [], errors }) {
     const [entries, setEntries] = useState(dbEntries);
     const [lastEntryId, setLastEntryId] = useState(entries[entries.length - 1]?.id);
     const [isLoading, setIsLoading] = useState(false);

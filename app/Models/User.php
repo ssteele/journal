@@ -65,4 +65,12 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Mention');
     }
+
+    /**
+     * Define the relationship between two eloquent models: User & Snippet
+     */
+    public function snippet()
+    {
+        return $this->hasMany('App\Models\Snippet');
+    }
 }

@@ -5,7 +5,7 @@ import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Show({ auth, errors, tag, timeline }) {
+export default function Show({ auth, errors, tag, timeline = [] }) {
     const [isLoading, setIsLoading] = useState(false);
     let doShowLoadMore = false;
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\EntryController;
 use App\Http\Controllers\MarkerController;
 use App\Http\Controllers\MentionController;
+use App\Http\Controllers\SnippetController;
 use App\Http\Controllers\TagController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/entries/more/{id}',[EntryController::class, 'moreEntries'])->name('entries.more');
 });
 Route::resource('entries', EntryController::class);
+
+Route::resource('snippets', SnippetController::class);
 
 Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
 Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');

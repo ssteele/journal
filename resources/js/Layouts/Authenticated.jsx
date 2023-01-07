@@ -16,6 +16,9 @@ export default function Authenticated({ auth, header, children }) {
         'markers.index',
         'mentions.index',
         'mentions.show',
+        'snippets.create',
+        'snippets.edit',
+        'snippets.index',
         'tags.index',
         'tags.show',
     ].includes(route().current());
@@ -27,10 +30,9 @@ export default function Authenticated({ auth, header, children }) {
                 if (entryId) {
                     return route('entries.show', entryId);
                 }
-            case 'markers.index':
-            case 'mentions.index':
-            case 'tags.index':
-                return route('entries.index');
+            case 'snippets.create':
+            case 'snippets.edit':
+                return route('snippets.index');
             case 'mentions.show':
                 // @todo: use cookies to store previous url, then nav back
                 return route('mentions.index');
@@ -156,6 +158,10 @@ export default function Authenticated({ auth, header, children }) {
 
                                         <Dropdown.Link href={route('markers.index')} as="button" method="get">
                                             Markers
+                                        </Dropdown.Link>
+
+                                        <Dropdown.Link href={route('snippets.index')} as="button" method="get">
+                                            Snippets
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>

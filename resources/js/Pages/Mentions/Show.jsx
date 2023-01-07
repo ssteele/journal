@@ -4,7 +4,7 @@ import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Show({ auth, errors, mention, timeline }) {
+export default function Show({ auth, errors, mention = [], timeline = [] }) {
     const timelineFrequency = getTimelineFrequency(timeline);
     const timelineYears = getTimelineYears(timelineFrequency);
 
