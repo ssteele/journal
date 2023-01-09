@@ -2,7 +2,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
 
-export default function Index({ auth, errors, mentions }) {
+export default function Index({ auth, errors, mentions = [] }) {
     const [filteredMentions, setFilteredMentions] = useState(mentions);
 
     function searchMentions(e) {

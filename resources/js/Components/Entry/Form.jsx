@@ -1,10 +1,11 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
-import { DailyTagsColors, EverydayTags, WeekdayTags, WeekendTags } from '@/Constants/DailyAnnotations';
+import { DailyTagsColors } from '@/Constants/DailyAnnotations';
+import { removeHashes } from '@/Utils/Snippet';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDate, recentTags, tags }) {
+export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], mentions, nextDate, recentTags, tags }) {
     const recentTagsCount = 25;
     const {
         id,
@@ -26,7 +27,10 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
     const [suggestedAnnotations, setSuggestedAnnotations] = useState([]);
     const [reset, setReset] = useState(null);
     const [inputRef, setInputFocus] = UseFocus();
-    const dailyTags = buildDailyTags(date, EverydayTags, WeekdayTags, WeekendTags);
+    
+    // populate snippet tags
+    const tagSnippets = dbSnippets.filter((snippet) => 'tag' === snippet.type);
+    const dailyTags = buildDailyTags(date, tagSnippets);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -47,19 +51,26 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
         }
     }
 
-    function buildDailyTags(date, EverydayTags, WeekdayTags, WeekendTags) {
-        let tags = EverydayTags;
+    function buildDailyTags(date, tagSnippets) {
+        let tags = [];
         const day = new Date(date.split('-')).getDay();
-        switch (day) {
-            case 0:
-            case 6:
-                tags = [...tags, ...WeekendTags];
-                break;
-            default:
-                tags = [...tags, ...WeekdayTags];
-                break;
-        }
+        tagSnippets
+            .filter(({ days, enabled }) => enabled && days.includes(day))
+            .map(({ snippet }) => {
+                tags = [...tags, ...JSON.parse(removeHashes(snippet))];
+            })
         return tags;
+    }
+
+    function buildDailyEntries(date, entrySnippets) {
+        let entries = [];
+        const day = new Date(date.split('-')).getDay();
+        entrySnippets
+            .filter(({ days, enabled }) => enabled && days.includes(day))
+            .map(({ snippet }) => {
+                entries += snippet;
+            })
+        return entries;
     }
 
     function getAnnotationState() {
@@ -71,6 +82,16 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
         }
     }
 
+    // populate snippet entries
+    useEffect(() => {
+        if (!data?.entry) {
+            const entrySnippets = dbSnippets.filter((snippet) => 'entry' === snippet.type);
+            if (entrySnippets.length) {
+                setData('entry', buildDailyEntries(date, entrySnippets));
+            }
+        }
+    }, []);
+
     useEffect(() => {
         suggestAnnotations(searchTerm);
     }, [searchTerm]);
@@ -79,14 +100,8 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
         if (isAnnotatingStart) {
             setReset(null);
             setIsAnnotatingStart(false);
-            const { entry } = getAnnotationState();
-            let regex;
-            if ('tag' === isAnnotating) {
-                regex = /(?<=\s|^)#\w(?=[^0-9a-zA-Z]|$)/
-            } else if ('mention' === isAnnotating) {
-                regex = /(?<=\s|^)@\w(?=[^0-9a-zA-Z]|$)/
-            }
-            const annotationStartIndex = entry.search(regex) + 1;
+            const entryEl = document.getElementById('entry');
+            const annotationStartIndex = entryEl.selectionStart - 1;
             setAnnotationStartIndex(annotationStartIndex);
         }
     }, [data?.entry]);
@@ -125,11 +140,12 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
 
     function populateTag(text) {
         const { entry } = getAnnotationState();
+        const entryEl = document.getElementById('entry');
         populateAnnotation({
-            annotationStartIndex: entry.length,
+            annotationStartIndex: (entryEl?.selectionStart) ?? entry.length,
             entry,
             searchTerm: '',
-            text: `#${text} `,
+            text: `#${text}`,
         });
     }
 
@@ -151,7 +167,7 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
         if ('tag' === isAnnotating) {
             suggestions = tags.filter((a) => a.includes(searchTerm));
         } else if ('mention' === isAnnotating) {
-            suggestions = mentions.filter((a) => a.startsWith(searchTerm));
+            suggestions = mentions.filter((a) => a.includes(searchTerm));
         }
         setSuggestedAnnotations(suggestions);
     }
@@ -246,10 +262,10 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
                                 name="date"
                                 onChange={e => setData('date', e?.target?.value)}
                                 type="date"
-                                value={data.date}
+                                value={data?.date}
                             />
                             <span className="text-red-600">
-                                {errors.date}
+                                {errors?.date}
                             </span>
                         </div>
 
@@ -261,10 +277,10 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
                                 name="tempo"
                                 onChange={e => setData('tempo', e?.target?.value)}
                                 type="number"
-                                value={data.tempo}
+                                value={data?.tempo}
                             />
                             <span className="text-red-600">
-                                {errors.tempo}
+                                {errors?.tempo}
                             </span>
                         </div>
 
@@ -292,7 +308,8 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
                                 <label>Entry</label>
                                 <textarea
                                     className="w-full h-[32rem] p-4 border-gray-200"
-                                    errors={errors.entry}
+                                    errors={errors?.entry}
+                                    id="entry"
                                     label="entry"
                                     name="entry"
                                     onChange={e => setData('entry', e?.target?.value)}
@@ -301,10 +318,10 @@ export default function Form({ dbEntry = {}, currentTags = [], mentions, nextDat
                                     onKeyUp={e => listenForAnnotation(e)}
                                     ref={inputRef}
                                     type="text"
-                                    value={data.entry}
+                                    value={data?.entry}
                                 />
                                 <span className="text-red-600">
-                                    {errors.entry}
+                                    {errors?.entry}
                                 </span>
                             </div>
 

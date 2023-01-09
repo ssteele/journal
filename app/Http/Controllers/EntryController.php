@@ -11,6 +11,7 @@ use App\Repositories\EntryRepository;
 use App\Repositories\MarkerCategoryRepository;
 use App\Repositories\MarkerRepository;
 use App\Repositories\MentionRepository;
+use App\Repositories\SnippetRepository;
 use App\Repositories\TagRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class EntryController extends Controller
     private $markerCategoryRepository;
     private $markerRepository;
     private $mentionRepository;
+    private $snippetRepository;
     private $tagRepository;
 
     // /** @var float */
@@ -40,6 +42,7 @@ class EntryController extends Controller
         MarkerCategoryRepository $markerCategoryRepository,
         MarkerRepository $markerRepository,
         MentionRepository $mentionRepository,
+        SnippetRepository $snippetRepository,
         TagRepository $tagRepository,
     )
     {
@@ -48,6 +51,7 @@ class EntryController extends Controller
         $this->markerCategoryRepository = $markerCategoryRepository;
         $this->markerRepository = $markerRepository;
         $this->mentionRepository = $mentionRepository;
+        $this->snippetRepository = $snippetRepository;
         $this->tagRepository = $tagRepository;
     }
 
@@ -60,7 +64,7 @@ class EntryController extends Controller
     {
         $entries = $this->entryRepository->getRecentWithMentions(config('constants.day_limit'));
         return Inertia::render('Entries/Index')
-            ->with('entries', $entries);
+            ->with('dbEntries', $entries);
     }
 
     /**
@@ -85,12 +89,14 @@ class EntryController extends Controller
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $nextDate = $this->entryRepository->getDateFollowing();
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), config('constants.day_limit_recent_tags'));
+        $snippets = $this->snippetRepository->get();
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Entries/Create')
-            ->with('mentions', $mentions)
-            ->with('nextDate', $nextDate)
-            ->with('recentTags', $recentTags)
-            ->with('tags', $tags);
+            ->with('dbMentions', $mentions)
+            ->with('dbNextDate', $nextDate)
+            ->with('dbRecentTags', $recentTags)
+            ->with('dbSnippets', $snippets)
+            ->with('dbTags', $tags);
     }
 
     /**
@@ -140,12 +146,12 @@ class EntryController extends Controller
         $mentions = $this->mentionRepository->getIdNamePairsForEntry($id);
         $tags = $this->tagRepository->getIdNamePairsForEntry($id);
         return Inertia::render('Entries/Show')
-            ->with('entry', $entry)
-            ->with('idsPrevNext', $idsPrevNext)
-            ->with('markerCategories', $markerCategories)
-            ->with('markers', $markers)
-            ->with('mentions', $mentions)
-            ->with('tags', $tags);
+            ->with('dbEntry', $entry)
+            ->with('dbIdsPrevNext', $idsPrevNext)
+            ->with('dbMarkerCategories', $markerCategories)
+            ->with('dbMarkers', $markers)
+            ->with('dbMentions', $mentions)
+            ->with('dbTags', $tags);
     }
 
     /**
@@ -158,16 +164,19 @@ class EntryController extends Controller
     {
         $entry = Entry::find($id);
         $entryDate = Carbon::parse($entry['date']);
-        $tags = $this->tagRepository->getNamesSortedByFrequency();
-        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
+
         $currentTags = $this->tagRepository->getNamesForEntry($id);
+        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
+        $snippets = $this->snippetRepository->get();
+        $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Entries/Edit')
-            ->with('currentTags', $currentTags)
-            ->with('entry', $entry)
-            ->with('mentions', $mentions)
-            ->with('recentTags', $recentTags)
-            ->with('tags', $tags);
+            ->with('dbCurrentTags', $currentTags)
+            ->with('dbEntry', $entry)
+            ->with('dbMentions', $mentions)
+            ->with('dbRecentTags', $recentTags)
+            ->with('dbSnippets', $snippets)
+            ->with('dbTags', $tags);
     }
 
     /**
@@ -179,7 +188,7 @@ class EntryController extends Controller
      */
     public function update(UpdateEntryRequest $request, $id, Handler $annotationHandler)
     {
-        // get/create the things
+        // get the things
         $user = \Auth::user();
         $entry = Entry::find($id);
         $update = new Entry($request->all());

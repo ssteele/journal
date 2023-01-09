@@ -4,7 +4,7 @@ import { FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Edit({ auth, currentTags, entry, errors, mentions, recentTags, tags }) {
+export default function Edit({ auth, dbCurrentTags = [], dbEntry, dbMentions = [], dbRecentTags = [], dbSnippets = [], dbTags = [], errors }) {
     return (
         <Authenticated
             auth={auth}
@@ -12,7 +12,7 @@ export default function Edit({ auth, currentTags, entry, errors, mentions, recen
             header={
                 <h2
                     className="font-semibold text-xl text-gray-800 leading-tight"
-                    dangerouslySetInnerHTML={{__html: `${FormatDateForTitle(entry?.date)} &#8211; ${FormatDateWeekdayLong(entry?.date)}`}}
+                    dangerouslySetInnerHTML={{__html: `${FormatDateForTitle(dbEntry?.date)} &#8211; ${FormatDateWeekdayLong(dbEntry?.date)}`}}
                 >
                 </h2>
             }
@@ -20,11 +20,12 @@ export default function Edit({ auth, currentTags, entry, errors, mentions, recen
             <Head title="Update Entry" />
 
             <Form
-                dbEntry={entry}
-                currentTags={currentTags}
-                mentions={mentions}
-                recentTags={recentTags}
-                tags={tags}
+                currentTags={dbCurrentTags}
+                dbEntry={dbEntry}
+                dbSnippets={dbSnippets}
+                mentions={dbMentions}
+                recentTags={dbRecentTags}
+                tags={dbTags}
             />
         </Authenticated>
     );

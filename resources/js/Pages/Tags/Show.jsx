@@ -5,7 +5,7 @@ import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Show({ auth, errors, tag, timeline }) {
+export default function Show({ auth, errors, tag, timeline = [] }) {
     const [isLoading, setIsLoading] = useState(false);
     let doShowLoadMore = false;
 
@@ -19,6 +19,7 @@ export default function Show({ auth, errors, tag, timeline }) {
         doShowLoadMore = true;
         timelineFrequencyAbridged = timelineFrequency.slice(0, tagLimitForPageLoad);
         timelineYearsAbridged = getTimelineYears(timelineFrequencyAbridged);
+        timelineYearsAbridged[timelineYearsAbridged.length - 1].count += '+';
     }
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
 
@@ -41,7 +42,7 @@ export default function Show({ auth, errors, tag, timeline }) {
             errors={errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    {tag.name}
+                    {tag.name} <span className="text-xs font-thin">({timeline.length})</span>
                 </h2>
             }
         >

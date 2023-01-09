@@ -6,7 +6,7 @@ import GetMarkerCategory from '@/Utils/GetMarkerCategory';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Index({ auth, errors, markerCategories, markers }) {
+export default function Index({ auth, errors, markerCategories = [], markers = [] }) {
     const initialMarkerLimit = 100;
     const abridgedMarkers = markers.slice(0, initialMarkerLimit);
     const [filterCategory, setFilterCategory] = useState(null);
