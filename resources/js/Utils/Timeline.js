@@ -1,6 +1,6 @@
 export function getTimelineFrequency(timeline = []) {
     let timehash = {};
-    timeline.forEach((time) => {
+    for (const time of timeline) {
         const { date, entryId, tagId } = time;
         timehash[date] = {
             counts: {
@@ -8,7 +8,7 @@ export function getTimelineFrequency(timeline = []) {
             },
             entryId,
         }
-    });
+    };
 
     return Object.keys(timehash).map(date => {
         return {

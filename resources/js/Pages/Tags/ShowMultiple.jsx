@@ -16,7 +16,7 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
     let timelinesYearsAbridged = [];
 
     const tagLimitForPageLoad = 250;
-    timelines.forEach((timeline) => {
+    for (const timeline of timelines) {
         const timelineFrequency = getTimelineFrequency(timeline);
         const timelineYears = getTimelineYears(timelineFrequency);
 
@@ -32,7 +32,7 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
         timelinesYears.push(...timelineYears);
         timelinesFrequencyAbridged.push(...timelineFrequencyAbridged);
         timelinesYearsAbridged.push(...timelineYearsAbridged);
-    });
+    };
     const combinedTimelineYears = sumTimelineYearCounts(timelinesYears);
     const combinedTimelineYearsAbridged = sumTimelineYearCounts(timelinesYearsAbridged);
 
