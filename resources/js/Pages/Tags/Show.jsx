@@ -9,6 +9,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     const [isLoading, setIsLoading] = useState(false);
     let doShowLoadMore = false;
 
+    const annotationMap = [tag.id];
     const timelineFrequency = getTimelineFrequency(timeline);
     const timelineYears = getTimelineYears(timelineFrequency);
 
@@ -53,6 +54,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                     <div className="p-6 bg-white">
                         {!isMoreToLoad && (
                             <Timeline
+                                annotationMap={annotationMap}
                                 timelineFrequency={timelineFrequency}
                                 timelineYears={timelineYears}
                             ></Timeline>
@@ -60,6 +62,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
 
                         {isMoreToLoad && (
                             <Timeline
+                                annotationMap={annotationMap}
                                 timelineFrequency={timelineFrequencyAbridged}
                                 timelineYears={timelineYearsAbridged}
                             ></Timeline>

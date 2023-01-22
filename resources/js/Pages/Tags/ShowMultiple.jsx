@@ -7,16 +7,16 @@ import React, { useEffect, useState } from 'react';
 
 export default function ShowMultiple({ auth, errors, tags, timelines }) {
     const [isLoading, setIsLoading] = useState(false);
-    const annotationMap = tags.map(tag => tag.id);
     let doShowLoadMore = false;
 
+    const annotationMap = tags.map(tag => tag.id);
     let timelinesFrequency = [];
     let timelinesYears = [];
     let timelinesFrequencyAbridged = [];
     let timelinesYearsAbridged = [];
 
     const tagLimitForPageLoad = 250;
-    timelines.forEach((timeline, i) => {
+    timelines.forEach((timeline) => {
         const timelineFrequency = getTimelineFrequency(timeline);
         const timelineYears = getTimelineYears(timelineFrequency);
 
@@ -33,8 +33,8 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
         timelinesFrequencyAbridged.push(...timelineFrequencyAbridged);
         timelinesYearsAbridged.push(...timelineYearsAbridged);
     });
-    timelinesYears = [...new Set(timelinesYears)];
-    timelinesYearsAbridged = [...new Set(timelinesYearsAbridged)];
+    const combinedTimelineYears = sumTimelineYearCounts(timelinesYears);
+    const combinedTimelineYearsAbridged = sumTimelineYearCounts(timelinesYearsAbridged);
 
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
 
@@ -49,6 +49,23 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
             setIsMoreToLoad(false);
         });
         setIsLoading(true);
+    }
+
+    function sumTimelineYearCounts([...timelinesYears]) {
+        let timelineYears = [];
+        let years = [];
+        for (const timeline of timelinesYears) {
+            const mtdTimeline = _.clone(timeline);
+            const { count, year } = mtdTimeline;
+            if (years.includes(year)) {
+                const element = timelineYears.find(tl => tl.year === year);
+                element.count = `${parseInt(element.count) + parseInt(count)}`;
+            } else {
+                timelineYears.push(mtdTimeline);
+                years.push(year);
+            }
+        }
+        return timelineYears;
     }
 
     return (
@@ -70,7 +87,7 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
                             <Timeline
                                 annotationMap={annotationMap}
                                 timelineFrequency={timelinesFrequency}
-                                timelineYears={timelinesYears}
+                                timelineYears={combinedTimelineYears}
                             ></Timeline>
                         )}
 
@@ -78,7 +95,7 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
                             <Timeline
                                 annotationMap={annotationMap}
                                 timelineFrequency={timelinesFrequencyAbridged}
-                                timelineYears={timelinesYearsAbridged}
+                                timelineYears={combinedTimelineYearsAbridged}
                             ></Timeline>
                         )}
 

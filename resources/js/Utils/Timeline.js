@@ -4,7 +4,7 @@ export function getTimelineFrequency(timeline = []) {
         const { date, entryId, tagId } = time;
         timehash[date] = {
             counts: {
-                [tagId]: (timehash[date]?.count[tagId] || 0) + 1,
+                [tagId]: (timehash[date]?.counts[tagId] || 0) + 1,
             },
             entryId,
         }
@@ -28,7 +28,7 @@ export function getTimelineYears(timelineFrequency) {
     for (let i=timelineEndYear; i>=timelineStartYear; i--) {
         const count = timelineFrequency.reduce((acc, cur) => {
             if (cur?.date?.getFullYear() === i) {
-                acc += 1;
+                acc += Object.values(cur?.counts)[0];
             }
             return acc;
         }, 0);
