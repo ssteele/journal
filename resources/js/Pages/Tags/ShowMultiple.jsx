@@ -33,8 +33,8 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
         timelinesFrequencyAbridged.push(...timelineFrequencyAbridged);
         timelinesYearsAbridged.push(...timelineYearsAbridged);
     };
-    const combinedTimelineYears = sumTimelineYearCounts(timelinesYears);
-    const combinedTimelineYearsAbridged = sumTimelineYearCounts(timelinesYearsAbridged);
+    const mergedTimelineYears = mergeTimelineYearCounts(timelinesYears);
+    const mergedTimelineYearsAbridged = mergeTimelineYearCounts(timelinesYearsAbridged);
 
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
 
@@ -51,16 +51,17 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
         setIsLoading(true);
     }
 
-    function sumTimelineYearCounts([...timelinesYears]) {
+    function mergeTimelineYearCounts([...timelinesYears]) {
         let timelineYears = [];
         let years = [];
         for (const timeline of timelinesYears) {
             const mtdTimeline = _.clone(timeline);
-            const { count, year } = mtdTimeline;
+            let { count, year } = mtdTimeline;
             if (years.includes(year)) {
                 const element = timelineYears.find(tl => tl.year === year);
-                element.count = `${parseInt(element.count) + parseInt(count)}`;
+                element.count.push(count);
             } else {
+                mtdTimeline.count = [count];
                 timelineYears.push(mtdTimeline);
                 years.push(year);
             }
@@ -87,7 +88,7 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
                             <Timeline
                                 annotationMap={annotationMap}
                                 timelineFrequency={timelinesFrequency}
-                                timelineYears={combinedTimelineYears}
+                                timelineYears={mergedTimelineYears}
                             ></Timeline>
                         )}
 
@@ -95,7 +96,7 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
                             <Timeline
                                 annotationMap={annotationMap}
                                 timelineFrequency={timelinesFrequencyAbridged}
-                                timelineYears={combinedTimelineYearsAbridged}
+                                timelineYears={mergedTimelineYearsAbridged}
                             ></Timeline>
                         )}
 

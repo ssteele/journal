@@ -14,7 +14,13 @@ export default function Timeline({ annotationMap, timelineFrequency, timelineYea
                             <span className="text-sm sm:text-base lg:text-lg">
                                 {timelineYear?.year}
                             </span>
-                            <span className="text-xs font-thin"> ({timelineYear?.count})</span>
+                            <span className="text-xs font-thin">(
+                                {(timelineYear?.count?.constructor === Array)
+                                    ? timelineYear?.count?.join('/')
+                                    : timelineYear?.count
+                                }
+                            )
+                            </span>
 
                             <CalendarHeatmap
                                 startDate={new Date(`${timelineYear?.year - 1}-12-31`)}
