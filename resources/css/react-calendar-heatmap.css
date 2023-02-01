@@ -1,5 +1,65 @@
+:root {
+    --color-red: #cb2121;
+    --color-blue: #2159e2;
+
+    /* --color-red-1: color(#cb2121 tint(85%)); */
+    --color-red-1: color(var(--color-red) tint(80%));
+    --color-red-2: color(var(--color-red) tint(60%));
+    --color-red-3: color(var(--color-red) tint(40%));
+    --color-red-4: color(var(--color-red) tint(20%));
+    --color-red-5: var(--color-red);
+    --color-red-6: color(var(--color-red) shade(20%));
+    --color-red-7: color(var(--color-red) shade(40%));
+    --color-red-8: color(var(--color-red) shade(60%));
+    --color-red-9: color(var(--color-red) shade(80%));
+
+    /* --color-blue-1: color(#2159e2 tint(85%)); */
+    --color-blue-1: color(var(--color-blue) tint(80%));
+    --color-blue-2: color(var(--color-blue) tint(60%));
+    --color-blue-3: color(var(--color-blue) tint(40%));
+    --color-blue-4: color(var(--color-blue) tint(20%));
+    --color-blue-5: var(--color-blue);
+    --color-blue-6: color(var(--color-blue) shade(20%));
+    --color-blue-7: color(var(--color-blue) shade(40%));
+    --color-blue-8: color(var(--color-blue) shade(60%));
+    --color-blue-9: color(var(--color-blue) shade(80%));
+
+    --color-red-1-blue-1: mix(var(--color-red-1), var(--color-blue-1));
+    --color-red-5-blue-5: mix(var(--color-red-5), var(--color-blue-5));
+    --color-red-9-blue-9: mix(var(--color-red-9), var(--color-blue-9));
+    --color-red-2-blue-5: mix(var(--color-red-2), var(--color-blue-5));
+    --color-red-5-blue-2: mix(var(--color-red-5), var(--color-blue-2));
+}
+
 .react-calendar-heatmap .color-empty { fill: #f3f4f6; }
 
+.react-calendar-heatmap .red-1 { fill: var(--color-red-1); }
+.react-calendar-heatmap .red-2 { fill: var(--color-red-2); }
+.react-calendar-heatmap .red-3 { fill: var(--color-red-3); }
+.react-calendar-heatmap .red-4 { fill: var(--color-red-4); }
+.react-calendar-heatmap .red-5 { fill: var(--color-red-5); }
+.react-calendar-heatmap .red-6 { fill: var(--color-red-6); }
+.react-calendar-heatmap .red-7 { fill: var(--color-red-7); }
+.react-calendar-heatmap .red-8 { fill: var(--color-red-8); }
+.react-calendar-heatmap .red-9 { fill: var(--color-red-9); }
+
+.react-calendar-heatmap .blue-1 { fill: var(--color-blue-1); }
+.react-calendar-heatmap .blue-2 { fill: var(--color-blue-2); }
+.react-calendar-heatmap .blue-3 { fill: var(--color-blue-3); }
+.react-calendar-heatmap .blue-4 { fill: var(--color-blue-4); }
+.react-calendar-heatmap .blue-5 { fill: var(--color-blue-5); }
+.react-calendar-heatmap .blue-6 { fill: var(--color-blue-6); }
+.react-calendar-heatmap .blue-7 { fill: var(--color-blue-7); }
+.react-calendar-heatmap .blue-8 { fill: var(--color-blue-8); }
+.react-calendar-heatmap .blue-9 { fill: var(--color-blue-9); }
+
+.react-calendar-heatmap .red-1-blue-1 { fill: var(--color-red-1-blue-1); }
+.react-calendar-heatmap .red-5-blue-5 { fill: var(--color-red-5-blue-5); }
+.react-calendar-heatmap .red-9-blue-9 { fill: var(--color-red-9-blue-9); }
+.react-calendar-heatmap .red-2-blue-5 { fill: var(--color-red-2-blue-5); }
+.react-calendar-heatmap .red-5-blue-2 { fill: var(--color-red-5-blue-2); }
+
+/*
 .react-calendar-heatmap .color-0-scale-1 { fill: #fecaca; }
 .react-calendar-heatmap .color-0-scale-2 { fill: #fca5a5; }
 .react-calendar-heatmap .color-0-scale-3 { fill: #f87171; }
@@ -19,5 +79,6 @@
 .react-calendar-heatmap .color-1-scale-6 { fill: #1d4ed8; }
 .react-calendar-heatmap .color-1-scale-7 { fill: #1e40af; }
 .react-calendar-heatmap .color-1-scale-8 { fill: #1e3a8a; }
-/* .react-calendar-heatmap .color-0-scale-9 { fill: #651f1f; } */
-/* .react-calendar-heatmap .color-0-scale-10 { fill: #4b2121; } */
+.react-calendar-heatmap .color-0-scale-9 { fill: #651f1f; }
+.react-calendar-heatmap .color-0-scale-10 { fill: #4b2121; }
+*/
