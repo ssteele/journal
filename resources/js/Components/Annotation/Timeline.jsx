@@ -5,6 +5,8 @@ import 'react-calendar-heatmap/dist/styles.css';
 import '@/../css/react-calendar-heatmap.css';
 
 export default function Timeline({ annotationMap, timelineFrequency, timelineYears }) {
+    const tagColors = ['red', 'blue'];
+
     return (
         <>
             {
@@ -49,10 +51,15 @@ export default function Timeline({ annotationMap, timelineFrequency, timelineYea
                                     let count;
                                     if (1 === keys.length) {
                                         const key = parseInt(keys[0]);
-                                        color = annotationMap.indexOf(key);
+                                        color = tagColors[annotationMap.indexOf(key)];
                                         count = counts[key];
                                     }
-                                    return `color-${color}-scale-${count}`;
+                                    return `${color}-${count}`;
+                                    // return 'red-1-blue-1';
+                                    // return 'red-5-blue-5';
+                                    // return 'red-9-blue-9';
+                                    // return 'red-2-blue-5';
+                                    // return 'red-5-blue-2';
                                 }}
                             />
                         </div>
