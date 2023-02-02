@@ -45,21 +45,18 @@ export default function Timeline({ annotationMap, timelineFrequency, timelineYea
                                     if (!day) {
                                         return 'color-empty';
                                     }
-                                    const { counts } = day;
-                                    const keys = Object.keys(counts);
-                                    let color;
-                                    let count;
-                                    if (1 === keys.length) {
-                                        const key = parseInt(keys[0]);
-                                        color = tagColors[annotationMap.indexOf(key)];
-                                        count = counts[key];
-                                    }
-                                    return `${color}-${count}`;
-                                    // return 'red-1-blue-1';
-                                    // return 'red-5-blue-5';
-                                    // return 'red-9-blue-9';
-                                    // return 'red-2-blue-5';
-                                    // return 'red-5-blue-2';
+
+                                    const { counts: entryCounts } = day;
+                                    const entryIds = Object.keys(entryCounts);
+                                    const entryColors = entryIds.map(e => {
+                                        const entryId = parseInt(e);
+                                        const color = tagColors[annotationMap.indexOf(entryId)];
+                                        const count = entryCounts[entryId];
+                                        return `${color}-${count}`;
+                                    });
+
+                                    const sortedEntryColors = entryColors.sort((a, b) => a.startsWith(tagColors[0]) ? -1 : 1);
+                                    return sortedEntryColors.join('-');   // eg: 'red-1' or 'red-2-blue-5'
                                 }}
                             />
                         </div>
