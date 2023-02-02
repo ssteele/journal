@@ -41,8 +41,21 @@ export function getTimelineYears(timelineFrequency) {
 }
 
 export function mergeTimelineFrequencies(timelinesFrequency) {
-    // console.log('SHS timelinesFrequency:', timelinesFrequency);
-    return timelinesFrequency;
+    let timelineFrequency = [];
+    let days = [];
+    for (const timeline of timelinesFrequency) {
+        const mtdTimeline = _.clone(timeline);
+        let { counts, entryId } = mtdTimeline;
+        if (days.includes(entryId)) {
+            const element = timelineFrequency.find(tl => tl.entryId === entryId);
+            element.counts = {...element?.counts, ...counts};
+        } else {
+            mtdTimeline.counts = counts;
+            timelineFrequency.push(mtdTimeline);
+            days.push(entryId);
+        }
+    }
+    return timelineFrequency;
 }
 
 export function mergeTimelineYearCounts(timelinesYears) {
