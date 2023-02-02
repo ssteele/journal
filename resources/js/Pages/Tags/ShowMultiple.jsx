@@ -1,7 +1,12 @@
 import Timeline from '@/Components/Annotation/Timeline';
 import LoadingSpinner from '@/Components/LoadingSpinner';
 import Authenticated from '@/Layouts/Authenticated';
-import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
+import {
+    getTimelineFrequency,
+    getTimelineYears,
+    mergeTimelineFrequencies,
+    mergeTimelineYearCounts,
+} from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
@@ -33,6 +38,10 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
         timelinesFrequencyAbridged.push(...timelineFrequencyAbridged);
         timelinesYearsAbridged.push(...timelineYearsAbridged);
     };
+
+    const mergedTimelineFrequency = mergeTimelineFrequencies(timelinesFrequency);
+    // const mergedTimelineFrequencyAbridged = mergeTimelineFrequencies(timelinesFrequencyAbridged);
+    const mergedTimelineFrequencyAbridged = timelinesFrequencyAbridged;
     const mergedTimelineYears = mergeTimelineYearCounts(timelinesYears);
     const mergedTimelineYearsAbridged = mergeTimelineYearCounts(timelinesYearsAbridged);
 
@@ -49,24 +58,6 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
             setIsMoreToLoad(false);
         });
         setIsLoading(true);
-    }
-
-    function mergeTimelineYearCounts([...timelinesYears]) {
-        let timelineYears = [];
-        let years = [];
-        for (const timeline of timelinesYears) {
-            const mtdTimeline = _.clone(timeline);
-            let { count, year } = mtdTimeline;
-            if (years.includes(year)) {
-                const element = timelineYears.find(tl => tl.year === year);
-                element.count.push(count);
-            } else {
-                mtdTimeline.count = [count];
-                timelineYears.push(mtdTimeline);
-                years.push(year);
-            }
-        }
-        return timelineYears;
     }
 
     return (
@@ -87,7 +78,7 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
                         {!isMoreToLoad && (
                             <Timeline
                                 annotationMap={annotationMap}
-                                timelineFrequency={timelinesFrequency}
+                                timelineFrequency={mergedTimelineFrequency}
                                 timelineYears={mergedTimelineYears}
                             ></Timeline>
                         )}
@@ -95,7 +86,7 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
                         {isMoreToLoad && (
                             <Timeline
                                 annotationMap={annotationMap}
-                                timelineFrequency={timelinesFrequencyAbridged}
+                                timelineFrequency={mergedTimelineFrequencyAbridged}
                                 timelineYears={mergedTimelineYearsAbridged}
                             ></Timeline>
                         )}

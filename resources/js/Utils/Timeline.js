@@ -39,3 +39,26 @@ export function getTimelineYears(timelineFrequency) {
     }
     return timelineYears;
 }
+
+export function mergeTimelineFrequencies(timelinesFrequency) {
+    // console.log('SHS timelinesFrequency:', timelinesFrequency);
+    return timelinesFrequency;
+}
+
+export function mergeTimelineYearCounts(timelinesYears) {
+    let timelineYears = [];
+    let years = [];
+    for (const timeline of timelinesYears) {
+        const mtdTimeline = _.clone(timeline);
+        let { count, year } = mtdTimeline;
+        if (years.includes(year)) {
+            const element = timelineYears.find(tl => tl.year === year);
+            element.count.push(count);
+        } else {
+            mtdTimeline.count = [count];
+            timelineYears.push(mtdTimeline);
+            years.push(year);
+        }
+    }
+    return timelineYears;
+}
