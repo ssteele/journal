@@ -1,5 +1,6 @@
 import Timeline from '@/Components/Annotation/Timeline';
 import LoadingSpinner from '@/Components/LoadingSpinner';
+import { TimelineMultiTagColors } from '@/Constants/MarkerColorMap';
 import Authenticated from '@/Layouts/Authenticated';
 import {
     getTimelineFrequency,
@@ -66,7 +67,18 @@ export default function ShowMultiple({ auth, errors, tags, timelines }) {
             errors={errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    {tags.map(tag => tag?.name).join(' / ')}
+                    {
+                        tags.map((tag, i) => (
+                            <span key={i}>
+                                {i > 0 ? ' / ' : ''}
+                                <span
+                                    className={`bg-${TimelineMultiTagColors[i]}-100`}
+                                >
+                                    {tag?.name}
+                                </span>
+                            </span>
+                        ))
+                    }
                 </h2>
             }
         >

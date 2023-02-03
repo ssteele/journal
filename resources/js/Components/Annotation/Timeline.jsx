@@ -1,3 +1,4 @@
+import { TimelineMultiTagColors } from '@/Constants/MarkerColorMap';
 import { FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import React from 'react';
@@ -5,8 +6,6 @@ import 'react-calendar-heatmap/dist/styles.css';
 import '@/../css/react-calendar-heatmap.css';
 
 export default function Timeline({ annotationMap, timelineFrequency, timelineYears }) {
-    const tagColors = ['red', 'blue'];
-
     return (
         <>
             {
@@ -50,12 +49,12 @@ export default function Timeline({ annotationMap, timelineFrequency, timelineYea
                                     const entryIds = Object.keys(entryCounts);
                                     const entryColors = entryIds.map(e => {
                                         const entryId = parseInt(e);
-                                        const color = tagColors[annotationMap.indexOf(entryId)];
+                                        const color = TimelineMultiTagColors[annotationMap.indexOf(entryId)];
                                         const count = entryCounts[entryId];
                                         return `${color}-${count}`;
                                     });
 
-                                    const sortedEntryColors = entryColors.sort((a, b) => a.startsWith(tagColors[0]) ? -1 : 1);
+                                    const sortedEntryColors = entryColors.sort((a, b) => a.startsWith(TimelineMultiTagColors[0]) ? -1 : 1);
                                     return sortedEntryColors.join('-');   // eg: 'red-1' or 'red-2-blue-5'
                                 }}
                             />

@@ -12,4 +12,10 @@ export const MarkerColorMap = {
     11: 'bg-yellow-200',
     12: 'bg-pink-200',
     13: 'bg-purple-100',
+    14: 'bg-blue-100',
 };
+
+export const TimelineMultiTagColors = [
+    'red',
+    'blue',
+];
