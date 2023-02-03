@@ -12,7 +12,7 @@ export const MarkerColorMap = {
     11: 'bg-yellow-200',
     12: 'bg-pink-200',
     13: 'bg-purple-100',
-    14: 'bg-blue-100',
+    1000: 'bg-blue-100',                                            // declare active tailwind colors here
 };
 
 export const TimelineMultiTagColors = [
