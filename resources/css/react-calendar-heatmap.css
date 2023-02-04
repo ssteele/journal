@@ -24,15 +24,25 @@
     --color-blue-8: color(var(--color-blue) shade(60%));
     --color-blue-9: color(var(--color-blue) shade(80%));
 
+    @for $i from 1 to 9 {
+        @for $j from 1 to 9 {
+            --color-red-$(i)-blue-$(j): mix(var(--color-red-$(i)), var(--color-blue-$(j)));
+        }
+    }
+
+    /*
     --color-red-1-blue-1: mix(var(--color-red-1), var(--color-blue-1));
+    --color-red-2-blue-2: mix(var(--color-red-2), var(--color-blue-2));
     --color-red-5-blue-5: mix(var(--color-red-5), var(--color-blue-5));
     --color-red-9-blue-9: mix(var(--color-red-9), var(--color-blue-9));
     --color-red-2-blue-5: mix(var(--color-red-2), var(--color-blue-5));
     --color-red-5-blue-2: mix(var(--color-red-5), var(--color-blue-2));
+    */
 }
 
 .react-calendar-heatmap .color-empty { fill: #f3f4f6; }
 
+/*
 .react-calendar-heatmap .red-1 { fill: var(--color-red-1); }
 .react-calendar-heatmap .red-2 { fill: var(--color-red-2); }
 .react-calendar-heatmap .red-3 { fill: var(--color-red-3); }
@@ -52,12 +62,22 @@
 .react-calendar-heatmap .blue-7 { fill: var(--color-blue-7); }
 .react-calendar-heatmap .blue-8 { fill: var(--color-blue-8); }
 .react-calendar-heatmap .blue-9 { fill: var(--color-blue-9); }
+*/
 
-.react-calendar-heatmap .red-1-blue-1 { fill: var(--color-red-1-blue-1); }
-.react-calendar-heatmap .red-5-blue-5 { fill: var(--color-red-5-blue-5); }
+@for $i from 1 to 9 {
+    .react-calendar-heatmap .red-$(i) { fill: var(--color-red-$(i)); }
+    .react-calendar-heatmap .blue-$(i) { fill: var(--color-blue-$(i)); }
+
+    @for $j from 1 to 9 {
+        .react-calendar-heatmap .red-$(i)-blue-$(j) { fill: var(--color-red-$(i)-blue-$(j)); }
+    }
+}
+
+/* .react-calendar-heatmap .red-1-blue-1 { fill: var(--color-red-1-blue-1); } */
+/* .react-calendar-heatmap .red-5-blue-5 { fill: var(--color-red-5-blue-5); }
 .react-calendar-heatmap .red-9-blue-9 { fill: var(--color-red-9-blue-9); }
 .react-calendar-heatmap .red-2-blue-5 { fill: var(--color-red-2-blue-5); }
-.react-calendar-heatmap .red-5-blue-2 { fill: var(--color-red-5-blue-2); }
+.react-calendar-heatmap .red-5-blue-2 { fill: var(--color-red-5-blue-2); } */
 
 /*
 .react-calendar-heatmap .color-0-scale-1 { fill: #fecaca; }
