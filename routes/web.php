@@ -21,6 +21,7 @@ use Inertia\Inertia;
 */
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/entries/today', [EntryController::class, 'today'])->name('entries.today');
     Route::get('/entries/upload', [EntryController::class, 'createUpload'])->name('entries.create-upload');
     Route::post('/entries/upload', [EntryController::class, 'storeUpload'])->name('entries.store-upload');
     Route::get('/entries/more/{id}',[EntryController::class, 'moreEntries'])->name('entries.more');
@@ -31,9 +32,11 @@ Route::resource('snippets', SnippetController::class);
 
 Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
 Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
+Route::get('/tags/{tag1}/{tag2}', [TagController::class, 'compare'])->name('tags.compare');
 
 Route::get('/mentions', [MentionController::class, 'index'])->name('mentions.index');
 Route::get('/mentions/{mention}', [MentionController::class, 'show'])->name('mentions.show');
+Route::get('/mentions/{mention1}/{mention2}', [MentionController::class, 'compare'])->name('mentions.compare');
 
 Route::get('/markers', [MarkerController::class, 'index'])->name('markers.index');
 

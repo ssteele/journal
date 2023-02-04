@@ -1,10 +1,11 @@
+import { TimelineAnnotationColors } from '@/Constants/MarkerColorMap';
 import { FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import React from 'react';
 import 'react-calendar-heatmap/dist/styles.css';
 import '@/../css/react-calendar-heatmap.css';
 
-export default function Timeline({ timelineFrequency, timelineYears }) {
+export default function Timeline({ annotationMap, timelineFrequency, timelineYears }) {
     return (
         <>
             {
@@ -14,7 +15,13 @@ export default function Timeline({ timelineFrequency, timelineYears }) {
                             <span className="text-sm sm:text-base lg:text-lg">
                                 {timelineYear?.year}
                             </span>
-                            <span className="text-xs font-thin"> ({timelineYear?.count})</span>
+                            <span className="text-xs font-thin">(
+                                {(timelineYear?.count?.constructor === Array)
+                                    ? timelineYear?.count?.join('/')
+                                    : timelineYear?.count
+                                }
+                            )
+                            </span>
 
                             <CalendarHeatmap
                                 startDate={new Date(`${timelineYear?.year - 1}-12-31`)}
@@ -37,7 +44,18 @@ export default function Timeline({ timelineFrequency, timelineYears }) {
                                     if (!day) {
                                         return 'color-empty';
                                     }
-                                    return `color-scale-${day.count}`;
+
+                                    const { counts: entryCounts } = day;
+                                    const entryIds = Object.keys(entryCounts);
+                                    const entryColors = entryIds.map(e => {
+                                        const entryId = parseInt(e);
+                                        const color = TimelineAnnotationColors[annotationMap.indexOf(entryId)];
+                                        const count = entryCounts[entryId];
+                                        return `${color}-${count}`;
+                                    });
+
+                                    const sortedEntryColors = entryColors.sort((a, b) => a.startsWith(TimelineAnnotationColors[0]) ? -1 : 1);
+                                    return sortedEntryColors.join('-');   // eg: 'red-1' or 'red-2-blue-5'
                                 }}
                             />
                         </div>

@@ -1,17 +1,19 @@
 export function getTimelineFrequency(timeline = []) {
     let timehash = {};
-    timeline.forEach((time) => {
-        const { date, entryId } = time;
+    for (const time of timeline) {
+        const { date, entryId, annotationId } = time;
         timehash[date] = {
-            count: (timehash[date]?.count || 0) + 1,
+            counts: {
+                [annotationId]: (timehash[date]?.counts[annotationId] || 0) + 1,
+            },
             entryId,
         }
-    });
+    };
 
     return Object.keys(timehash).map(date => {
         return {
             date: new Date(date),
-            count: timehash[date]?.count,
+            counts: timehash[date]?.counts,
             entryId: timehash[date]?.entryId,
         };
     });
@@ -26,7 +28,7 @@ export function getTimelineYears(timelineFrequency) {
     for (let i=timelineEndYear; i>=timelineStartYear; i--) {
         const count = timelineFrequency.reduce((acc, cur) => {
             if (cur?.date?.getFullYear() === i) {
-                acc += 1;
+                acc += Object.values(cur?.counts)[0];
             }
             return acc;
         }, 0);
@@ -34,6 +36,42 @@ export function getTimelineYears(timelineFrequency) {
             year: i,
             count: `${count}`,
         });
+    }
+    return timelineYears;
+}
+
+export function mergeTimelineFrequencies(timelinesFrequency) {
+    let timelineFrequency = [];
+    let days = [];
+    for (const timeline of timelinesFrequency) {
+        const mtdTimeline = _.clone(timeline);
+        let { counts, entryId } = mtdTimeline;
+        if (days.includes(entryId)) {
+            const element = timelineFrequency.find(tl => tl.entryId === entryId);
+            element.counts = {...element?.counts, ...counts};
+        } else {
+            mtdTimeline.counts = counts;
+            timelineFrequency.push(mtdTimeline);
+            days.push(entryId);
+        }
+    }
+    return timelineFrequency;
+}
+
+export function mergeTimelineYearCounts(timelinesYears) {
+    let timelineYears = [];
+    let years = [];
+    for (const timeline of timelinesYears) {
+        const mtdTimeline = _.clone(timeline);
+        let { count, year } = mtdTimeline;
+        if (years.includes(year)) {
+            const element = timelineYears.find(tl => tl.year === year);
+            element.count.push(count);
+        } else {
+            mtdTimeline.count = [count];
+            timelineYears.push(mtdTimeline);
+            years.push(year);
+        }
     }
     return timelineYears;
 }

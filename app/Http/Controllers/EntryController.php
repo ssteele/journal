@@ -56,7 +56,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of entries.
      *
      * @return \Illuminate\Http\Response
      */
@@ -80,7 +80,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new entry.
      *
      * @return \Illuminate\Http\Response
      */
@@ -100,7 +100,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created entry in storage.
      *
      * @param  \App\Http\Requests\StoreEntryRequest  $request
      * @return \Illuminate\Http\Response
@@ -129,7 +129,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified entry.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -155,7 +155,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified entry.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -180,7 +180,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified entry in storage.
      *
      * @param  \App\Http\Requests\UpdateEntryRequest  $request
      * @param  int  $id
@@ -220,7 +220,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified entry from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -228,6 +228,22 @@ class EntryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Redirect to today's entry or create new if entry doesn't exist.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function today()
+    {
+        $entry = $this->entryRepository->getToday();
+        if ($entry->count()) {
+            $entryId = $entry[0]->id;
+            return redirect()->route('entries.edit', $entryId);
+        } else {
+            return redirect()->route('entries.create');
+        }
     }
 
     /**
@@ -239,11 +255,11 @@ class EntryController extends Controller
         $headers = [];
         $rows = [];
         if (false !== ($file = fopen($csvUpload, 'r'))) {
-            if (false !== ($data = fgetcsv($file, 1000, '|'))) {        
+            if (false !== ($data = fgetcsv($file, 1000, '|'))) {
                 $headers = array_map('strtolower', $data); 
             }
 
-            while (false !== ($data = fgetcsv($file, null, '|'))) {        
+            while (false !== ($data = fgetcsv($file, null, '|'))) {
                 $rows[] = array_combine($headers, $data);
             }
             fclose($file);

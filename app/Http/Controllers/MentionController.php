@@ -25,7 +25,7 @@ class MentionController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of mentions.
      *
      * @return \Illuminate\Http\Response
      */
@@ -37,7 +37,7 @@ class MentionController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified mention.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -51,8 +51,27 @@ class MentionController extends Controller
             ->with('timeline', $timeline);
     }
 
+    /**
+     * Display two mentions.
+     *
+     * @param  int  $id1
+     * @param  int  $id2
+     * @return \Illuminate\Http\Response
+     */
+    public function compare($id1, $id2)
+    {
+        $mentions = [Mention::find($id1), Mention::find($id2)];
+        $timelines = [
+            $this->mentionRepository->getTimeline($id1),
+            $this->mentionRepository->getTimeline($id2),
+        ];
+        return Inertia::render('Mentions/Compare')
+            ->with('mentions', $mentions)
+            ->with('timelines', $timelines);
+    }
+
     // /**
-    //  * Show the form for editing the specified resource.
+    //  * Show the form for editing the specified mention.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response
@@ -63,7 +82,7 @@ class MentionController extends Controller
     // }
 
     // /**
-    //  * Update the specified resource in storage.
+    //  * Update the specified mention in storage.
     //  *
     //  * @param  \Illuminate\Http\Request  $request
     //  * @param  int  $id
@@ -75,7 +94,7 @@ class MentionController extends Controller
     // }
 
     // /**
-    //  * Remove the specified resource from storage.
+    //  * Remove the specified mention from storage.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response

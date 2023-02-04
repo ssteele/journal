@@ -16,27 +16,32 @@ export default function Authenticated({ auth, header, children }) {
         'markers.index',
         'mentions.index',
         'mentions.show',
+        'mentions.compare',
         'snippets.create',
         'snippets.edit',
         'snippets.index',
         'tags.index',
         'tags.show',
+        'tags.compare',
     ].includes(route().current());
     
     function routeBackArrow(currentRoute) {
         switch(currentRoute) {
             case 'entries.edit':
-                const entryId = history?.state?.props?.entry?.id;
+                const entryId = history?.state?.props?.dbEntry?.id;
                 if (entryId) {
                     return route('entries.show', entryId);
                 }
+                break;
             case 'snippets.create':
             case 'snippets.edit':
                 return route('snippets.index');
             case 'mentions.show':
+            case 'mentions.compare':
                 // @todo: use cookies to store previous url, then nav back
                 return route('mentions.index');
             case 'tags.show':
+            case 'tags.compare':
                 // @todo: use cookies to store previous url, then nav back
                 return route('tags.index');
         }
@@ -68,7 +73,7 @@ export default function Authenticated({ auth, header, children }) {
                             {/*
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink href={route('entries.index')} active={route().current('entries.index')}>
-                                    View
+                                    Entries
                                 </NavLink>
                             </div>
                             */}
@@ -106,8 +111,12 @@ export default function Authenticated({ auth, header, children }) {
                                         </Dropdown.Link>
                                         */}
 
+                                        <Dropdown.Link href={route('entries.today')} as="button" method="get">
+                                            Today
+                                        </Dropdown.Link>
+
                                         <Dropdown.Link href={route('entries.index')} as="button" method="get">
-                                            View
+                                            Entries
                                         </Dropdown.Link>
 
                                         <Dropdown.Link href={route('entries.create')} as="button" method="get">
@@ -232,14 +241,14 @@ export default function Authenticated({ auth, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div>
-                        <ResponsiveNavLink href={route('entries.index')} active={route().current('entries.index')}>
-                            View
+                        <ResponsiveNavLink href={route('entries.today')} active={route().current('entries.today')}>
+                            Today
                         </ResponsiveNavLink>
                     </div>
 
                     <div className="pb-1">
-                        <ResponsiveNavLink href={route('entries.create')} active={route().current('entries.create')}>
-                            Create
+                        <ResponsiveNavLink href={route('entries.index')} active={route().current('entries.index')}>
+                            Entries
                         </ResponsiveNavLink>
                     </div>
 

@@ -25,7 +25,7 @@ class TagController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of tags.
      *
      * @return \Illuminate\Http\Response
      */
@@ -37,7 +37,7 @@ class TagController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified tag.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -51,8 +51,27 @@ class TagController extends Controller
             ->with('timeline', $timeline);
     }
 
+    /**
+     * Display two tags.
+     *
+     * @param  int  $id1
+     * @param  int  $id2
+     * @return \Illuminate\Http\Response
+     */
+    public function compare($id1, $id2)
+    {
+        $tags = [Tag::find($id1), Tag::find($id2)];
+        $timelines = [
+            $this->tagRepository->getTimeline($id1),
+            $this->tagRepository->getTimeline($id2),
+        ];
+        return Inertia::render('Tags/Compare')
+            ->with('tags', $tags)
+            ->with('timelines', $timelines);
+    }
+
     // /**
-    //  * Show the form for editing the specified resource.
+    //  * Show the form for editing the specified tag.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response
@@ -63,7 +82,7 @@ class TagController extends Controller
     // }
 
     // /**
-    //  * Update the specified resource in storage.
+    //  * Update the specified tag in storage.
     //  *
     //  * @param  \Illuminate\Http\Request  $request
     //  * @param  int  $id
@@ -75,7 +94,7 @@ class TagController extends Controller
     // }
 
     // /**
-    //  * Remove the specified resource from storage.
+    //  * Remove the specified tag from storage.
     //  *
     //  * @param  int  $id
     //  * @return \Illuminate\Http\Response

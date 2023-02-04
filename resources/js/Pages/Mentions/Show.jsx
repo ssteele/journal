@@ -4,7 +4,8 @@ import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Show({ auth, errors, mention = [], timeline = [] }) {
+export default function Show({ auth, errors, mention, timeline = [] }) {
+    const annotationMap = [mention.id];
     const timelineFrequency = getTimelineFrequency(timeline);
     const timelineYears = getTimelineYears(timelineFrequency);
 
@@ -24,6 +25,7 @@ export default function Show({ auth, errors, mention = [], timeline = [] }) {
                 <div className="mt-12 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div className="p-6 bg-white">
                         <Timeline
+                            annotationMap={annotationMap}
                             timelineFrequency={timelineFrequency}
                             timelineYears={timelineYears}
                         ></Timeline>

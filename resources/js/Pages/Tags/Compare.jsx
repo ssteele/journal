@@ -1,27 +1,50 @@
 import Timeline from '@/Components/Annotation/Timeline';
 import LoadingSpinner from '@/Components/LoadingSpinner';
+import { TimelineAnnotationColors } from '@/Constants/MarkerColorMap';
 import Authenticated from '@/Layouts/Authenticated';
-import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
+import {
+    getTimelineFrequency,
+    getTimelineYears,
+    mergeTimelineFrequencies,
+    mergeTimelineYearCounts,
+} from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Show({ auth, errors, tag, timeline = [] }) {
+export default function Compare({ auth, errors, tags = [], timelines = [] }) {
     const [isLoading, setIsLoading] = useState(false);
     let doShowLoadMore = false;
 
-    const annotationMap = [tag.id];
-    const timelineFrequency = getTimelineFrequency(timeline);
-    const timelineYears = getTimelineYears(timelineFrequency);
+    const annotationMap = tags.map(tag => tag.id);
+    let timelinesFrequency = [];
+    let timelinesYears = [];
+    let timelinesFrequencyAbridged = [];
+    let timelinesYearsAbridged = [];
 
     const tagLimitForPageLoad = 250;
-    let timelineFrequencyAbridged = [];
-    let timelineYearsAbridged = timelineYears;
-    if (timelineFrequency.length > tagLimitForPageLoad) {
-        doShowLoadMore = true;
-        timelineFrequencyAbridged = timelineFrequency.slice(0, tagLimitForPageLoad);
-        timelineYearsAbridged = getTimelineYears(timelineFrequencyAbridged);
-        timelineYearsAbridged[timelineYearsAbridged.length - 1].count += '+';
-    }
+    for (const timeline of timelines) {
+        const timelineFrequency = getTimelineFrequency(timeline);
+        const timelineYears = getTimelineYears(timelineFrequency);
+
+        let timelineFrequencyAbridged = [];
+        let timelineYearsAbridged = timelineYears;
+        if (timelineFrequency.length > tagLimitForPageLoad) {
+            doShowLoadMore = true;
+            timelineFrequencyAbridged = timelineFrequency.slice(0, tagLimitForPageLoad);
+            timelineYearsAbridged = getTimelineYears(timelineFrequencyAbridged);
+        }
+
+        timelinesFrequency.push(...timelineFrequency);
+        timelinesYears.push(...timelineYears);
+        timelinesFrequencyAbridged.push(...timelineFrequencyAbridged);
+        timelinesYearsAbridged.push(...timelineYearsAbridged);
+    };
+
+    const mergedTimelineFrequency = mergeTimelineFrequencies(timelinesFrequency);
+    const mergedTimelineFrequencyAbridged = mergeTimelineFrequencies(timelinesFrequencyAbridged);
+    const mergedTimelineYears = mergeTimelineYearCounts(timelinesYears);
+    const mergedTimelineYearsAbridged = mergeTimelineYearCounts(timelinesYearsAbridged);
+
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
 
     useEffect(() => {
@@ -43,7 +66,18 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
             errors={errors}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    {tag.name} <span className="text-xs font-thin">({timeline.length})</span>
+                    {
+                        tags.map((tag, i) => (
+                            <span key={i}>
+                                {i > 0 ? ' / ' : ''}
+                                <span
+                                    className={`bg-${TimelineAnnotationColors[i]}-100`}
+                                >
+                                    {tag?.name}
+                                </span>
+                            </span>
+                        ))
+                    }
                 </h2>
             }
         >
@@ -55,16 +89,16 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                         {!isMoreToLoad && (
                             <Timeline
                                 annotationMap={annotationMap}
-                                timelineFrequency={timelineFrequency}
-                                timelineYears={timelineYears}
+                                timelineFrequency={mergedTimelineFrequency}
+                                timelineYears={mergedTimelineYears}
                             ></Timeline>
                         )}
 
                         {isMoreToLoad && (
                             <Timeline
                                 annotationMap={annotationMap}
-                                timelineFrequency={timelineFrequencyAbridged}
-                                timelineYears={timelineYearsAbridged}
+                                timelineFrequency={mergedTimelineFrequencyAbridged}
+                                timelineYears={mergedTimelineYearsAbridged}
                             ></Timeline>
                         )}
 
