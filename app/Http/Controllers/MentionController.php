@@ -51,6 +51,25 @@ class MentionController extends Controller
             ->with('timeline', $timeline);
     }
 
+    /**
+     * Display two mentions.
+     *
+     * @param  int  $id1
+     * @param  int  $id2
+     * @return \Illuminate\Http\Response
+     */
+    public function compare($id1, $id2)
+    {
+        $mentions = [Mention::find($id1), Mention::find($id2)];
+        $timelines = [
+            $this->mentionRepository->getTimeline($id1),
+            $this->mentionRepository->getTimeline($id2),
+        ];
+        return Inertia::render('Mentions/Compare')
+            ->with('mentions', $mentions)
+            ->with('timelines', $timelines);
+    }
+
     // /**
     //  * Show the form for editing the specified mention.
     //  *

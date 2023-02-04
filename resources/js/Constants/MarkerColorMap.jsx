@@ -16,7 +16,7 @@ export const MarkerColorMap = {
     1001: 'bg-blue-100',                                            // ...these are parameterized elsewhere
 };
 
-export const TimelineMultiTagColors = [
+export const TimelineAnnotationColors = [
     'red',
     'blue',
 ];

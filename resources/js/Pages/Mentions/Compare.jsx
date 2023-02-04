@@ -11,11 +11,11 @@ import {
 import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Compare({ auth, errors, tags = [], timelines = [] }) {
+export default function Compare({ auth, errors, mentions = [], timelines = [] }) {
     const [isLoading, setIsLoading] = useState(false);
     let doShowLoadMore = false;
 
-    const annotationMap = tags.map(tag => tag.id);
+    const annotationMap = mentions.map(mention => mention.id);
     let timelinesFrequency = [];
     let timelinesYears = [];
     let timelinesFrequencyAbridged = [];
@@ -67,13 +67,13 @@ export default function Compare({ auth, errors, tags = [], timelines = [] }) {
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                     {
-                        tags.map((tag, i) => (
+                        mentions.map((mention, i) => (
                             <span key={i}>
                                 {i > 0 ? ' / ' : ''}
                                 <span
                                     className={`bg-${TimelineAnnotationColors[i]}-100`}
                                 >
-                                    {tag?.name}
+                                    {mention?.name}
                                 </span>
                             </span>
                         ))
@@ -81,7 +81,7 @@ export default function Compare({ auth, errors, tags = [], timelines = [] }) {
                 </h2>
             }
         >
-            <Head title="Tag" />
+            <Head title="Mention" />
 
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div className="mt-12 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
