@@ -231,6 +231,22 @@ class EntryController extends Controller
     }
 
     /**
+     * Redirect to today's entry or create new if entry doesn't exist.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function today()
+    {
+        $entry = $this->entryRepository->getToday();
+        if ($entry->count()) {
+            $entryId = $entry[0]->id;
+            return redirect()->route('entries.edit', $entryId);
+        } else {
+            return redirect()->route('entries.create');
+        }
+    }
+
+    /**
      * Use maatwebsite/excel package to extract CSV data
      * @param  object $csvUpload    File upload
      */

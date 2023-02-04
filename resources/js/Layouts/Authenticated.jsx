@@ -73,7 +73,7 @@ export default function Authenticated({ auth, header, children }) {
                             {/*
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink href={route('entries.index')} active={route().current('entries.index')}>
-                                    View
+                                    Entries
                                 </NavLink>
                             </div>
                             */}
@@ -111,8 +111,12 @@ export default function Authenticated({ auth, header, children }) {
                                         </Dropdown.Link>
                                         */}
 
+                                        <Dropdown.Link href={route('entries.today')} as="button" method="get">
+                                            Today
+                                        </Dropdown.Link>
+
                                         <Dropdown.Link href={route('entries.index')} as="button" method="get">
-                                            View
+                                            Entries
                                         </Dropdown.Link>
 
                                         <Dropdown.Link href={route('entries.create')} as="button" method="get">
@@ -237,14 +241,14 @@ export default function Authenticated({ auth, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div>
-                        <ResponsiveNavLink href={route('entries.index')} active={route().current('entries.index')}>
-                            View
+                        <ResponsiveNavLink href={route('entries.today')} active={route().current('entries.today')}>
+                            Today
                         </ResponsiveNavLink>
                     </div>
 
                     <div className="pb-1">
-                        <ResponsiveNavLink href={route('entries.create')} active={route().current('entries.create')}>
-                            Create
+                        <ResponsiveNavLink href={route('entries.index')} active={route().current('entries.index')}>
+                            Entries
                         </ResponsiveNavLink>
                     </div>
 

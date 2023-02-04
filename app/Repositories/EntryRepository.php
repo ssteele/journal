@@ -42,4 +42,14 @@ class EntryRepository
         $date = Carbon::parse($entry[0]->date);
         return $date->addDay()->toDateString();
     }
+
+    public function getToday()
+    {
+        $today = Carbon::today();
+        $entry = DB::table('entries')
+            ->whereDate('date', '=', $today)
+            ->limit(1)
+            ->get();
+        return $entry;
+    }
 }
