@@ -1,10 +1,10 @@
 export function getTimelineFrequency(timeline = []) {
     let timehash = {};
     for (const time of timeline) {
-        const { date, entryId, tagId } = time;
+        const { date, entryId, annotationId } = time;
         timehash[date] = {
             counts: {
-                [tagId]: (timehash[date]?.counts[tagId] || 0) + 1,
+                [annotationId]: (timehash[date]?.counts[annotationId] || 0) + 1,
             },
             entryId,
         }
