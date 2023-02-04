@@ -11,7 +11,7 @@ import {
 import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function ShowMultiple({ auth, errors, tags, timelines }) {
+export default function Compare({ auth, errors, tags, timelines }) {
     const [isLoading, setIsLoading] = useState(false);
     let doShowLoadMore = false;
 

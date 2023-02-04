@@ -58,14 +58,14 @@ class TagController extends Controller
      * @param  int  $id2
      * @return \Illuminate\Http\Response
      */
-    public function showTwo($id1, $id2)
+    public function compare($id1, $id2)
     {
         $tags = [Tag::find($id1), Tag::find($id2)];
         $timelines = [
             $this->tagRepository->getTimeline($id1),
             $this->tagRepository->getTimeline($id2),
         ];
-        return Inertia::render('Tags/ShowMultiple')
+        return Inertia::render('Tags/Compare')
             ->with('tags', $tags)
             ->with('timelines', $timelines);
     }
