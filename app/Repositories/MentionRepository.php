@@ -31,7 +31,7 @@ class MentionRepository
         return DB::table('mentions')
             ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
             ->join('entries', 'entry_has_mentions.entry_id', '=', 'entries.id')
-            ->select('date', 'entries.id as entryId')
+            ->select('date', 'entries.id as entryId', 'mentions.id as annotationId')
             ->where('mentions.id', '=', $id)
             ->orderBy('date', 'desc')
             ->get();
