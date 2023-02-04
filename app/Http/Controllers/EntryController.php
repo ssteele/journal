@@ -255,11 +255,11 @@ class EntryController extends Controller
         $headers = [];
         $rows = [];
         if (false !== ($file = fopen($csvUpload, 'r'))) {
-            if (false !== ($data = fgetcsv($file, 1000, '|'))) {        
+            if (false !== ($data = fgetcsv($file, 1000, '|'))) {
                 $headers = array_map('strtolower', $data); 
             }
 
-            while (false !== ($data = fgetcsv($file, null, '|'))) {        
+            while (false !== ($data = fgetcsv($file, null, '|'))) {
                 $rows[] = array_combine($headers, $data);
             }
             fclose($file);
