@@ -16,11 +16,13 @@ export default function Authenticated({ auth, header, children }) {
         'markers.index',
         'mentions.index',
         'mentions.show',
+        'mentions.compare',
         'snippets.create',
         'snippets.edit',
         'snippets.index',
         'tags.index',
         'tags.show',
+        'tags.compare',
     ].includes(route().current());
     
     function routeBackArrow(currentRoute) {
@@ -35,9 +37,11 @@ export default function Authenticated({ auth, header, children }) {
             case 'snippets.edit':
                 return route('snippets.index');
             case 'mentions.show':
+            case 'mentions.compare':
                 // @todo: use cookies to store previous url, then nav back
                 return route('mentions.index');
             case 'tags.show':
+            case 'tags.compare':
                 // @todo: use cookies to store previous url, then nav back
                 return route('tags.index');
         }
