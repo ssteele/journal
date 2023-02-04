@@ -26,10 +26,11 @@ export default function Authenticated({ auth, header, children }) {
     function routeBackArrow(currentRoute) {
         switch(currentRoute) {
             case 'entries.edit':
-                const entryId = history?.state?.props?.entry?.id;
+                const entryId = history?.state?.props?.dbEntry?.id;
                 if (entryId) {
                     return route('entries.show', entryId);
                 }
+                break;
             case 'snippets.create':
             case 'snippets.edit':
                 return route('snippets.index');
