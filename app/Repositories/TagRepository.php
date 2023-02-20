@@ -30,7 +30,7 @@ class TagRepository
     public function getRecentNamesSortedByFrequency($date = null, $dayLimit = null)
     {
         if (!$date) {
-            $date = Carbon::today();
+            $date = Carbon::today(config('constants.timezone'));
         }
         $dayLimit = $dayLimit ?: config('constants.day_limit_recent_tags');
         $pastDate = $date->copy()->subDay($dayLimit);

@@ -88,7 +88,7 @@ class EntryController extends Controller
     {
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $nextDate = $this->entryRepository->getDateFollowing();
-        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(), config('constants.day_limit_recent_tags'));
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(config('constants.timezone')), config('constants.day_limit_recent_tags'));
         $snippets = $this->snippetRepository->get();
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Entries/Create')

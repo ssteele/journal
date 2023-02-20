@@ -45,8 +45,7 @@ class EntryRepository
 
     public function getToday()
     {
-        // $today = Carbon::today('America/Chicago');
-        $today = Carbon::today('Asia/Dubai');
+        $today = Carbon::today(config('constants.timezone'));
         $entry = DB::table('entries')
             ->whereDate('date', '=', $today)
             ->limit(1)
