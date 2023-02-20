@@ -2,8 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Models\Snippet;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class SnippetRepository
