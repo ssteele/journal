@@ -1,4 +1,5 @@
 import Timeline from '@/Components/Annotation/Timeline';
+import XClose from '@/Components/XClose';
 import LoadingSpinner from '@/Components/LoadingSpinner';
 import Authenticated from '@/Layouts/Authenticated';
 import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
@@ -23,6 +24,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
         timelineYearsAbridged[timelineYearsAbridged.length - 1].count += '+';
     }
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
+    const [isDetailBarOpen, setIsDetailBarOpen] = useState(false);
 
     useEffect(() => {
         if (isLoading && !isMoreToLoad) {
@@ -35,6 +37,18 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
             setIsMoreToLoad(false);
         });
         setIsLoading(true);
+    }
+
+    function handleDayClick(day) {
+        if (!isDetailBarOpen) {
+            setIsDetailBarOpen(true);
+        }
+    }
+
+    function handleCloseDetailBar() {
+        if (isDetailBarOpen) {
+            setIsDetailBarOpen(false);
+        }
     }
 
     return (
@@ -50,11 +64,25 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
             <Head title="Tag" />
 
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div className="mt-12 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                {/* @todo: remove lines */}
+                {/* <div className="mt-12 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg"> */}
+                {/* <div className="grid grid-cols-1 md:grid-cols-2 mt-12 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg"> */}
+                <div
+                    className={`
+                        ${isDetailBarOpen ? 'grid grid-cols-1 md:grid-cols-2' : ''}
+                        mt-12
+                        pb-4
+                        bg-white
+                        overflow-hidden
+                        shadow-sm
+                        sm:rounded-lg
+                    `}
+                >
                     <div className="p-6 bg-white">
                         {!isMoreToLoad && (
                             <Timeline
                                 annotationMap={annotationMap}
+                                handleDayClick={handleDayClick}
                                 timelineFrequency={timelineFrequency}
                                 timelineYears={timelineYears}
                             ></Timeline>
@@ -63,6 +91,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                         {isMoreToLoad && (
                             <Timeline
                                 annotationMap={annotationMap}
+                                handleDayClick={handleDayClick}
                                 timelineFrequency={timelineFrequencyAbridged}
                                 timelineYears={timelineYearsAbridged}
                             ></Timeline>
@@ -85,6 +114,14 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                             )}
                         </div>
                     </div>
+
+                    {isDetailBarOpen && (
+                        <div className="p-6 bg-white">
+                            <div className="float-right" onClick={() => handleCloseDetailBar()}>
+                                <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </Authenticated>

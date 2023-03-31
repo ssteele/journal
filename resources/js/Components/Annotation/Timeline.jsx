@@ -5,7 +5,7 @@ import React from 'react';
 import 'react-calendar-heatmap/dist/styles.css';
 import '@/../css/react-calendar-heatmap.css';
 
-export default function Timeline({ annotationMap, timelineFrequency, timelineYears }) {
+export default function Timeline({ annotationMap, handleDayClick = null, timelineFrequency, timelineYears }) {
     return (
         <>
             {
@@ -37,7 +37,11 @@ export default function Timeline({ annotationMap, timelineFrequency, timelineYea
                                 values={timelineFrequency}
                                 onClick={(day) => {
                                     if (day) {
-                                        window.location.href = route('entries.show', day?.entryId)
+                                        if (!!handleDayClick) {
+                                            handleDayClick(day);
+                                        } else {
+                                            window.location.href = route('entries.show', day?.entryId)
+                                        }
                                     }
                                 }}
                                 classForValue={(day) => {
