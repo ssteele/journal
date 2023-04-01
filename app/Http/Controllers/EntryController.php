@@ -76,7 +76,7 @@ class EntryController extends Controller
     public function moreEntries($lastFetchedId)
     {
         $result = $this->entryRepository->getMoreWithMentions($lastFetchedId, config('constants.day_limit'));
-        return response()->json($result);
+        return response()->json($result);                           // @todo: move to api?
     }
 
     /**

@@ -39,10 +39,17 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
         setIsLoading(true);
     }
 
-    function handleDayClick(day) {
+    async function handleDayClick(day) {
         if (!isDetailBarOpen) {
             setIsDetailBarOpen(true);
         }
+
+        // const entry = await fetch(route('entries.show', day?.entryId))
+        const entry = await fetch(`http://127.0.0.1:8000/api/entries/${day.entryId}`)
+            .then(async response => response.ok ? await response.json() : null)
+            .catch(error => console.log(error.message));
+        ;
+        console.log('SHS entry:', entry);
     }
 
     function handleCloseDetailBar() {
