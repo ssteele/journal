@@ -4,12 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Entry;
-// use App\Repositories\EntryRepository;
+use App\Repositories\EntryRepository;
 // use Illuminate\Http\Request;
 
 class EntryController extends Controller
 {
-    // private $entryRepository;
+    private $entryRepository;
 
     /**
      * Create a new controller instance
@@ -17,23 +17,34 @@ class EntryController extends Controller
      * @return void
      */
     public function __construct(
-        // EntryRepository $entryRepository,
+        EntryRepository $entryRepository,
     )
     {
         // $this->middleware('auth');                               // @todo: handle auth
-        // $this->entryRepository = $entryRepository;
+        $this->entryRepository = $entryRepository;
     }
 
     /**
      * Get entry by id.
      *
      * @param  int  $id
-     * @return any? // @todo
+     * @return \Illuminate\Http\JsonResponse 
      */
     public function get($id)
     {
         $entry = Entry::find($id);
-        // dd($entry);
         return response()->json($entry);
+    }
+
+    /**
+     * Fetch more entries on index listing.
+     *
+     * @param  int  $lastFetchedId
+     * @return \Illuminate\Http\JsonResponse 
+     */
+    public function moreEntries($lastFetchedId)
+    {
+        $result = $this->entryRepository->getMoreWithMentions($lastFetchedId, config('constants.day_limit'));
+        return response()->json($result);
     }
 }

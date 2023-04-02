@@ -11,7 +11,7 @@ export default function Index({ auth, dbEntries = [], errors }) {
 
     async function handleLoadMore() {
         setIsLoading(true);
-        await axios(route('entries.more', lastEntryId))
+        await axios(route('api.entries.more', lastEntryId))
             .then((response) => response?.data)
             .then((more) => {
                 setEntries([...entries, ...more]);

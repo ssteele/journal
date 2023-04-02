@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Route::middleware('auth:sanctum')->get('/entries/{id}', [EntryController::class, 'get']);
 Route::get('/entries/{id}', [EntryController::class, 'get'])->name('api.entries.id');
+Route::get('/entries/more/{id}',[EntryController::class, 'moreEntries'])->name('api.entries.more');
