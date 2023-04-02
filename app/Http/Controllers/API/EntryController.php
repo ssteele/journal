@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Entry;
 use App\Repositories\EntryRepository;
-// use Illuminate\Http\Request;
 
 class EntryController extends Controller
 {
@@ -20,7 +19,7 @@ class EntryController extends Controller
         EntryRepository $entryRepository,
     )
     {
-        // $this->middleware('auth');                               // @todo: handle auth
+        $this->middleware('auth');
         $this->entryRepository = $entryRepository;
     }
 

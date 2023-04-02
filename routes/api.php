@@ -15,10 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/entries/{id}', [EntryController::class, 'get'])->name('api.entries.id');
+    Route::get('/entries/more/{id}',[EntryController::class, 'moreEntries'])->name('api.entries.more');
 });
 
-// Route::middleware('auth:sanctum')->get('/entries/{id}', [EntryController::class, 'get']);
-Route::get('/entries/{id}', [EntryController::class, 'get'])->name('api.entries.id');
-Route::get('/entries/more/{id}',[EntryController::class, 'moreEntries'])->name('api.entries.more');
+// one-off
+// Route::middleware('auth:sanctum')->get('/entries/{id}', [EntryController::class, 'get'])->name('api.entries.id');
