@@ -23,7 +23,7 @@ export default function Excerpt({ entry: dbEntry, tag }) {
         return segment.substring(0, wordBreak);
     }
 
-    function getSnippet(target, entry, length = snippetLength) {
+    function getExcerpt(target, entry, length = snippetLength) {
         const [segBefore, segAfter] = entry.split(target);
 
         const segBeforeSpaceIndices = getSpaceIndices(segBefore);
@@ -47,7 +47,7 @@ export default function Excerpt({ entry: dbEntry, tag }) {
             </div>
 
             <div className="p-4 border border-gray-100 bg-gray-100">
-                { getSnippet(tag?.name, entry) }
+                { getExcerpt(tag?.name, entry) }
             </div>
         </div>
     );
