@@ -8,8 +8,21 @@ export default function Excerpt({ entry: dbEntry, tag }) {
 
     function getSnippet(target, entry, length = snippetLength) {
         const [segBefore, segAfter] = entry.split(target);
-        const segBeforeTrimmed = segBefore.substring(segBefore.length - length);
-        const segAfterTrimmed = segAfter.substring(0, length);
+
+        let segBeforeSpaceIndices = [...segBefore.matchAll(/\s/g)].map(s => s.index);
+        segBeforeSpaceIndices = [0, ...segBeforeSpaceIndices, segBefore.length];
+
+        const segBeforeSubstringTarget = segBefore.length - length;
+        const segBeforeSubstringBreak = segBeforeSpaceIndices.filter(v => v < segBeforeSubstringTarget).pop();
+        const segBeforeTrimmed = segBefore.substring(segBeforeSubstringBreak + 1);
+
+        let segAfterSpaceIndices = [...segAfter.matchAll(/\s/g)].map(s => s.index);
+        segAfterSpaceIndices = [0, ...segAfterSpaceIndices, segAfter.length];
+
+        const segAfterSubstringTarget = length;
+        const segAfterSubstringBreak = segAfterSpaceIndices.filter(v => v > segAfterSubstringTarget)[0];
+        const segAfterTrimmed = segAfter.substring(0, segAfterSubstringBreak);
+
         return `...${segBeforeTrimmed}${target}${segAfterTrimmed}...`;
     }
 
