@@ -11,20 +11,26 @@ export default function Excerpt({ entry: dbEntry, tag }) {
         return [0, ...spaceIndices, segment.length];
     }
 
+    function getExcerptBack(segment, length, spaceIndices) {
+        const target = segment.length - length;
+        const wordBreak = spaceIndices.filter(v => v < target).pop();
+        return segment.substring(wordBreak + 1);
+    }
+
+    function getExcerptForward(segment, length, spaceIndices) {
+        const target = length;
+        const wordBreak = spaceIndices.filter(v => v > target)[0];
+        return segment.substring(0, wordBreak);
+    }
+
     function getSnippet(target, entry, length = snippetLength) {
         const [segBefore, segAfter] = entry.split(target);
 
         const segBeforeSpaceIndices = getSpaceIndices(segBefore);
-
-        const segBeforeSubstringTarget = segBefore.length - length;
-        const segBeforeSubstringBreak = segBeforeSpaceIndices.filter(v => v < segBeforeSubstringTarget).pop();
-        const segBeforeTrimmed = segBefore.substring(segBeforeSubstringBreak + 1);
+        const segBeforeTrimmed = getExcerptBack(segBefore, length, segBeforeSpaceIndices);
 
         const segAfterSpaceIndices = getSpaceIndices(segAfter);
-
-        const segAfterSubstringTarget = length;
-        const segAfterSubstringBreak = segAfterSpaceIndices.filter(v => v > segAfterSubstringTarget)[0];
-        const segAfterTrimmed = segAfter.substring(0, segAfterSubstringBreak);
+        const segAfterTrimmed = getExcerptForward(segAfter, length, segAfterSpaceIndices);
 
         return `...${segBeforeTrimmed}${target}${segAfterTrimmed}...`;
     }
