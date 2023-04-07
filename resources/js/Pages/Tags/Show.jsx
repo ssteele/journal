@@ -1,5 +1,6 @@
 import Timeline from '@/Components/Annotation/Timeline';
 import XClose from '@/Components/XClose';
+import Excerpt from '@/Components/Entry/Excerpt';
 import LoadingSpinner from '@/Components/LoadingSpinner';
 import Authenticated from '@/Layouts/Authenticated';
 import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
@@ -25,6 +26,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     }
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
     const [isDetailBarOpen, setIsDetailBarOpen] = useState(false);
+    const [tagEntries, setTagEntries] = useState([]);
 
     useEffect(() => {
         if (isLoading && !isMoreToLoad) {
@@ -44,11 +46,15 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
             setIsDetailBarOpen(true);
         }
 
-        const entry = await fetch(route('api.entries.id', day?.entryId))
+        const tagEntry = await fetch(route('api.entries.id', day?.entryId))
             .then(async response => response.ok ? await response.json() : null)
             .catch(error => console.log(error.message));
         ;
-        console.log('SHS entry:', entry);
+        if (tagEntry) {
+            if (!tagEntries.find(entry => entry.id === tagEntry.id)) {
+                setTagEntries([...tagEntries, tagEntry].sort((a, b) => new Date(a.date) - new Date(b.date)));
+            }
+        }
     }
 
     function handleCloseDetailBar() {
@@ -70,9 +76,6 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
             <Head title="Tag" />
 
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                {/* @todo: remove lines */}
-                {/* <div className="mt-12 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg"> */}
-                {/* <div className="grid grid-cols-1 md:grid-cols-2 mt-12 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg"> */}
                 <div
                     className={`
                         ${isDetailBarOpen ? 'grid grid-cols-1 md:grid-cols-2' : ''}
@@ -126,6 +129,18 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                             <div className="float-right" onClick={() => handleCloseDetailBar()}>
                                 <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
                             </div>
+
+                            {
+                                tagEntries.map((tagEntry, i) => {
+                                    return (
+                                        <Excerpt
+                                            entry={tagEntry}
+                                            key={i}
+                                            tag={tag}
+                                        ></Excerpt>
+                                    )
+                                })
+                            }
                         </div>
                     )}
                 </div>
