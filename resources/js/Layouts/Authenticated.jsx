@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import BackArrow from '@/Components/BackArrow';
+import ApplicationLogo from '@/Components/Icons/ApplicationLogo';
+import BackArrow from '@/Components/Icons/BackArrow';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';

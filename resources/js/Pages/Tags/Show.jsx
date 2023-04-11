@@ -1,5 +1,5 @@
 import Timeline from '@/Components/Annotation/Timeline';
-import XClose from '@/Components/XClose';
+import XClose from '@/Components/Icons/XClose';
 import Excerpt from '@/Components/Entry/Excerpt';
 import LoadingSpinner from '@/Components/LoadingSpinner';
 import Authenticated from '@/Layouts/Authenticated';
