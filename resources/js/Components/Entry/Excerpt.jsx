@@ -1,8 +1,9 @@
+import ExpandBox from '@/Components/Icons/ExpandBox';
 import { FormatDateForInputField, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import React, { useState } from 'react';
 
 export default function Excerpt({ entry: dbEntry, tag }) {
-    const { date, entry = '' } = dbEntry;
+    const { date, entry = '', id } = dbEntry;
     const snippetLengths = [50, 100, 300];
     const [snippetLength, setSnippetLength] = useState(snippetLengths[0]);
 
@@ -38,6 +39,12 @@ export default function Excerpt({ entry: dbEntry, tag }) {
     return (
         <div className="px-6 py-2 bg-white">
             <div>
+                <span className="mr-2">
+                    <a href={route('entries.show', id)} target="_blank" rel="noopener noreferrer">
+                        <ExpandBox className="inline-block h-4 align-sub w-auto text-gray-600" />
+                    </a>
+                </span>
+
                 <span className="inline sm:hidden">{ `${FormatDateForInputField(date)}` }</span>
                 <span
                     className="hidden sm:inline"
