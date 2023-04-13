@@ -25,6 +25,12 @@ export default function Excerpt({ entry: dbEntry, tag }) {
         return segment.substring(0, wordBreak);
     }
 
+    function getEllipses(entry, segBeforeTrimmed, segAfterTrimmed) {
+        const ellipsesBefore = (segBeforeTrimmed === entry.substring(0, segBeforeTrimmed.length)) ? '' : '...';
+        const ellipsesAfter = (segAfterTrimmed === entry.substring(entry.length - segAfterTrimmed.length)) ? '' : '...';
+        return [ellipsesBefore, ellipsesAfter];
+    }
+
     function getExcerpt(target, entry, length = snippetLengths[snippetLengthIndex]) {
         const [segBefore, segAfter] = entry.split(target);
 
@@ -34,7 +40,10 @@ export default function Excerpt({ entry: dbEntry, tag }) {
         const segAfterSpaceIndices = getSpaceIndices(segAfter);
         const segAfterTrimmed = getExcerptForward(segAfter, length, segAfterSpaceIndices);
 
-        return `...${segBeforeTrimmed}${target}${segAfterTrimmed}...`;
+        const [ellipsesBefore, ellipsesAfter] = getEllipses(entry, segBeforeTrimmed, segAfterTrimmed);
+        const isMoreExcerpt = !![ellipsesBefore, ellipsesAfter].filter(e => !!e).length;
+
+        return `${ellipsesBefore}${segBeforeTrimmed}${target}${segAfterTrimmed}${ellipsesAfter}`;
     }
 
     function expandExcerpt() {
