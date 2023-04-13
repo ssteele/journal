@@ -126,9 +126,9 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
 
                     {isDetailBarOpen && (
                         <div className="p-6 bg-white">
-                            <div className="float-right" onClick={() => handleCloseDetailBar()}>
+                            <span className="float-right -mt-2 -mr-2" onClick={() => handleCloseDetailBar()}>
                                 <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
-                            </div>
+                            </span>
 
                             {
                                 tagEntries.map((tagEntry, i) => {
