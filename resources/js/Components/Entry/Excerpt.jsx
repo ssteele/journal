@@ -15,7 +15,7 @@ export default function Excerpt({ entry: dbEntry, tag }) {
 
     function getExcerptBack(segment, length, spaceIndices) {
         const target = segment.length - length;
-        const wordBreak = spaceIndices.filter(v => v < target).pop();
+        const wordBreak = spaceIndices.filter(v => v < target).at(-1);
         return segment.substring(wordBreak + 1);
     }
 
