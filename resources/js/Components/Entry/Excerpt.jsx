@@ -8,6 +8,8 @@ export default function Excerpt({ entry: dbEntry, tag }) {
     const snippetLengths = [50, 100, 300];
     const [snippetLengthIndex, setSnippetLengthIndex] = useState(0);
 
+    const excerpt = getExcerpt(tag?.name, entry, snippetLengths[snippetLengthIndex]);
+
     function getSpaceIndices(segment) {
         const spaceIndices = [...segment.matchAll(/\s/g)].map(s => s.index);
         return [0, ...spaceIndices, segment.length];
@@ -37,6 +39,12 @@ export default function Excerpt({ entry: dbEntry, tag }) {
         return `...${segBeforeTrimmed}${target}${segAfterTrimmed}...`;
     }
 
+    function expandExcerpt() {
+        if (snippetLengthIndex < snippetLengths.length - 1) {
+            setSnippetLengthIndex(snippetLengthIndex + 1);
+        }
+    }
+
     return (
         <div className="px-6 py-2 bg-white">
             <div>
@@ -59,7 +67,7 @@ export default function Excerpt({ entry: dbEntry, tag }) {
             </div>
 
             <div className="p-4 border border-gray-100 bg-gray-100">
-                { getExcerpt(tag?.name, entry) }
+                { excerpt }
             </div>
         </div>
     );
