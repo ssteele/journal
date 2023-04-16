@@ -126,21 +126,23 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
 
                     {isDetailBarOpen && (
                         <div className="p-6 bg-white">
-                            <span className="float-right -mt-2 -mr-2" onClick={() => handleCloseDetailBar()}>
+                            <span className="float-right" onClick={() => handleCloseDetailBar()}>
                                 <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
                             </span>
 
-                            {
-                                tagEntries.map((tagEntry, i) => {
-                                    return (
-                                        <Excerpt
-                                            entry={tagEntry}
-                                            key={i}
-                                            tag={tag}
-                                        ></Excerpt>
-                                    )
-                                })
-                            }
+                            <div className="mt-6">
+                                {
+                                    tagEntries.map((tagEntry, i) => {
+                                        return (
+                                            <Excerpt
+                                                entry={tagEntry}
+                                                key={i}
+                                                tag={tag}
+                                            ></Excerpt>
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
                     )}
                 </div>
