@@ -135,9 +135,10 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                                     tagEntries.map((tagEntry, i) => {
                                         return (
                                             <Excerpt
+                                                annotation={tag}
+                                                annotationType="tag"
                                                 entry={tagEntry}
                                                 key={i}
-                                                tag={tag}
                                             ></Excerpt>
                                         )
                                     })

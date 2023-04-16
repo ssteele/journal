@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 const excerptLengthOptions = [50, 100, 300];
 const excerptLengths = {};
 
-export default function Excerpt({ entry: dbEntry, tag }) {
+export default function Excerpt({ annotation, annotationType, entry: dbEntry }) {
     const { date, entry = '', id } = dbEntry;
     excerptLengths[id] = excerptLengths[id] ?? 0;
     const [doRefresh, setDoRefresh] = useState(false);
@@ -40,8 +40,9 @@ export default function Excerpt({ entry: dbEntry, tag }) {
         return [ellipsesBefore, ellipsesAfter];
     }
 
-    function getExcerpt(target, entry, length = excerptLengthOptions[0]) {
-        const [segBefore, segAfter] = entry.split(target);
+    function getExcerpt(target, annotationType, entry, length = excerptLengthOptions[0]) {
+        const annotationSymbol = ('tag' === annotationType) ? '#' : '@';
+        const [segBefore, segAfter] = entry.split(`${annotationSymbol}${target}`);
 
         const segBeforeSpaceIndices = getSpaceIndices(segBefore);
         const segBeforeTrimmed = getExcerptBefore(segBefore, length, segBeforeSpaceIndices);
@@ -51,7 +52,7 @@ export default function Excerpt({ entry: dbEntry, tag }) {
 
         const [ellipsesBefore, ellipsesAfter] = getEllipses(entry, segBeforeTrimmed, segAfterTrimmed);
 
-        return `${ellipsesBefore}${segBeforeTrimmed}${target}${segAfterTrimmed}${ellipsesAfter}`;
+        return `${ellipsesBefore}${segBeforeTrimmed}${annotationSymbol}${target}${segAfterTrimmed}${ellipsesAfter}`;
     }
 
     async function expandExcerpt() {
@@ -83,7 +84,7 @@ export default function Excerpt({ entry: dbEntry, tag }) {
             </div>
 
             <div className="p-4 border border-gray-100 bg-gray-100">
-                { !doRefresh && getExcerpt(tag?.name, entry, excerptLengthOptions[excerptLengths[id]]) }
+                { !doRefresh && getExcerpt(annotation?.name, annotationType, entry, excerptLengthOptions[excerptLengths[id]]) }
             </div>
         </div>
     );
