@@ -22,13 +22,13 @@ export default function Excerpt({ entry: dbEntry, tag }) {
         return [0, ...spaceIndices, segment.length];
     }
 
-    function getExcerptBack(segment, length, spaceIndices) {
+    function getExcerptBefore(segment, length, spaceIndices) {
         const target = segment.length - length;
         const wordBreak = spaceIndices.filter(v => v < target).at(-1);
         return segment.substring(wordBreak + 1);
     }
 
-    function getExcerptForward(segment, length, spaceIndices) {
+    function getExcerptAfter(segment, length, spaceIndices) {
         const target = length;
         const wordBreak = spaceIndices.filter(v => v > target)[0];
         return segment.substring(0, wordBreak);
@@ -44,13 +44,12 @@ export default function Excerpt({ entry: dbEntry, tag }) {
         const [segBefore, segAfter] = entry.split(target);
 
         const segBeforeSpaceIndices = getSpaceIndices(segBefore);
-        const segBeforeTrimmed = getExcerptBack(segBefore, length, segBeforeSpaceIndices);
+        const segBeforeTrimmed = getExcerptBefore(segBefore, length, segBeforeSpaceIndices);
 
         const segAfterSpaceIndices = getSpaceIndices(segAfter);
-        const segAfterTrimmed = getExcerptForward(segAfter, length, segAfterSpaceIndices);
+        const segAfterTrimmed = getExcerptAfter(segAfter, length, segAfterSpaceIndices);
 
         const [ellipsesBefore, ellipsesAfter] = getEllipses(entry, segBeforeTrimmed, segAfterTrimmed);
-        const isMoreExcerpt = !![ellipsesBefore, ellipsesAfter].filter(e => !!e).length;
 
         return `${ellipsesBefore}${segBeforeTrimmed}${target}${segAfterTrimmed}${ellipsesAfter}`;
     }
