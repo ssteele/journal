@@ -11,12 +11,14 @@ export default function Index({ auth, dbEntries = [], errors }) {
 
     async function handleLoadMore() {
         setIsLoading(true);
-        await axios(route('entries.more', lastEntryId))
-            .then((response) => response?.data)
-            .then((more) => {
-                setEntries([...entries, ...more]);
-                setLastEntryId(more[more.length - 1]?.id);
-            });
+        const more = await fetch(route('api.entries.more', lastEntryId))
+            .then(async response => response.ok ? await response.json() : null)
+            .catch(error => console.log(error.message));
+        ;
+        if (more.length) {
+            setEntries([...entries, ...more]);
+            setLastEntryId(more[more.length - 1]?.id);
+        }
         setIsLoading(false);
     }
 

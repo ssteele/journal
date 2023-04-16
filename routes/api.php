@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\EntryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/entries/{id}', [EntryController::class, 'get'])->name('api.entries.id');
+    Route::get('/entries/more/{id}',[EntryController::class, 'moreEntries'])->name('api.entries.more');
 });
 
-// one-off api route example
-// Route::middleware('auth:sanctum')->get('/mentions',[MentionController::class, 'getNames']);
+// one-off
+// Route::middleware('auth:sanctum')->get('/entries/{id}', [EntryController::class, 'get'])->name('api.entries.id');

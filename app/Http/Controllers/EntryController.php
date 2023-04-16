@@ -68,18 +68,6 @@ class EntryController extends Controller
     }
 
     /**
-     * Fetch more entries on index listing.
-     *
-     * @param  int  $lastFetchedId
-     * @return \Illuminate\Http\Response
-     */
-    public function moreEntries($lastFetchedId)
-    {
-        $result = $this->entryRepository->getMoreWithMentions($lastFetchedId, config('constants.day_limit'));
-        return response()->json($result);
-    }
-
-    /**
      * Show the form for creating a new entry.
      *
      * @return \Illuminate\Http\Response

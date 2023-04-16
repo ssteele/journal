@@ -2,10 +2,11 @@ import { TimelineAnnotationColors } from '@/Constants/MarkerColorMap';
 import { FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import React from 'react';
+import { isMobile } from 'react-device-detect';
 import 'react-calendar-heatmap/dist/styles.css';
 import '@/../css/react-calendar-heatmap.css';
 
-export default function Timeline({ annotationMap, timelineFrequency, timelineYears }) {
+export default function Timeline({ annotationMap, handleDayClick = null, timelineFrequency, timelineYears }) {
     return (
         <>
             {
@@ -37,7 +38,11 @@ export default function Timeline({ annotationMap, timelineFrequency, timelineYea
                                 values={timelineFrequency}
                                 onClick={(day) => {
                                     if (day) {
-                                        window.location.href = route('entries.show', day?.entryId)
+                                        if (!isMobile && !!handleDayClick) {
+                                            handleDayClick(day);
+                                        } else {
+                                            window.location.href = route('entries.show', day?.entryId)
+                                        }
                                     }
                                 }}
                                 classForValue={(day) => {
