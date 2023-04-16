@@ -1,12 +1,21 @@
 import ExpandBox from '@/Components/Icons/ExpandBox';
 import ExpandVertical from '@/Components/Icons/ExpandVertical';
 import { FormatDateForInputField, FormatDateWeekdayLong } from '@/Utils/FormatDate';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+const excerptLengthOptions = [50, 100, 300];
+const excerptLengths = {};
 
 export default function Excerpt({ entry: dbEntry, tag }) {
     const { date, entry = '', id } = dbEntry;
-    const snippetLengths = [50, 100, 300];
-    const [snippetLengthIndex, setSnippetLengthIndex] = useState(0);
+    excerptLengths[id] = excerptLengths[id] ?? 0;
+    const [doRefresh, setDoRefresh] = useState(false);
+
+    useEffect(() => {
+        if (doRefresh) {
+            setDoRefresh(false);
+        }
+    }, [doRefresh]);
 
     function getSpaceIndices(segment) {
         const spaceIndices = [...segment.matchAll(/\s/g)].map(s => s.index);
@@ -31,7 +40,7 @@ export default function Excerpt({ entry: dbEntry, tag }) {
         return [ellipsesBefore, ellipsesAfter];
     }
 
-    function getExcerpt(target, entry, length = snippetLengths[snippetLengthIndex]) {
+    function getExcerpt(target, entry, length = excerptLengthOptions[0]) {
         const [segBefore, segAfter] = entry.split(target);
 
         const segBeforeSpaceIndices = getSpaceIndices(segBefore);
@@ -46,9 +55,10 @@ export default function Excerpt({ entry: dbEntry, tag }) {
         return `${ellipsesBefore}${segBeforeTrimmed}${target}${segAfterTrimmed}${ellipsesAfter}`;
     }
 
-    function expandExcerpt() {
-        if (snippetLengthIndex < snippetLengths.length - 1) {
-            setSnippetLengthIndex(snippetLengthIndex + 1);
+    async function expandExcerpt() {
+        if (excerptLengths[id] < excerptLengthOptions.length - 1) {
+            excerptLengths[id] += 1;
+            setDoRefresh(true);
         }
     }
 
@@ -74,7 +84,7 @@ export default function Excerpt({ entry: dbEntry, tag }) {
             </div>
 
             <div className="p-4 border border-gray-100 bg-gray-100">
-                { getExcerpt(tag?.name, entry, snippetLengths[snippetLengthIndex]) }
+                { !doRefresh && getExcerpt(tag?.name, entry, excerptLengthOptions[excerptLengths[id]]) }
             </div>
         </div>
     );
