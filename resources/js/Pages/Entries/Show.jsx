@@ -89,7 +89,7 @@ export default function Show({ auth, dbEntry, dbIdsPrevNext, dbMarkerCategories 
                                 return (
                                     <li className="inline-block pr-1.5" key={i}>
                                         <Link
-                                            href={route('tags.show', tag?.id)}
+                                            href={route('tags.show', tag?.name)}
                                         >
                                             {tag?.name}
                                         </Link>
