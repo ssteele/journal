@@ -24,6 +24,14 @@ class Tag extends Model
     protected $hidden = [];
 
     /**
+     * Set implicit route model binding: Tag is fetched by name, not id
+     */
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
+
+    /**
      * Define the relationship between two eloquent models: Tag & User
      */
     public function user()
