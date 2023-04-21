@@ -42,10 +42,9 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Tag $tag)
     {
-        $tag = Tag::find($id);
-        $timeline = $this->tagRepository->getTimeline($id);
+        $timeline = $this->tagRepository->getTimeline($tag->id);
         return Inertia::render('Tags/Show')
             ->with('tag', $tag)
             ->with('timeline', $timeline);
