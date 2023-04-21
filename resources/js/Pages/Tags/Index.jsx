@@ -45,7 +45,7 @@ export default function Index({ auth, errors, tags = [] }) {
                             {filteredTags.map((tag, i) => {
                                 return (
                                     <Link
-                                        href={route('tags.show', tag?.id)}
+                                        href={route('tags.show', tag?.name)}
                                         key={i}
                                     >
                                         <span className="inline-flex px-2 py-1">
