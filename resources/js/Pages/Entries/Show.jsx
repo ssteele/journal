@@ -39,7 +39,7 @@ export default function Show({ auth, dbEntry, dbIdsPrevNext, dbMarkerCategories 
             return (
                 <li className="inline-block pr-1.5" key={i}>
                     <Link
-                        href={route('mentions.show', mention?.id)}
+                        href={route('mentions.show', mention?.name)}
                     >
                         {mention?.name}
                     </Link>
