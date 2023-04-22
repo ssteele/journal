@@ -39,13 +39,12 @@ class MentionController extends Controller
     /**
      * Display the specified mention.
      *
-     * @param  int  $id
+     * @param  Mention  $mention
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Mention $mention)
     {
-        $mention = Mention::find($id);
-        $timeline = $this->mentionRepository->getTimeline($id);
+        $timeline = $this->mentionRepository->getTimeline($mention->id);
         return Inertia::render('Mentions/Show')
             ->with('mention', $mention)
             ->with('timeline', $timeline);
@@ -54,16 +53,16 @@ class MentionController extends Controller
     /**
      * Display two mentions.
      *
-     * @param  int  $id1
-     * @param  int  $id2
+     * @param  Mention  $mention1
+     * @param  Mention  $mention2
      * @return \Illuminate\Http\Response
      */
-    public function compare($id1, $id2)
+    public function compare(Mention $mention1, Mention $mention2)
     {
-        $mentions = [Mention::find($id1), Mention::find($id2)];
+        $mentions = [$mention1, $mention2];
         $timelines = [
-            $this->mentionRepository->getTimeline($id1),
-            $this->mentionRepository->getTimeline($id2),
+            $this->mentionRepository->getTimeline($mention1->id),
+            $this->mentionRepository->getTimeline($mention2->id),
         ];
         return Inertia::render('Mentions/Compare')
             ->with('mentions', $mentions)
