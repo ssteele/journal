@@ -21,21 +21,13 @@ class Entry extends Model
         'entry',
     ];
 
-    // /**
-    //  * The attributes excluded from the model's JSON form.
-    //  *
-    //  * @var array
-    //  */
-    // protected $dates = ['date'];
-
-    // /**
-    //  * The attributes that should be hidden for serialization.
-    //  *
-    //  * @var array<int, string>
-    //  */
-    // protected $hidden = [
-    //     'date',
-    // ];
+    /**
+     * Set implicit route model binding: Tag is fetched by name, not id
+     */
+    public function getRouteKeyName()
+    {
+        return 'date';
+    }
 
     /**
      * Define the relationship between two eloquent models: Entry & User
