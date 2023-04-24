@@ -8,7 +8,6 @@ import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
 export default function Show({ auth, errors, tag, timeline = [] }) {
-    const [isLoading, setIsLoading] = useState(false);
     let doShowLoadMore = false;
 
     const annotationMap = [tag.id];
@@ -24,8 +23,9 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
         timelineYearsAbridged = getTimelineYears(timelineFrequencyAbridged);
         timelineYearsAbridged[timelineYearsAbridged.length - 1].count += '+';
     }
+    const [isLoading, setIsLoading] = useState(false);
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
-    const [isDetailBarOpen, setIsDetailBarOpen] = useState(false);
+    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(false);
     const [tagEntries, setTagEntries] = useState([]);
 
     useEffect(() => {
@@ -42,8 +42,8 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     }
 
     async function handleDayClick(day) {
-        if (!isDetailBarOpen) {
-            setIsDetailBarOpen(true);
+        if (!isDetailPanelOpen) {
+            setIsDetailPanelOpen(true);
         }
 
         const tagEntry = await fetch(route('api.entries.id', day?.entryId))
@@ -58,8 +58,8 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     }
 
     function handleCloseDetailBar() {
-        if (isDetailBarOpen) {
-            setIsDetailBarOpen(false);
+        if (isDetailPanelOpen) {
+            setIsDetailPanelOpen(false);
         }
     }
 
@@ -78,7 +78,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div
                     className={`
-                        ${isDetailBarOpen ? 'grid grid-cols-1 md:grid-cols-2' : ''}
+                        ${isDetailPanelOpen ? 'grid grid-cols-1 md:grid-cols-2' : ''}
                         mt-12
                         pb-4
                         bg-white
@@ -124,7 +124,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                         </div>
                     </div>
 
-                    {isDetailBarOpen && (
+                    {isDetailPanelOpen && (
                         <div className="p-6 bg-white">
                             <span className="float-right" onClick={() => handleCloseDetailBar()}>
                                 <XClose className="block h-5 w-auto" strokeColor="#4b5563" />

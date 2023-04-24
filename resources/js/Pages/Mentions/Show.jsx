@@ -11,12 +11,12 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
     const timelineFrequency = getTimelineFrequency(timeline);
     const timelineYears = getTimelineYears(timelineFrequency);
 
-    const [isDetailBarOpen, setIsDetailBarOpen] = useState(false);
+    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(false);
     const [mentionEntries, setMentionEntries] = useState([]);
 
     async function handleDayClick(day) {
-        if (!isDetailBarOpen) {
-            setIsDetailBarOpen(true);
+        if (!isDetailPanelOpen) {
+            setIsDetailPanelOpen(true);
         }
 
         const mentionEntry = await fetch(route('api.entries.id', day?.entryId))
@@ -31,8 +31,8 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
     }
 
     function handleCloseDetailBar() {
-        if (isDetailBarOpen) {
-            setIsDetailBarOpen(false);
+        if (isDetailPanelOpen) {
+            setIsDetailPanelOpen(false);
         }
     }
 
@@ -51,7 +51,7 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div
                     className={`
-                        ${isDetailBarOpen ? 'grid grid-cols-1 md:grid-cols-2' : ''}
+                        ${isDetailPanelOpen ? 'grid grid-cols-1 md:grid-cols-2' : ''}
                         mt-12
                         pb-4
                         bg-white
@@ -69,7 +69,7 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                         ></Timeline>
                     </div>
 
-                    {isDetailBarOpen && (
+                    {isDetailPanelOpen && (
                         <div className="p-6 bg-white">
                             <span className="float-right" onClick={() => handleCloseDetailBar()}>
                                 <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
