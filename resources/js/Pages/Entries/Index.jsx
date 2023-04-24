@@ -40,7 +40,7 @@ export default function Index({ auth, dbEntries = [], errors }) {
                         {entries.map((entry, i) => {
                             return (
                                 <Link
-                                    href={route('entries.show', entry?.id)}
+                                    href={route('entries.show', entry?.date)}
                                     key={i}
                                 >
                                     <Card

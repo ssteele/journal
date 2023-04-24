@@ -28,9 +28,9 @@ export default function Authenticated({ auth, header, children }) {
     function routeBackArrow(currentRoute) {
         switch(currentRoute) {
             case 'entries.edit':
-                const entryId = history?.state?.props?.dbEntry?.id;
-                if (entryId) {
-                    return route('entries.show', entryId);
+                const entryDate = history?.state?.props?.dbEntry?.date;
+                if (entryDate) {
+                    return route('entries.show', entryDate);
                 }
                 break;
             case 'snippets.create':

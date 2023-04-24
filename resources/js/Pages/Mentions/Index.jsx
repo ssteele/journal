@@ -45,7 +45,7 @@ export default function Index({ auth, errors, mentions = [] }) {
                             {filteredMentions.map((mention, i) => {
                                 return (
                                     <Link
-                                        href={route('mentions.show', mention?.id)}
+                                        href={route('mentions.show', mention?.name)}
                                         key={i}
                                     >
                                         <span className="inline-flex px-2 py-1">

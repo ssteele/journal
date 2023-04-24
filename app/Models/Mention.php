@@ -24,6 +24,14 @@ class Mention extends Model
     protected $hidden = [];
 
     /**
+     * Set implicit route model binding: Mention is fetched by name, not id
+     */
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
+
+    /**
      * Define the relationship between two eloquent models: Mention & User
      */
     public function user()

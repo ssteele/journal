@@ -112,30 +112,29 @@ class EntryController extends Controller
         $annotationHandler->save();
 
         if (is_null($request->bulk)) {
-            return redirect()->route('entries.update', $entity->id);
+            return redirect()->route('entries.update', $entity->date);
         }
     }
 
     /**
      * Display the specified entry.
      *
-     * @param  int  $id
+     * @param  Entry  $entry
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Entry $entry)
     {
-        $entry = Entry::find($id);
-        $idsPrevNext = [
-            'prev' => Entry::where('id', '<', $id)->max('id'),
-            'next' => Entry::where('id', '>', $id)->min('id'),
+        $datesPrevNext = [
+            'prev' => Entry::where('date', '<', $entry->date)->max('date'),
+            'next' => Entry::where('date', '>', $entry->date)->min('date'),
         ];
         $markerCategories = $this->markerCategoryRepository->get();
-        $markers = $this->markerRepository->getForEntry($id);
-        $mentions = $this->mentionRepository->getIdNamePairsForEntry($id);
-        $tags = $this->tagRepository->getIdNamePairsForEntry($id);
+        $markers = $this->markerRepository->getForEntry($entry->id);
+        $mentions = $this->mentionRepository->getIdNamePairsForEntry($entry->id);
+        $tags = $this->tagRepository->getIdNamePairsForEntry($entry->id);
         return Inertia::render('Entries/Show')
             ->with('dbEntry', $entry)
-            ->with('dbIdsPrevNext', $idsPrevNext)
+            ->with('dbDatesPrevNext', $datesPrevNext)
             ->with('dbMarkerCategories', $markerCategories)
             ->with('dbMarkers', $markers)
             ->with('dbMentions', $mentions)
@@ -145,15 +144,14 @@ class EntryController extends Controller
     /**
      * Show the form for editing the specified entry.
      *
-     * @param  int  $id
+     * @param  Entry  $entry
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Entry $entry)
     {
-        $entry = Entry::find($id);
         $entryDate = Carbon::parse($entry['date']);
 
-        $currentTags = $this->tagRepository->getNamesForEntry($id);
+        $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
         $snippets = $this->snippetRepository->get();
@@ -171,14 +169,13 @@ class EntryController extends Controller
      * Update the specified entry in storage.
      *
      * @param  \App\Http\Requests\UpdateEntryRequest  $request
-     * @param  int  $id
+     * @param  Entry  $entry
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEntryRequest $request, $id, Handler $annotationHandler)
+    public function update(UpdateEntryRequest $request, Entry $entry, Handler $annotationHandler)
     {
         // get the things
         $user = \Auth::user();
-        $entry = Entry::find($id);
         $update = new Entry($request->all());
 
         // update fillable fields (except user_id), then save
@@ -192,7 +189,7 @@ class EntryController extends Controller
 
         // set annotations
         $annotationHandler->setUserId($user->id);
-        $annotationHandler->setEntryId($id);
+        $annotationHandler->setEntryId($entry->id);
         $annotationHandler->setEntryText($entry->entry);
 
         // clear existing annotations
@@ -203,17 +200,17 @@ class EntryController extends Controller
         $annotationHandler->save();
 
         if (is_null($request->bulk)) {
-            return redirect()->route('entries.update', $id);
+            return redirect()->route('entries.update', $entry->date);
         }
     }
 
     /**
      * Remove the specified entry from storage.
      *
-     * @param  int  $id
+     * @param  Entry  $entry
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Entry $entry)
     {
         //
     }
@@ -227,8 +224,8 @@ class EntryController extends Controller
     {
         $entry = $this->entryRepository->getToday();
         if ($entry->count()) {
-            $entryId = $entry[0]->id;
-            return redirect()->route('entries.edit', $entryId);
+            $entryDate = $entry[0]->date;
+            return redirect()->route('entries.edit', $entryDate);
         } else {
             return redirect()->route('entries.create');
         }

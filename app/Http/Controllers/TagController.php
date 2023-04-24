@@ -39,13 +39,12 @@ class TagController extends Controller
     /**
      * Display the specified tag.
      *
-     * @param  int  $id
+     * @param  Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Tag $tag)
     {
-        $tag = Tag::find($id);
-        $timeline = $this->tagRepository->getTimeline($id);
+        $timeline = $this->tagRepository->getTimeline($tag->id);
         return Inertia::render('Tags/Show')
             ->with('tag', $tag)
             ->with('timeline', $timeline);
@@ -54,16 +53,16 @@ class TagController extends Controller
     /**
      * Display two tags.
      *
-     * @param  int  $id1
-     * @param  int  $id2
+     * @param  Tag  $tag1
+     * @param  Tag  $tag2
      * @return \Illuminate\Http\Response
      */
-    public function compare($id1, $id2)
+    public function compare(Tag $tag1, Tag $tag2)
     {
-        $tags = [Tag::find($id1), Tag::find($id2)];
+        $tags = [$tag1, $tag2];
         $timelines = [
-            $this->tagRepository->getTimeline($id1),
-            $this->tagRepository->getTimeline($id2),
+            $this->tagRepository->getTimeline($tag1->id),
+            $this->tagRepository->getTimeline($tag2->id),
         ];
         return Inertia::render('Tags/Compare')
             ->with('tags', $tags)
@@ -73,10 +72,10 @@ class TagController extends Controller
     // /**
     //  * Show the form for editing the specified tag.
     //  *
-    //  * @param  int  $id
+    //  * @param  Tag  $tag
     //  * @return \Illuminate\Http\Response
     //  */
-    // public function edit($id)
+    // public function edit(Tag $tag)
     // {
     //     //
     // }
@@ -85,10 +84,10 @@ class TagController extends Controller
     //  * Update the specified tag in storage.
     //  *
     //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  int  $id
+    //  * @param  Tag  $tag
     //  * @return \Illuminate\Http\Response
     //  */
-    // public function update(Request $request, $id)
+    // public function update(Request $request, Tag $tag)
     // {
     //     //
     // }
@@ -96,10 +95,10 @@ class TagController extends Controller
     // /**
     //  * Remove the specified tag from storage.
     //  *
-    //  * @param  int  $id
+    //  * @param  Tag  $tag
     //  * @return \Illuminate\Http\Response
     //  */
-    // public function destroy($id)
+    // public function destroy(Tag $tag)
     // {
     //     //
     // }
