@@ -1,5 +1,5 @@
 import { TimelineAnnotationColors } from '@/Constants/MarkerColorMap';
-import { FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
+import { FormatDateForRouteModelBinding, FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
@@ -41,7 +41,7 @@ export default function Timeline({ annotationMap, handleDayClick = null, timelin
                                         if (!isMobile && !!handleDayClick) {
                                             handleDayClick(day);
                                         } else {
-                                            window.location.href = route('entries.show', day?.entryId)
+                                            window.location.href = route('entries.show', FormatDateForRouteModelBinding(day?.date))
                                         }
                                     }
                                 }}

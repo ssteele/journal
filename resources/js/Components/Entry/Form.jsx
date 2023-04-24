@@ -35,7 +35,7 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
     function handleSubmit(e) {
         e.preventDefault();
         if (isExistingEntry) {
-            put(route('entries.update', id), {
+            put(route('entries.update', date), {
                 onSuccess: () => {
                     // @todo: flash notify
                     console.log('Entry updated');

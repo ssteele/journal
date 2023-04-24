@@ -77,7 +77,7 @@ export default function Excerpt({ annotation, annotationType, entry: dbEntry }) 
                 </span>
 
                 <span className="float-right">
-                    <a href={route('entries.show', id)} target="_blank" rel="noopener noreferrer">
+                    <a href={route('entries.show', date)} target="_blank" rel="noopener noreferrer">
                         <ExpandBox className="inline-block h-4 align-sub w-auto text-gray-600" />
                     </a>
                 </span>

@@ -97,7 +97,7 @@ export default function Index({ auth, errors, markerCategories = [], markers = [
                                     const categoryName = GetMarkerCategory(markerCategories, marker?.marker_category_id);
                                     return (
                                         <Link
-                                            href={route('entries.show', marker?.entry_id)}
+                                            href={route('entries.show', marker?.date)}
                                             className={`
                                                 block
                                                 mt-4

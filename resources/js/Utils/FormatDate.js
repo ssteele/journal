@@ -4,8 +4,17 @@ function getDateOffset(date) {
     return new Date(date.getTime() - date.getTimezoneOffset() * -60000);
 }
 
+function zeroPadTens(n) {
+    return n < 10 ? `0${n}` : n;
+}
+
 export function GetDate(dateString = '') {
     return getDateOffset(new Date(dateString));
+}
+
+export function FormatDateForRouteModelBinding(dateString = '') {
+    const date = GetDate(dateString);
+    return `${date.getFullYear()}-${zeroPadTens(date.getMonth() + 1)}-${zeroPadTens(date.getDate())}`
 }
 
 export function FormatDateForInputField(dateString = '') {

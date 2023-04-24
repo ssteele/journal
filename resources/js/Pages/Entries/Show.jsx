@@ -6,8 +6,8 @@ import MarkupEntry from '@/Utils/MarkupEntry';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Show({ auth, dbEntry, dbIdsPrevNext, dbMarkerCategories = [], dbMarkers = [], dbMentions = [], dbTags = [], errors }) {
-    const { id, date, tempo, entry } = dbEntry;
+export default function Show({ auth, dbEntry, dbDatesPrevNext, dbMarkerCategories = [], dbMarkers = [], dbMentions = [], dbTags = [], errors }) {
+    const { date, tempo, entry } = dbEntry;
 
     function renderMarkers(markers, markerCategories) {
         return markers.map((marker, i) => {
@@ -118,19 +118,19 @@ export default function Show({ auth, dbEntry, dbIdsPrevNext, dbMarkerCategories 
 
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div className="flex justify-between mt-2 px-6 text-2xl">
-                    {dbIdsPrevNext?.prev && (
-                        <Link href={route('entries.show', dbIdsPrevNext?.prev)}>
+                    {dbDatesPrevNext?.prev && (
+                        <Link href={route('entries.show', dbDatesPrevNext?.prev)}>
                             <button className="px-2 font-bold text-white bg-gray-400 rounded">&laquo;</button>
                         </Link>
                     )}
 
-                    {dbIdsPrevNext?.next && (
-                        <Link href={route('entries.show', dbIdsPrevNext?.next)}>
+                    {dbDatesPrevNext?.next && (
+                        <Link href={route('entries.show', dbDatesPrevNext?.next)}>
                             <button className="px-2 font-bold text-white bg-gray-400 rounded">&raquo;</button>
                         </Link>
                     )}
 
-                    {!dbIdsPrevNext?.next && (
+                    {!dbDatesPrevNext?.next && (
                         <Link href={route('entries.create')}>
                             <button className="px-2 font-bold text-white bg-green-400 rounded">&raquo;</button>
                         </Link>
@@ -141,14 +141,14 @@ export default function Show({ auth, dbEntry, dbIdsPrevNext, dbMarkerCategories 
                     <div className="px-6 bg-white">
                         <div className="mt-6">
                             <label>Date</label>
-                            <Link href={route('entries.edit', id)}>
+                            <Link href={route('entries.edit', date)}>
                                 <div className="p-4 border border-gray-100 bg-gray-100">{ FormatDateForInputField(date) }</div>
                             </Link>
                         </div>
 
                         <div className="mt-6">
                             <label>Tempo</label>
-                            <Link href={route('entries.edit', id)}>
+                            <Link href={route('entries.edit', date)}>
                                 <div className="p-4 border border-gray-100 bg-gray-100">{ tempo }</div>
                             </Link>
                         </div>
@@ -184,7 +184,7 @@ export default function Show({ auth, dbEntry, dbIdsPrevNext, dbMarkerCategories 
                     <div className="md:col-span-2 px-6 bg-white">
                         <div className="mt-6">
                             <label>Entry</label>
-                            <Link href={route('entries.edit', id)}>
+                            <Link href={route('entries.edit', date)}>
                                 <div
                                     className="p-4 border border-gray-100 bg-gray-100"
                                     dangerouslySetInnerHTML={{__html: MarkupEntry(entry)}}
