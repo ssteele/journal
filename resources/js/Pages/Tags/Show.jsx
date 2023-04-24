@@ -6,6 +6,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 
 export default function Show({ auth, errors, tag, timeline = [] }) {
     let doShowLoadMore = false;
@@ -25,7 +26,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     }
     const [isLoading, setIsLoading] = useState(false);
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
-    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(false);
+    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
     const [tagEntries, setTagEntries] = useState([]);
 
     useEffect(() => {

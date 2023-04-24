@@ -5,13 +5,14 @@ import Authenticated from '@/Layouts/Authenticated';
 import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
+import { isMobile } from 'react-device-detect';
 
 export default function Show({ auth, errors, mention, timeline = [] }) {
     const annotationMap = [mention.id];
     const timelineFrequency = getTimelineFrequency(timeline);
     const timelineYears = getTimelineYears(timelineFrequency);
 
-    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(false);
+    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
     const [mentionEntries, setMentionEntries] = useState([]);
 
     async function handleDayClick(day) {
