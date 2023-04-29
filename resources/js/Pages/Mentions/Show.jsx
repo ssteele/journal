@@ -20,10 +20,6 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
     const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
     const [mentionEntries, setMentionEntries] = useState([]);
 
-    function showDetailPanelTabs() {
-        return !!mentionEntries.length;
-    }
-
     function isActiveTab(tab) {
         return tab === currentDetailPanelTab;
     }
@@ -129,7 +125,6 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
 
                                 <span className="mt-2" onClick={() => handleCloseDetailBar()}>
                                     <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
-                                    {/* <Edit className="block h-5 w-auto" strokeColor="#4b5563" /> */}
                                 </span>
                             </div>
 
