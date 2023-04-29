@@ -10,7 +10,7 @@ export default function EditPanel({ annotation, annotationType }) {
 
             <div className="mt-6">
                 <label>Nest Under</label>
-                <div className="p-4 border border-gray-100 bg-gray-100 cursor-pointer">{ annotation?.name }</div>
+                <div className="p-4 border border-gray-100 bg-gray-100 cursor-pointer">&nbsp;</div>
             </div>
         </>
     );

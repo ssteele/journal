@@ -17,8 +17,7 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
     const timelineYears = getTimelineYears(timelineFrequency);
 
     const [currentDetailPanelTab, setCurrentDetailPanelTab] = useState(AnnotationDetailPanelTabs.Edit);
-    // const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
-    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(isMobile);
+    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
     const [mentionEntries, setMentionEntries] = useState([]);
 
     function showDetailPanelTabs() {
@@ -86,7 +85,7 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                         sm:rounded-lg
                     `}
                 >
-                    {!isDetailPanelOpen && (
+                    {!isDetailPanelOpen && !isMobile && (
                         <div className="mt-8 mr-6 float-right" onClick={() => handleOpenDetailBar()}>
                             <Edit className="block h-5 w-auto" strokeColor="#4b5563" />
                         </div>
