@@ -1,8 +1,12 @@
+import EditPanel from '@/Components/Annotation/Detail/EditPanel';
+import ExcerptPanel from '@/Components/Annotation/Detail/ExcerptPanel';
 import Timeline from '@/Components/Annotation/Timeline';
+import Edit from '@/Components/Icons/Edit';
 import XClose from '@/Components/Icons/XClose';
-import Excerpt from '@/Components/Entry/Excerpt';
 import LoadingSpinner from '@/Components/LoadingSpinner';
+import { AnnotationDetailPanelTabs } from '@/Constants/AnnotationDetailPanelTabs';
 import Authenticated from '@/Layouts/Authenticated';
+import { ucFirst } from '@/Utils/String';
 import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
@@ -15,6 +19,10 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     const timelineFrequency = getTimelineFrequency(timeline);
     const timelineYears = getTimelineYears(timelineFrequency);
 
+    const [currentDetailPanelTab, setCurrentDetailPanelTab] = useState(AnnotationDetailPanelTabs.Edit);
+    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
+    const [tagEntries, setTagEntries] = useState([]);
+
     const tagLimitForPageLoad = 250;
     let timelineFrequencyAbridged = [];
     let timelineYearsAbridged = timelineYears;
@@ -26,8 +34,6 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     }
     const [isLoading, setIsLoading] = useState(false);
     const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
-    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
-    const [tagEntries, setTagEntries] = useState([]);
 
     useEffect(() => {
         if (isLoading && !isMoreToLoad) {
@@ -42,10 +48,19 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
         setIsLoading(true);
     }
 
+    function isActiveTab(tab) {
+        return tab === currentDetailPanelTab;
+    }
+
+    function handleSwitchDetailPanelTab(tab) {
+        setCurrentDetailPanelTab(tab);
+    }
+
     async function handleDayClick(day) {
         if (!isDetailPanelOpen) {
             setIsDetailPanelOpen(true);
         }
+        setCurrentDetailPanelTab(AnnotationDetailPanelTabs.Excerpts);
 
         const tagEntry = await fetch(route('api.entries.id', day?.entryId))
             .then(async response => response.ok ? await response.json() : null)
@@ -55,6 +70,12 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
             if (!tagEntries.find(entry => entry.id === tagEntry.id)) {
                 setTagEntries([...tagEntries, tagEntry].sort((a, b) => new Date(a.date) - new Date(b.date)));
             }
+        }
+    }
+
+    function handleOpenDetailBar() {
+        if (!isDetailPanelOpen) {
+            setIsDetailPanelOpen(true);
         }
     }
 
@@ -88,6 +109,12 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                         sm:rounded-lg
                     `}
                 >
+                    {!isDetailPanelOpen && !isMobile && (
+                        <div className="mt-8 mr-6 float-right" onClick={() => handleOpenDetailBar()}>
+                            <Edit className="block h-5 w-auto" strokeColor="#4b5563" />
+                        </div>
+                    )}
+
                     <div className="p-6 bg-white">
                         {!isMoreToLoad && (
                             <Timeline
@@ -127,24 +154,53 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
 
                     {isDetailPanelOpen && (
                         <div className="p-6 bg-white">
-                            <span className="float-right" onClick={() => handleCloseDetailBar()}>
-                                <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
-                            </span>
+                            <div className="flex justify-between">
+                                <ul className="flex justify-evenly divide-x divide-white border-b border-gray-300">
+                                    <li
+                                        className={`
+                                            px-4 py-1 rounded-t-md cursor-pointer
+                                            ${isActiveTab(AnnotationDetailPanelTabs.Edit) ? 'bg-green-200' : 'bg-gray-200'}
+                                        `}
+                                        onClick={() => handleSwitchDetailPanelTab(AnnotationDetailPanelTabs.Edit)}
+                                    >
+                                        { ucFirst(AnnotationDetailPanelTabs.Edit) }
+                                    </li>
 
-                            <div className="mt-6">
-                                {
-                                    tagEntries.map((tagEntry, i) => {
-                                        return (
-                                            <Excerpt
-                                                annotation={tag}
-                                                annotationType="tag"
-                                                entry={tagEntry}
-                                                key={i}
-                                            ></Excerpt>
-                                        )
-                                    })
-                                }
+                                    {!!tagEntries.length && (
+                                        <li
+                                            className={`
+                                                px-4 py-1 rounded-t-md cursor-pointer
+                                                ${isActiveTab(AnnotationDetailPanelTabs.Excerpts) ? 'bg-green-200' : 'bg-gray-200'}
+                                            `}
+                                            onClick={() => handleSwitchDetailPanelTab(AnnotationDetailPanelTabs.Excerpts)}
+                                        >
+                                            { ucFirst(AnnotationDetailPanelTabs.Excerpts) }
+                                        </li>
+                                    )}
+                                </ul>
+
+                                <span className="mt-2" onClick={() => handleCloseDetailBar()}>
+                                    <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
+                                </span>
                             </div>
+
+                            {
+                                {
+                                    edit: (
+                                        <EditPanel
+                                            annotation={tag}
+                                            annotationType="tag"
+                                        />
+                                    ),
+                                    excerpts: (
+                                        <ExcerptPanel
+                                            annotation={tag}
+                                            annotationType="tag"
+                                            annotationEntries={tagEntries}
+                                        />
+                                    ),
+                                }[currentDetailPanelTab]
+                            }
                         </div>
                     )}
                 </div>
