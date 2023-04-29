@@ -1,6 +1,7 @@
 import EditPanel from '@/Components/Annotation/Detail/EditPanel';
 import ExcerptPanel from '@/Components/Annotation/Detail/ExcerptPanel';
 import Timeline from '@/Components/Annotation/Timeline';
+import Edit from '@/Components/Icons/Edit';
 import XClose from '@/Components/Icons/XClose';
 import { AnnotationDetailPanelTabs } from '@/Constants/AnnotationDetailPanelTabs';
 import Authenticated from '@/Layouts/Authenticated';
@@ -16,7 +17,8 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
     const timelineYears = getTimelineYears(timelineFrequency);
 
     const [currentDetailPanelTab, setCurrentDetailPanelTab] = useState(AnnotationDetailPanelTabs.Edit);
-    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
+    // const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
+    const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(isMobile);
     const [mentionEntries, setMentionEntries] = useState([]);
 
     function showDetailPanelTabs() {
@@ -45,6 +47,12 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
             if (!mentionEntries.find(entry => entry.id === mentionEntry.id)) {
                 setMentionEntries([...mentionEntries, mentionEntry].sort((a, b) => new Date(a.date) - new Date(b.date)));
             }
+        }
+    }
+
+    function handleOpenDetailBar() {
+        if (!isDetailPanelOpen) {
+            setIsDetailPanelOpen(true);
         }
     }
 
@@ -78,6 +86,12 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                         sm:rounded-lg
                     `}
                 >
+                    {!isDetailPanelOpen && (
+                        <div className="mt-8 mr-6 float-right" onClick={() => handleOpenDetailBar()}>
+                            <Edit className="block h-5 w-auto" strokeColor="#4b5563" />
+                        </div>
+                    )}
+
                     <div className="p-6 bg-white">
                         <Timeline
                             annotationMap={annotationMap}
@@ -90,21 +104,18 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                     {isDetailPanelOpen && (
                         <div className="p-6 bg-white">
                             <div className="flex justify-between">
-                                {!showDetailPanelTabs() && (
-                                    <div className="py-1">&nbsp;</div>
-                                )}
+                                <ul className="flex justify-evenly divide-x divide-white border-b border-gray-300">
+                                    <li
+                                        className={`
+                                            px-4 py-1 rounded-t-md cursor-pointer
+                                            ${isActiveTab(AnnotationDetailPanelTabs.Edit) ? 'bg-green-200' : 'bg-gray-200'}
+                                        `}
+                                        onClick={() => handleSwitchDetailPanelTab(AnnotationDetailPanelTabs.Edit)}
+                                    >
+                                        { ucFirst(AnnotationDetailPanelTabs.Edit) }
+                                    </li>
 
-                                {showDetailPanelTabs() && (
-                                    <ul className="flex justify-evenly divide-x divide-white">
-                                        <li
-                                            className={`
-                                                px-4 py-1 rounded-t-md cursor-pointer
-                                                ${isActiveTab(AnnotationDetailPanelTabs.Edit) ? 'bg-green-200' : 'bg-gray-200'}
-                                            `}
-                                            onClick={() => handleSwitchDetailPanelTab(AnnotationDetailPanelTabs.Edit)}
-                                        >
-                                            { ucFirst(AnnotationDetailPanelTabs.Edit) }
-                                        </li>
+                                    {!!mentionEntries.length && (
                                         <li
                                             className={`
                                                 px-4 py-1 rounded-t-md cursor-pointer
@@ -114,11 +125,12 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                                         >
                                             { ucFirst(AnnotationDetailPanelTabs.Excerpts) }
                                         </li>
-                                    </ul>
-                                )}
+                                    )}
+                                </ul>
 
                                 <span className="mt-2" onClick={() => handleCloseDetailBar()}>
                                     <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
+                                    {/* <Edit className="block h-5 w-auto" strokeColor="#4b5563" /> */}
                                 </span>
                             </div>
 
