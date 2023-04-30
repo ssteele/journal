@@ -13,8 +13,6 @@ import React, { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 
 export default function Show({ auth, errors, tag, timeline = [] }) {
-    let doShowLoadMore = false;
-
     const annotationMap = [tag.id];
     const timelineFrequency = getTimelineFrequency(timeline);
     const timelineYears = getTimelineYears(timelineFrequency);
@@ -23,6 +21,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
     const [tagEntries, setTagEntries] = useState([]);
 
+    let doShowLoadMore = false;
     const tagLimitForPageLoad = 250;
     let timelineFrequencyAbridged = [];
     let timelineYearsAbridged = timelineYears;
