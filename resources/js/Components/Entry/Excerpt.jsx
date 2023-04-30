@@ -63,7 +63,7 @@ export default function Excerpt({ annotation, annotationType, entry: dbEntry }) 
     }
 
     return (
-        <div className="py-2 bg-white">
+        <div className="pt-4 pb-2 border-b border-gray-200">
             <div>
                 <span className="cursor-pointer" onClick={() => expandExcerpt()}>
                     <ExpandVertical className="inline-block h-4 align-sub w-auto text-gray-600" />
@@ -83,7 +83,7 @@ export default function Excerpt({ annotation, annotationType, entry: dbEntry }) 
                 </span>
             </div>
 
-            <div className="p-4 border border-gray-100 bg-gray-100">
+            <div className="p-4">
                 { !doRefresh && getExcerpt(annotation?.name, annotationType, entry, excerptLengthOptions[excerptLengths[id]]) }
             </div>
         </div>
