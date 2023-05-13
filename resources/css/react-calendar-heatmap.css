@@ -30,7 +30,8 @@
     }
 }
 
-.react-calendar-heatmap .color-empty { fill: var(--color-grey); }
+.react-calendar-heatmap .color-zero { fill: var(--color-grey); }
+.react-calendar-heatmap .color-empty { fill: transparent; }
 
 @for $i from 1 to 9 {
     .react-calendar-heatmap .red-$(i) { fill: var(--color-red-$(i)); }

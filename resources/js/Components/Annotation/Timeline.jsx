@@ -31,13 +31,13 @@ export default function Timeline({ annotationMap, handleDayClick = null, timelin
                                 showMonthLabels={timelineYear?.year === timelineYears[0]?.year}
                                 showWeekdayLabels={false}
                                 titleForValue={(day) => {
-                                    if (day) {
+                                    if (day && day?.counts) {
                                         return `${FormatDateWeekdayLong(day?.date)}, ${FormatDateForTitle(day?.date)}`;
                                     }
                                 }}
                                 values={timelineFrequency}
                                 onClick={(day) => {
-                                    if (day) {
+                                    if (day && day.counts) {
                                         if (!isMobile && !!handleDayClick) {
                                             handleDayClick(day);
                                         } else {
@@ -46,7 +46,13 @@ export default function Timeline({ annotationMap, handleDayClick = null, timelin
                                     }
                                 }}
                                 classForValue={(day) => {
+                                    // past date: no tag
                                     if (!day) {
+                                        return 'color-zero';
+                                    }
+
+                                    // future date (no tag)
+                                    if (!day.counts) {
                                         return 'color-empty';
                                     }
 
