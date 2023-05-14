@@ -51,7 +51,7 @@ export default function Compare({ auth, errors, tags = [], timelines = [] }) {
 
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div className="mt-12 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div className="p-6 bg-white">
+                    <div className="p-6">
                         <Timeline
                             annotationMap={annotationMap}
                             timelineFrequency={mergedTimelineFrequency}

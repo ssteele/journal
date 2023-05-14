@@ -77,7 +77,7 @@ export function mergeTimelineFrequencies(timelinesFrequency) {
     for (const timeline of timelinesFrequency) {
         const mtdTimeline = _.clone(timeline);
         let { counts, entryId } = mtdTimeline;
-        if (days.includes(entryId)) {
+        if (days.includes(entryId) && !!counts) {
             const element = timelineFrequency.find(tl => tl.entryId === entryId);
             element.counts = {...element?.counts, ...counts};
         } else {
