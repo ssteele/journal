@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSnippetRequest;
 use App\Http\Requests\UpdateSnippetRequest;
 use App\Models\Snippet;
+use App\Repositories\MentionRepository;
 use App\Repositories\SnippetRepository;
 use App\Repositories\TagRepository;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Inertia\Inertia;
 
 class SnippetController extends Controller
 {
+    private $mentionRepository;
     private $snippetRepository;
     private $tagRepository;
 
@@ -21,11 +23,13 @@ class SnippetController extends Controller
      * @return void
      */
     public function __construct(
+        MentionRepository $mentionRepository,
         SnippetRepository $snippetRepository,
         TagRepository $tagRepository,
     )
     {
         $this->middleware('auth');
+        $this->mentionRepository = $mentionRepository;
         $this->snippetRepository = $snippetRepository;
         $this->tagRepository = $tagRepository;
     }
@@ -49,8 +53,10 @@ class SnippetController extends Controller
      */
     public function create()
     {
+        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Snippets/Create')
+            ->with('dbMentions', $mentions)
             ->with('dbTags', $tags);
     }
 
@@ -81,8 +87,10 @@ class SnippetController extends Controller
     public function edit($id)
     {
         $snippet = Snippet::find($id);
+        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         return Inertia::render('Snippets/Edit')
+            ->with('dbMentions', $mentions)
             ->with('dbSnippet', $snippet)
             ->with('dbTags', $tags);
     }
