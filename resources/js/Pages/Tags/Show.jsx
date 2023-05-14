@@ -3,13 +3,12 @@ import ExcerptPanel from '@/Components/Annotation/Detail/ExcerptPanel';
 import Timeline from '@/Components/Annotation/Timeline';
 import Edit from '@/Components/Icons/Edit';
 import XClose from '@/Components/Icons/XClose';
-import LoadingSpinner from '@/Components/LoadingSpinner';
 import { AnnotationDetailPanelTabs } from '@/Constants/AnnotationDetailPanelTabs';
 import Authenticated from '@/Layouts/Authenticated';
 import { ucFirst } from '@/Utils/String';
 import { getTimelineFrequency, getTimelineYears } from '@/Utils/Timeline';
 import { Head } from '@inertiajs/inertia-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { isMobile } from 'react-device-detect';
 
 export default function Show({ auth, errors, tag, timeline = [] }) {
@@ -20,32 +19,6 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     const [currentDetailPanelTab, setCurrentDetailPanelTab] = useState(AnnotationDetailPanelTabs.Edit);
     const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
     const [tagEntries, setTagEntries] = useState([]);
-
-    let doShowLoadMore = false;
-    const tagLimitForPageLoad = 250;
-    let timelineFrequencyAbridged = [];
-    let timelineYearsAbridged = timelineYears;
-    if (timelineFrequency.length > tagLimitForPageLoad) {
-        doShowLoadMore = true;
-        timelineFrequencyAbridged = timelineFrequency.slice(0, tagLimitForPageLoad);
-        timelineYearsAbridged = getTimelineYears(timelineFrequencyAbridged);
-        timelineYearsAbridged[timelineYearsAbridged.length - 1].count += '+';
-    }
-    const [isLoading, setIsLoading] = useState(false);
-    const [isMoreToLoad, setIsMoreToLoad] = useState(doShowLoadMore);
-
-    useEffect(() => {
-        if (isLoading && !isMoreToLoad) {
-            setIsLoading(false);
-        }
-    }, [isLoading, isMoreToLoad]);
-
-    function handleLoadMore() {
-        setTimeout(() => {
-            setIsMoreToLoad(false);
-        });
-        setIsLoading(true);
-    }
 
     function isActiveTab(tab) {
         return tab === currentDetailPanelTab;
@@ -114,40 +87,12 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                     )}
 
                     <div className="p-6 bg-white">
-                        {!isMoreToLoad && (
-                            <Timeline
-                                annotationMap={annotationMap}
-                                handleDayClick={handleDayClick}
-                                timelineFrequency={timelineFrequency}
-                                timelineYears={timelineYears}
-                            ></Timeline>
-                        )}
-
-                        {isMoreToLoad && (
-                            <Timeline
-                                annotationMap={annotationMap}
-                                handleDayClick={handleDayClick}
-                                timelineFrequency={timelineFrequencyAbridged}
-                                timelineYears={timelineYearsAbridged}
-                            ></Timeline>
-                        )}
-
-                        <div className="w-full mt-8 flex flex-col items-center">
-                            {isMoreToLoad && !isLoading && (
-                                <button
-                                    className="py-4 text-sm text-blue-400"
-                                    onClick={() => handleLoadMore()}
-                                >
-                                    Load more
-                                </button>
-                            )}
-
-                            {isLoading && (
-                                <div className="py-px">
-                                    <LoadingSpinner />
-                                </div>
-                            )}
-                        </div>
+                        <Timeline
+                            annotationMap={annotationMap}
+                            handleDayClick={handleDayClick}
+                            timelineFrequency={timelineFrequency}
+                            timelineYears={timelineYears}
+                        ></Timeline>
                     </div>
 
                     {isDetailPanelOpen && (
