@@ -106,24 +106,24 @@ export default function Authenticated({ auth, header, children }) {
 
                                     <Dropdown.Content>
                                         {/*
-                                        <Dropdown.Link href={route('search.index')} as="button" method="get">
+                                        <Dropdown.Link href={route('search.index')} as="a" method="get">
                                             Search
                                         </Dropdown.Link>
                                         */}
 
-                                        <Dropdown.Link href={route('entries.today')} as="button" method="get">
+                                        <Dropdown.Link href={route('entries.today')} as="a" method="get">
                                             Today
                                         </Dropdown.Link>
 
-                                        <Dropdown.Link href={route('entries.index')} as="button" method="get">
+                                        <Dropdown.Link href={route('entries.index')} as="a" method="get">
                                             Entries
                                         </Dropdown.Link>
 
-                                        <Dropdown.Link href={route('entries.create')} as="button" method="get">
+                                        <Dropdown.Link href={route('entries.create')} as="a" method="get">
                                             Create
                                         </Dropdown.Link>
 
-                                        <Dropdown.Link href={route('entries.create-upload')} as="button" method="get">
+                                        <Dropdown.Link href={route('entries.create-upload')} as="a" method="get">
                                             Upload
                                         </Dropdown.Link>
                                     </Dropdown.Content>
@@ -157,19 +157,19 @@ export default function Authenticated({ auth, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('tags.index')} as="button" method="get">
+                                        <Dropdown.Link href={route('tags.index')} as="a" method="get">
                                             Tags
                                         </Dropdown.Link>
 
-                                        <Dropdown.Link href={route('mentions.index')} as="button" method="get">
+                                        <Dropdown.Link href={route('mentions.index')} as="a" method="get">
                                             Mentions
                                         </Dropdown.Link>
 
-                                        <Dropdown.Link href={route('markers.index')} as="button" method="get">
+                                        <Dropdown.Link href={route('markers.index')} as="a" method="get">
                                             Markers
                                         </Dropdown.Link>
 
-                                        <Dropdown.Link href={route('snippets.index')} as="button" method="get">
+                                        <Dropdown.Link href={route('snippets.index')} as="a" method="get">
                                             Snippets
                                         </Dropdown.Link>
                                     </Dropdown.Content>
