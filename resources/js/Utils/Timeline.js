@@ -1,6 +1,8 @@
+import { getDateOffset } from "./FormatDate";
+
 function getRemainingDatesForYear() {
     const today = new Date();
-    const date = new Date(`${today.getFullYear() + 1}-01-01`);
+    const date = getDateOffset(new Date(`${today.getFullYear()}-12-31`));
     let remainingDates = [];
     while (date > today) {
         remainingDates.push(new Date(date));
