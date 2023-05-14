@@ -1,3 +1,26 @@
+import { getDateOffset } from "./FormatDate";
+
+function getRemainingDatesForYear() {
+    const today = new Date();
+    const date = getDateOffset(new Date(`${today.getFullYear()}-12-31`));
+    let remainingDates = [];
+    while (date > today) {
+        remainingDates.push(new Date(date));
+        date.setDate(date.getDate() - 1);
+    }
+    return remainingDates;
+}
+
+function getTimelineFuture(dates) {
+    return dates.map(date => {
+        return {
+            date,
+            counts: null,
+            entryId: null,
+        }
+    });
+}
+
 export function getTimelineFrequency(timeline = []) {
     let timehash = {};
     for (const time of timeline) {
@@ -10,13 +33,21 @@ export function getTimelineFrequency(timeline = []) {
         }
     };
 
-    return Object.keys(timehash).map(date => {
+    const timelineFrequency = Object.keys(timehash).map(date => {
         return {
             date: new Date(date),
             counts: timehash[date]?.counts,
             entryId: timehash[date]?.entryId,
         };
     });
+
+    const datesRemainingThisYear = getRemainingDatesForYear(new Date());
+    const timelineFuture = getTimelineFuture(datesRemainingThisYear);
+
+    return [
+        ...timelineFuture,
+        ...timelineFrequency,
+    ];
 }
 
 export function getTimelineYears(timelineFrequency) {
@@ -27,7 +58,7 @@ export function getTimelineYears(timelineFrequency) {
     let timelineYears = [];
     for (let i=timelineEndYear; i>=timelineStartYear; i--) {
         const count = timelineFrequency.reduce((acc, cur) => {
-            if (cur?.date?.getFullYear() === i) {
+            if (cur?.counts && cur?.date?.getFullYear() === i) {
                 acc += Object.values(cur?.counts)[0];
             }
             return acc;
@@ -46,7 +77,7 @@ export function mergeTimelineFrequencies(timelinesFrequency) {
     for (const timeline of timelinesFrequency) {
         const mtdTimeline = _.clone(timeline);
         let { counts, entryId } = mtdTimeline;
-        if (days.includes(entryId)) {
+        if (days.includes(entryId) && !!counts) {
             const element = timelineFrequency.find(tl => tl.entryId === entryId);
             element.counts = {...element?.counts, ...counts};
         } else {

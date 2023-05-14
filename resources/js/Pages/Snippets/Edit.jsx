@@ -3,7 +3,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Edit({ auth, dbSnippet, dbTags = [], errors }) {
+export default function Edit({ auth, dbMentions = [], dbSnippet, dbTags = [], errors }) {
     return (
         <Authenticated
             auth={auth}
@@ -20,6 +20,7 @@ export default function Edit({ auth, dbSnippet, dbTags = [], errors }) {
 
             <Form
                 dbSnippet={dbSnippet}
+                mentions={dbMentions}
                 tags={dbTags}
             />
         </Authenticated>
