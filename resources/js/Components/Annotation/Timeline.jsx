@@ -41,7 +41,7 @@ export default function Timeline({ annotationMap, handleDayClick = null, timelin
                                         if (!isMobile && !!handleDayClick) {
                                             handleDayClick(day);
                                         } else {
-                                            window.location.href = route('entries.show', FormatDateForRouteModelBinding(day?.date))
+                                            window.location.href = route('entries.show', FormatDateForRouteModelBinding(day?.date));
                                         }
                                     }
                                 }}
