@@ -6,6 +6,13 @@ export default function Index({ auth, errors, tags = [] }) {
     const [filteredTags, setFilteredTags] = useState(tags);
 
     function searchTags(e) {
+        if ('Enter' === e.key && filteredTags.length) {
+            const tagName = filteredTags[0]?.name;
+            if (tagName) {
+                window.location.href = route('tags.show', tagName);
+            }
+        }
+
         const searchTerm = e?.target?.value;
         if (searchTerm) {
             setFilteredTags(tags.filter(({ name }) => -1 !== name.indexOf(searchTerm)));
@@ -31,11 +38,12 @@ export default function Index({ auth, errors, tags = [] }) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white">
                             <input
-                                autoComplete='off'
+                                autoComplete="off"
+                                autoFocus
                                 className="w-full p-4 border border-gray-200"
                                 label="Search"
                                 name="search"
-                                onChange={e => searchTags(e)}
+                                onKeyUp={e => searchTags(e)}
                                 placeholder='Search tags'
                                 type="input"
                             />
