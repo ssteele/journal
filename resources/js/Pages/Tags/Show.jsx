@@ -86,7 +86,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                         </div>
                     )}
 
-                    <div className="p-6 bg-white">
+                    <div className="p-6">
                         <Timeline
                             annotationMap={annotationMap}
                             handleDayClick={handleDayClick}

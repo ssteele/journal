@@ -74,7 +74,6 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                     className={`
                         ${isDetailPanelOpen ? 'grid grid-cols-1 md:grid-cols-2' : ''}
                         mt-12
-                        pb-4
                         bg-white
                         overflow-hidden
                         shadow-sm
@@ -97,13 +96,13 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                     </div>
 
                     {isDetailPanelOpen && (
-                        <div className="p-6 bg-white">
+                        <div className="p-6 bg-gray-50">
                             <div className="flex justify-between">
-                                <ul className="flex justify-evenly divide-x divide-white border-b border-gray-300">
+                                <ul className="flex justify-evenly divide-x divide-bg-gray-50 border-b border-gray-300">
                                     <li
                                         className={`
                                             px-4 py-1 rounded-t-md cursor-pointer
-                                            ${isActiveTab(AnnotationDetailPanelTabs.Edit) ? 'bg-green-200' : 'bg-gray-200'}
+                                            ${isActiveTab(AnnotationDetailPanelTabs.Edit) ? 'bg-green-100' : 'bg-white'}
                                         `}
                                         onClick={() => handleSwitchDetailPanelTab(AnnotationDetailPanelTabs.Edit)}
                                     >
@@ -114,7 +113,7 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                                         <li
                                             className={`
                                                 px-4 py-1 rounded-t-md cursor-pointer
-                                                ${isActiveTab(AnnotationDetailPanelTabs.Excerpts) ? 'bg-green-200' : 'bg-gray-200'}
+                                                ${isActiveTab(AnnotationDetailPanelTabs.Excerpts) ? 'bg-green-100' : 'bg-white'}
                                             `}
                                             onClick={() => handleSwitchDetailPanelTab(AnnotationDetailPanelTabs.Excerpts)}
                                         >
