@@ -6,6 +6,13 @@ export default function Index({ auth, errors, mentions = [] }) {
     const [filteredMentions, setFilteredMentions] = useState(mentions);
 
     function searchMentions(e) {
+        if ('Enter' === e.key && filteredMentions.length) {
+            const mentionName = filteredMentions[0]?.name;
+            if (mentionName) {
+                window.location.href = route('mentions.show', mentionName);
+            }
+        }
+
         const searchTerm = e?.target?.value;
         if (searchTerm) {
             setFilteredMentions(mentions.filter(({ name }) => -1 !== name.indexOf(searchTerm)));
@@ -31,12 +38,13 @@ export default function Index({ auth, errors, mentions = [] }) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white">
                             <input
-                                autoComplete='off'
+                                autoComplete="off"
+                                autoFocus
                                 className="w-full p-4 border border-gray-200"
                                 label="Search"
                                 name="search"
-                                onChange={e => searchMentions(e)}
-                                placeholder='Search mentions'
+                                onKeyUp={e => searchMentions(e)}
+                                placeholder="Search mentions"
                                 type="input"
                             />
                         </div>

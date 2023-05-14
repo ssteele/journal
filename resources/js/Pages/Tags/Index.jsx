@@ -44,7 +44,7 @@ export default function Index({ auth, errors, tags = [] }) {
                                 label="Search"
                                 name="search"
                                 onKeyUp={e => searchTags(e)}
-                                placeholder='Search tags'
+                                placeholder="Search tags"
                                 type="input"
                             />
                         </div>
