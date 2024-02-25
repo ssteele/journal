@@ -293,4 +293,14 @@ class EntryController extends Controller
 
         return redirect()->route('entries.index');
     }
+
+    /**
+     * Show the form for exporting journal entries
+     *
+     * @return Response
+     */
+    public function createExport()
+    {
+        return Inertia::render('Entries/Export');
+    }
 }

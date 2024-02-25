@@ -13,6 +13,7 @@ export default function Authenticated({ auth, header, children }) {
         'entries.show',
         'entries.edit',
         'entries.create-upload',
+        'entries.create-export',
         'markers.index',
         'mentions.index',
         'mentions.show',
@@ -125,6 +126,10 @@ export default function Authenticated({ auth, header, children }) {
 
                                         <Dropdown.Link href={route('entries.create-upload')} as="a" method="get">
                                             Upload
+                                        </Dropdown.Link>
+
+                                        <Dropdown.Link href={route('entries.create-export')} as="a" method="get">
+                                            Export
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
