@@ -3,17 +3,28 @@ import { Head, useForm } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Create({ auth, errors: authErrors }) {
+    const defaultDaysBack = 0;
+
+    const today = new Date('2023-04-03');
+    // const today = new Date();
+    const startDate = new Date(today);
+    startDate.setDate(startDate.getDate() - defaultDaysBack);
+
     const initialState = {
-        startDate: '',
-        endDate: new Date().toISOString().slice(0, 10),
+        startDate: startDate.toISOString().slice(0, 10),
+        endDate: today.toISOString().slice(0, 10),
     };
-    const { data, errors, post, progress, setData } = useForm(initialState);
+    const { data, errors, progress, setData } = useForm(initialState);
     console.log('SHS data:', data);
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log('SHS e:', e);
-        // post(route('entries.file-export'), {
+        // can't trigger download using ajax
+        // @todo: post via form submit instead?
+        document.location = route('entries.download-export');
+        console.log('File exported');
+
+        // get(route('entries.download-export'), {
         //     onSuccess: () => {
         //         // @todo: flash notify
         //         console.log('File(s) exported');
@@ -74,16 +85,16 @@ export default function Create({ auth, errors: authErrors }) {
                                     </div>
                                 </div>
 
-                                {/*
+                                {/* @todo: remove me? */}
                                 {progress && (
                                     <progress value={progress.percentage} max="100">
                                         {progress.percentage}%
                                     </progress>
                                 )}
-                                <span className="text-red-600">
+                                {/* <span className="text-red-600">
                                     {errors.csv}
-                                </span>
-                                */}
+                                </span> */}
+                               
 
                                 <div className="mt-4 flex justify-end">
                                     <button
