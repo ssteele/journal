@@ -15,13 +15,13 @@ export default function Create({ auth, errors: authErrors }) {
         endDate: today.toISOString().slice(0, 10),
     };
     const { data, errors, progress, setData } = useForm(initialState);
-    console.log('SHS data:', data);
 
     function handleSubmit(e) {
         e.preventDefault();
         // can't trigger download using ajax
         // @todo: post via form submit instead?
-        document.location = route('entries.download-export');
+        // if have to do the following, there is a better way to send query params
+        document.location = `${route('entries.download-export')}?startDate=${data?.startDate}&endDate=${data?.endDate}`;
         console.log('File exported');
 
         // get(route('entries.download-export'), {

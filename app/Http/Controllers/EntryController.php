@@ -315,9 +315,13 @@ class EntryController extends Controller
      */
     public function downloadExport(ExportEntryRequest $request)
     {
-        $exportDirectory = 'entries-export';
-
         $entries = $this->entryRepository->getRange($request->startDate, $request->endDate);
+        if (!count($entries)) {
+            // @todo: redirect and pass the following to flash notify
+            return 'No entries found for the date range';
+        }
+
+        $exportDirectory = 'entries-export';
         foreach ($entries as $entry) {
             $day = Carbon::createFromFormat('Y-m-d', $entry->date, config('constants.timezone'))->format('l F j, Y');
             $content = $entry->entry;
