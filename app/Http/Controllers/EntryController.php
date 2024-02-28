@@ -326,6 +326,7 @@ class EntryController extends Controller
         foreach ($entries as $entry) {
             $day = Carbon::createFromFormat('Y-m-d', $entry->date, config('constants.timezone'))->format('l F j, Y');
             $content = $entry->entry;
+
             // @todo: replace annotations with read-as equivalent
 
             $fileContent = "$day\n\n" . $content;
