@@ -346,10 +346,10 @@ class EntryController extends Controller
             $zip->close();
 
         } else {
+            // @todo: redirect and pass the following to flash notify
             return 'Failed to create the zip file';
         }
 
-        // @todo: wrap files in a folder prior to zip
         // @todo: delete journal day files created above
 
         return response()->download(public_path($zipFileName))->deleteFileAfterSend(true);

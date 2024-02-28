@@ -19,7 +19,6 @@ export default function Create({ auth, errors: authErrors }) {
     function handleSubmit(e) {
         e.preventDefault();
 
-        // note: you can't trigger download the export using ajax (inertiajs)
         const url = new URL(route('entries.download-export'));
         const { startDate, endDate } = data;
         if (!!startDate) {
@@ -29,6 +28,7 @@ export default function Create({ auth, errors: authErrors }) {
             url.searchParams.append('endDate', data?.endDate);
         }
 
+        // note: you can't trigger export download using ajax (inertiajs)
         document.location = url.toString();
 
         // @todo: flash notify
