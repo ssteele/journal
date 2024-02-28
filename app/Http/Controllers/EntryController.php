@@ -321,6 +321,7 @@ class EntryController extends Controller
             return 'No entries found for the date range';
         }
 
+        // create output files
         $exportDirectory = 'entries-export';
         foreach ($entries as $entry) {
             $day = Carbon::createFromFormat('Y-m-d', $entry->date, config('constants.timezone'))->format('l F j, Y');
@@ -333,9 +334,9 @@ class EntryController extends Controller
             Storage::disk('public')->put($filePath, $fileContent);
         }
 
+        // create zip file
         $zip = new ZipArchive;
         $zipFileName = 'download.zip';
-
         if ($zip->open(public_path($zipFileName), ZipArchive::CREATE) === TRUE) {
             $files = File::files(storage_path('app/public/entries-export'));
             foreach ($files as $key => $value){
@@ -353,6 +354,7 @@ class EntryController extends Controller
         // clean up
         Storage::disk('public')->deleteDirectory($exportDirectory);
 
+        // trigger download
         return response()
             ->download(public_path($zipFileName))
             ->deleteFileAfterSend(true);
