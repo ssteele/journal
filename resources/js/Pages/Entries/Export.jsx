@@ -18,18 +18,16 @@ export default function Create({ auth, errors: authErrors }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        // can't trigger download using ajax
-        // @todo: post via form submit instead?
-        // if have to do the following, there is a better way to send query params
-        document.location = `${route('entries.download-export')}?startDate=${data?.startDate}&endDate=${data?.endDate}`;
-        console.log('File exported');
 
-        // get(route('entries.download-export'), {
-        //     onSuccess: () => {
-        //         // @todo: flash notify
-        //         console.log('File(s) exported');
-        //     },
-        // });
+        // note: you can't trigger download the export using ajax (inertiajs)
+        const url = new URL(route('entries.download-export'));
+        url.searchParams.append('startDate', data?.startDate);
+        url.searchParams.append('endDate', data?.endDate);
+
+        document.location = url.toString();
+
+        // @todo: flash notify
+        console.log('File exported');
     }
 
     return (
