@@ -309,9 +309,9 @@ class EntryController extends Controller
     }
 
     /**
-     * Redirect to today's entry or create new if entry doesn't exist.
+     * Download zip export
      *
-    //  * @return \Illuminate\Http\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function downloadExport(ExportEntryRequest $request)
     {
@@ -350,8 +350,11 @@ class EntryController extends Controller
             return 'Failed to create the zip file';
         }
 
-        // @todo: delete journal day files created above
+        // clean up
+        Storage::disk('public')->deleteDirectory($exportDirectory);
 
-        return response()->download(public_path($zipFileName))->deleteFileAfterSend(true);
+        return response()
+            ->download(public_path($zipFileName))
+            ->deleteFileAfterSend(true);
     }
 }
