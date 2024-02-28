@@ -35,9 +35,13 @@ class EntryRepository
 
     public function getRange($startDate = null, $endDate = null)
     {
-        // @todo: what if date(s) null?
         return DB::table('entries')
-            ->whereBetween('date', [$startDate, $endDate])
+            ->when($startDate, function ($query, $startDate) {
+                $query->where('date', '>=', $startDate);
+            })
+            ->when($endDate, function ($query, $endDate) {
+                $query->where('date', '<=', $endDate);
+            })
             ->orderBy('date', 'desc')
             ->get();
     }

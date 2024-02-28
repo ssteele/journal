@@ -21,8 +21,13 @@ export default function Create({ auth, errors: authErrors }) {
 
         // note: you can't trigger download the export using ajax (inertiajs)
         const url = new URL(route('entries.download-export'));
-        url.searchParams.append('startDate', data?.startDate);
-        url.searchParams.append('endDate', data?.endDate);
+        const { startDate, endDate } = data;
+        if (!!startDate) {
+            url.searchParams.append('startDate', data?.startDate);
+        }
+        if (!!endDate) {
+            url.searchParams.append('endDate', data?.endDate);
+        }
 
         document.location = url.toString();
 
