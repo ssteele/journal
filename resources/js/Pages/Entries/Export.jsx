@@ -3,18 +3,13 @@ import { Head, useForm } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Create({ auth, errors: authErrors }) {
-    const defaultDaysBack = 0;
-
-    const today = new Date('2023-04-03');
-    // const today = new Date();
-    const startDate = new Date(today);
-    startDate.setDate(startDate.getDate() - defaultDaysBack);
+    const today = new Date();
 
     const initialState = {
-        startDate: startDate.toISOString().slice(0, 10),
+        startDate: '',
         endDate: today.toISOString().slice(0, 10),
     };
-    const { data, errors, progress, setData } = useForm(initialState);
+    const { data, errors, setData } = useForm(initialState);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -87,17 +82,6 @@ export default function Create({ auth, errors: authErrors }) {
                                         </span>
                                     </div>
                                 </div>
-
-                                {/* @todo: remove me? */}
-                                {progress && (
-                                    <progress value={progress.percentage} max="100">
-                                        {progress.percentage}%
-                                    </progress>
-                                )}
-                                {/* <span className="text-red-600">
-                                    {errors.csv}
-                                </span> */}
-                               
 
                                 <div className="mt-4 flex justify-end">
                                     <button
