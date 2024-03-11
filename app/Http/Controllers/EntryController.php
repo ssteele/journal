@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExportEntryRequest;
 use App\Http\Requests\StoreEntryRequest;
 use App\Http\Requests\UpdateEntryRequest;
 use App\Http\Requests\UploadEntryRequest;
@@ -15,8 +16,11 @@ use App\Repositories\SnippetRepository;
 use App\Repositories\TagRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use File;
+use ZipArchive;
 
 class EntryController extends Controller
 {
@@ -292,5 +296,68 @@ class EntryController extends Controller
         unlink($fileUpload);
 
         return redirect()->route('entries.index');
+    }
+
+    /**
+     * Show the form for exporting journal entries
+     *
+     * @return Response
+     */
+    public function createExport()
+    {
+        return Inertia::render('Entries/Export');
+    }
+
+    /**
+     * Download zip export
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function downloadExport(ExportEntryRequest $request)
+    {
+        $entries = $this->entryRepository->getRange($request->startDate, $request->endDate);
+        if (!count($entries)) {
+            // @todo: redirect and pass the following to flash notify
+            return 'No entries found for the date range';
+        }
+
+        // create output files
+        $exportDirectory = 'entries-export';
+        foreach ($entries as $entry) {
+            $day = Carbon::createFromFormat('Y-m-d', $entry->date, config('constants.timezone'))->format('l F j, Y');
+            $content = $entry->entry;
+
+            // @todo: replace annotations with read-as equivalent
+
+            $fileContent = "$day\n\n" . $content;
+            $fileName = $entry->date . '.txt';
+            $filePath = $exportDirectory . '/' . $fileName;
+            Storage::disk('public')->put($filePath, $fileContent);
+        }
+
+        // create zip file
+        $zip = new ZipArchive;
+        $zipFileName = 'download.zip';
+        if ($zip->open(public_path($zipFileName), ZipArchive::CREATE) === TRUE) {
+            $files = File::files(storage_path('app/public/entries-export'));
+            foreach ($files as $key => $value){
+                $relativeName = basename($value);
+                $zip->addFile($value, $relativeName);
+            }
+
+            $zip->close();
+
+        } else {
+            // @todo: redirect and pass the following to flash notify
+            return 'Failed to create the zip file';
+        }
+
+        // clean up
+        Storage::disk('public')->deleteDirectory($exportDirectory);
+
+        // trigger download
+        return response()
+            ->download(public_path($zipFileName))
+            ->deleteFileAfterSend(true);
     }
 }

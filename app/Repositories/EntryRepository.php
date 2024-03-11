@@ -33,6 +33,19 @@ class EntryRepository
             ->get();
     }
 
+    public function getRange($startDate = null, $endDate = null)
+    {
+        return DB::table('entries')
+            ->when($startDate, function ($query, $startDate) {
+                $query->where('date', '>=', $startDate);
+            })
+            ->when($endDate, function ($query, $endDate) {
+                $query->where('date', '<=', $endDate);
+            })
+            ->orderBy('date', 'desc')
+            ->get();
+    }
+
     public function getDateFollowing()
     {
         $entry = DB::table('entries')
