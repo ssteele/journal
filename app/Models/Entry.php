@@ -22,7 +22,7 @@ class Entry extends Model
     ];
 
     /**
-     * Set implicit route model binding: Tag is fetched by name, not id
+     * Set implicit route model binding: Entry is fetched by date, not id
      */
     public function getRouteKeyName()
     {
