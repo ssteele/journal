@@ -24,13 +24,6 @@ class Snippet extends Model
     ];
 
     // /**
-    //  * The attributes excluded from the model's JSON form.
-    //  *
-    //  * @var array
-    //  */
-    // protected $dates = ['date'];
-
-    // /**
     //  * The attributes that should be hidden for serialization.
     //  *
     //  * @var array<int, string>
