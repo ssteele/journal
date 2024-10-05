@@ -9,7 +9,7 @@ export default function Card({ dbSnippet }) {
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-12 items-center p-6 bg-white border-b border-gray-200">
+        <div className="grid grid-cols-1 sm:grid-cols-12 items-center p-6 border-b border-gray-200">
             <span className="sm:col-span-4">{ description }</span>
 
             <span className="pt-4 text-center sm:col-span-6 sm:pt-0 sm:text-left">

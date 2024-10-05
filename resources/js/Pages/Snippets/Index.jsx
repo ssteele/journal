@@ -4,6 +4,11 @@ import { SnippetTypes } from '@/Constants/SnippetTypes';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
+import {
+    DragDropContext,
+    Draggable,
+    Droppable,
+} from 'react-beautiful-dnd';
 
 export default function Index({
     auth,
@@ -29,6 +34,7 @@ export default function Index({
                 return dbMentionSnippets;
         
             default:
+                console.log('SHS dbEntrySnippets:', dbEntrySnippets); // @debug
                 return dbEntrySnippets;
         }
     }
@@ -44,6 +50,26 @@ export default function Index({
     function handleSwitchSnippetTypeTab(tab) {
         setCurrentSnippetTab(tab);
     }
+
+    const getItemStyle = (isDragging, draggableStyle) => ({
+        background: isDragging ? 'lightgreen' : 'white',
+        ...draggableStyle,
+    });
+
+    const handleDragEnd = (result) => {
+        console.log('SHS handleDragEnd'); // @debug
+        console.log('SHS result:', result); // @debug
+        // if (!result.destination || result.destination.index === result.source.index) {
+        //     return;
+        // }
+
+        // const items = Array.from(tasks);
+        // const [reorderedItem] = items.splice(result.source.index, 1);
+        // items.splice(result.destination.index, 0, reorderedItem);
+        // reorderTasks(projectId, result.source.index + 1, result.destination.index + 1);
+
+        // setTasks(items);
+    };
 
     return (
         <Authenticated
@@ -79,25 +105,41 @@ export default function Index({
 
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
-                        {currentSnippets().map((dbSnippet, i) => {
-                            return (
-                                <div
-                                    className="flex"
-                                    key={i}
-                                >
-                                    <DragAndDrop className="w-10 h-6 self-center" />
+                        <DragDropContext onDragEnd={handleDragEnd}>
+                            <Droppable droppableId="droppable">
+                                {(provided) => (
+                                    <ul {...provided.droppableProps} ref={provided.innerRef}>
+                                        {currentSnippets().map((dbSnippet, i) => (
+                                            <Draggable key={dbSnippet?.id?.toString()} draggableId={dbSnippet?.id?.toString()} index={i}>
+                                                {(provided, snapshot) => (
+                                                    <li
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className="flex draggable-item"
+                                                        key={i}
+                                                        style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                                                    >
+                                                        {/* @todo: rename to DragAndDropIcon */}
+                                                        <DragAndDrop className="w-10 h-6 self-center" />
 
-                                    <Link
-                                        className="flex-auto"
-                                        href={route('snippets.edit', dbSnippet?.id)}
-                                    >
-                                        <Card
-                                            dbSnippet={dbSnippet}
-                                        ></Card>
-                                    </Link>
-                                </div>
-                            );
-                        })}
+                                                        <Link
+                                                            className="flex-auto"
+                                                            href={route('snippets.edit', dbSnippet?.id)}
+                                                        >
+                                                            <Card
+                                                                dbSnippet={dbSnippet}
+                                                            ></Card>
+                                                        </Link>
+                                                    </li>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </ul>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
 
                         <div className="w-full mt-8 flex flex-col items-center">
                             <Link
