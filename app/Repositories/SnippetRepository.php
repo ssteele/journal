@@ -12,6 +12,14 @@ class SnippetRepository
             ->get();
     }
 
+    public function getOrderedEntrySnippets()
+    {
+        return DB::table('snippets')
+            ->where('type', '=', 'entry')
+            ->orderBy('order', 'asc')
+            ->get();
+    }
+
     public function getOrderedTagSnippets()
     {
         return DB::table('snippets')
@@ -20,10 +28,10 @@ class SnippetRepository
             ->get();
     }
 
-    public function getOrderedEntrySnippets()
+    public function getOrderedMentionSnippets()
     {
         return DB::table('snippets')
-            ->where('type', '=', 'entry')
+            ->where('type', '=', 'mention')
             ->orderBy('order', 'asc')
             ->get();
     }

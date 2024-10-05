@@ -41,11 +41,13 @@ class SnippetController extends Controller
      */
     public function index()
     {
-        $tagSnippets = $this->snippetRepository->getOrderedTagSnippets();
         $entrySnippets = $this->snippetRepository->getOrderedEntrySnippets();
+        $tagSnippets = $this->snippetRepository->getOrderedTagSnippets();
+        $mentionSnippets = $this->snippetRepository->getOrderedMentionSnippets();
         return Inertia::render('Snippets/Index')
+            ->with('dbEntrySnippets', $entrySnippets)
             ->with('dbTagSnippets', $tagSnippets)
-            ->with('dbEntrySnippets', $entrySnippets);
+            ->with('dbMentionSnippets', $mentionSnippets);
     }
 
     /**
