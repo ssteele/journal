@@ -82,13 +82,13 @@ export default function Index({
                         {currentSnippets().map((dbSnippet, i) => {
                             return (
                                 <div
-                                    className="grid grid-cols-12"
+                                    className="flex"
                                     key={i}
                                 >
-                                    <DragAndDrop className="col-span-1 w-6 h-6" />
+                                    <DragAndDrop className="w-10 h-6 self-center" />
 
                                     <Link
-                                        className="col-span-11"
+                                        className="flex-auto"
                                         href={route('snippets.edit', dbSnippet?.id)}
                                     >
                                         <Card
