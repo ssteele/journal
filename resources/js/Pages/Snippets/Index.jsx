@@ -1,3 +1,4 @@
+import DragAndDrop from '@/Components/Icons/DragAndDrop';
 import Card from '@/Components/Snippet/Card';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
 import Authenticated from '@/Layouts/Authenticated';
@@ -80,14 +81,21 @@ export default function Index({
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
                         {currentSnippets().map((dbSnippet, i) => {
                             return (
-                                <Link
-                                    href={route('snippets.edit', dbSnippet?.id)}
+                                <div
+                                    className="grid grid-cols-12"
                                     key={i}
                                 >
-                                    <Card
-                                        dbSnippet={dbSnippet}
-                                    ></Card>
-                                </Link>
+                                    <DragAndDrop className="col-span-1 w-6 h-6" />
+
+                                    <Link
+                                        className="col-span-11"
+                                        href={route('snippets.edit', dbSnippet?.id)}
+                                    >
+                                        <Card
+                                            dbSnippet={dbSnippet}
+                                        ></Card>
+                                    </Link>
+                                </div>
                             );
                         })}
 
