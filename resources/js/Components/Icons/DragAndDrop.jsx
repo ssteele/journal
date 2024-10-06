@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function DragAndDrop({ className }) {
+export default function DragAndDropIcon({ className }) {
     return (
         <svg className={className} viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
             <g>

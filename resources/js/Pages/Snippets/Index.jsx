@@ -1,4 +1,4 @@
-import DragAndDrop from '@/Components/Icons/DragAndDrop';
+import DragAndDropIcon from '@/Components/Icons/DragAndDrop';
 import Card from '@/Components/Snippet/Card';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
 import Authenticated from '@/Layouts/Authenticated';
@@ -135,8 +135,7 @@ export default function Index({
                                                         key={i}
                                                         style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                                                     >
-                                                        {/* @todo: rename to DragAndDropIcon */}
-                                                        <DragAndDrop className="w-10 h-6 self-center" />
+                                                        <DragAndDropIcon className="w-10 h-6 self-center" />
 
                                                         <Link
                                                             className="flex-auto"
