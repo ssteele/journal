@@ -34,7 +34,6 @@ export default function Index({
                 return dbMentionSnippets;
         
             default:
-                console.log('SHS dbEntrySnippets:', dbEntrySnippets); // @debug
                 return dbEntrySnippets;
         }
     }
