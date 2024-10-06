@@ -18,36 +18,52 @@ export default function Index({
     errors,
 }) {
     const defaultSnippetTab = 'entry';
+    const defaultSnippets = dbEntrySnippets
     const [currentSnippetTab, setCurrentSnippetTab] = useState(defaultSnippetTab);
+    const [entrySnippets, setEntrySnippets] = useState(dbEntrySnippets);
+    const [tagSnippets, setTagSnippets] = useState(dbTagSnippets);
+    const [mentionSnippets, setMentionSnippets] = useState(dbMentionSnippets);
+    const [currentSnippets, setCurrentSnippets] = useState(defaultSnippets);
 
     function currentSnippetType() {
         return SnippetTypes.find(snippetType => snippetType?.value === currentSnippetTab);
-    }
-
-    function currentSnippets() {
-        const currentType = currentSnippetType()?.value;
-        switch (currentType) {
-            case 'tag':
-                return dbTagSnippets;
-        
-            case 'mention':
-                return dbMentionSnippets;
-        
-            default:
-                return dbEntrySnippets;
-        }
-    }
-
-    function currentSnippetLabel() {
-        return currentSnippetType()?.label;
     }
 
     function isActiveTab(tab) {
         return tab === currentSnippetTab;
     }
 
+    function setSnippets(snippets) {
+        const type = currentSnippetType()?.value;
+        setCurrentSnippets(snippets);
+        switch (type) {
+            case 'tag':
+                setTagSnippets(snippets);
+                break;
+        
+            case 'mention':
+                setMentionSnippets(snippets);
+                break;
+        
+            default:
+                setEntrySnippets(snippets);
+        }
+    }
+
     function handleSwitchSnippetTypeTab(tab) {
         setCurrentSnippetTab(tab);
+        switch (tab) {
+            case 'tag':
+                setCurrentSnippets(tagSnippets);
+                break;
+        
+            case 'mention':
+                setCurrentSnippets(mentionSnippets);
+                break;
+        
+            default:
+                setCurrentSnippets(entrySnippets);
+        }
     }
 
     const getItemStyle = (isDragging, draggableStyle) => ({
@@ -57,18 +73,17 @@ export default function Index({
     });
 
     const handleDragEnd = (result) => {
-        console.log('SHS handleDragEnd'); // @debug
-        console.log('SHS result:', result); // @debug
-        // if (!result.destination || result.destination.index === result.source.index) {
-        //     return;
-        // }
+        if (!result.destination || result.destination.index === result.source.index) {
+            return;
+        }
 
-        // const items = Array.from(tasks);
-        // const [reorderedItem] = items.splice(result.source.index, 1);
-        // items.splice(result.destination.index, 0, reorderedItem);
-        // reorderTasks(projectId, result.source.index + 1, result.destination.index + 1);
+        const snippets = [ ...currentSnippets ];
 
-        // setTasks(items);
+        const [ reorderedSnippet ] = snippets.splice(result.source.index, 1);
+        snippets.splice(result.destination.index, 0, reorderedSnippet);
+
+        setSnippets(snippets);
+        // @todo: make backend request to update snippet order
     };
 
     return (
@@ -109,7 +124,7 @@ export default function Index({
                             <Droppable droppableId="droppable">
                                 {(provided) => (
                                     <ul {...provided.droppableProps} ref={provided.innerRef}>
-                                        {currentSnippets().map((dbSnippet, i) => (
+                                        {currentSnippets?.map((dbSnippet, i) => (
                                             <Draggable key={dbSnippet?.id?.toString()} draggableId={dbSnippet?.id?.toString()} index={i}>
                                                 {(provided, snapshot) => (
                                                     <li
@@ -146,7 +161,7 @@ export default function Index({
                                 href={route('snippets.create')}
                                 className="py-4 text-sm text-blue-400"
                             >
-                                {`Create ${currentSnippetLabel()} Snippet`}
+                                {`Create ${currentSnippetType()?.label} Snippet`}
                             </Link>
                         </div>
                     </div>
