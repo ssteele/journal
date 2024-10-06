@@ -2,8 +2,8 @@ import DragAndDropIcon from '@/Components/Icons/DragAndDrop';
 import Card from '@/Components/Snippet/Card';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
 import Authenticated from '@/Layouts/Authenticated';
-import { Head, Link } from '@inertiajs/inertia-react';
-import React, { useState } from 'react';
+import { Head, Link, useForm } from '@inertiajs/inertia-react';
+import React, { useEffect, useState } from 'react';
 import {
     DragDropContext,
     Draggable,
@@ -24,6 +24,20 @@ export default function Index({
     const [tagSnippets, setTagSnippets] = useState(dbTagSnippets);
     const [mentionSnippets, setMentionSnippets] = useState(dbMentionSnippets);
     const [currentSnippets, setCurrentSnippets] = useState(defaultSnippets);
+
+    const { data, post, setData } = useForm([]);
+
+    // persist snippet reorder on backend
+    useEffect(() => {
+        if (data?.idsOrders?.length) {
+            post(route('api.snippets.update-order'), {
+                onSuccess: () => {
+                    // @todo: flash notify
+                    console.log('Snippets reordered');
+                },
+            });
+        }
+    }, [data]);
 
     function currentSnippetType() {
         return SnippetTypes.find(snippetType => snippetType?.value === currentSnippetTab);
@@ -48,6 +62,9 @@ export default function Index({
             default:
                 setEntrySnippets(snippets);
         }
+
+        const snippetOrder = snippets.map(({ id }, i) => ({ id, order: i}));
+        setData({ idsOrders: snippetOrder });
     }
 
     function handleSwitchSnippetTypeTab(tab) {
@@ -83,7 +100,6 @@ export default function Index({
         snippets.splice(result.destination.index, 0, reorderedSnippet);
 
         setSnippets(snippets);
-        // @todo: make backend request to update snippet order
     };
 
     return (
