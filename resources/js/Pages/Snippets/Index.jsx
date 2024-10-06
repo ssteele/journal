@@ -52,7 +52,8 @@ export default function Index({
     }
 
     const getItemStyle = (isDragging, draggableStyle) => ({
-        background: isDragging ? 'lightgreen' : 'white',
+        background: isDragging ? 'rgba(230, 255, 230, 0.75)' : 'white',
+        border: isDragging ? '1px solid black' : 'none',
         ...draggableStyle,
     });
 
