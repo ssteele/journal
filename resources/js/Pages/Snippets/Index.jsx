@@ -26,6 +26,7 @@ export default function Index({
     const [currentSnippets, setCurrentSnippets] = useState(defaultSnippets);
 
     const { data, post, setData } = useForm([]);
+    const props = usePage().props;
 
     // persist snippet reorder on backend
     useEffect(async () => {
