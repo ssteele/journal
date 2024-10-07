@@ -18,15 +18,18 @@ export default function Index({
     errors,
 }) {
     const defaultSnippetTab = 'entry';
-    const defaultSnippets = dbEntrySnippets
     const [currentSnippetTab, setCurrentSnippetTab] = useState(defaultSnippetTab);
     const [entrySnippets, setEntrySnippets] = useState(dbEntrySnippets);
     const [tagSnippets, setTagSnippets] = useState(dbTagSnippets);
     const [mentionSnippets, setMentionSnippets] = useState(dbMentionSnippets);
-    const [currentSnippets, setCurrentSnippets] = useState(defaultSnippets);
+    const [currentSnippets, setCurrentSnippets] = useState([]);
 
     const { data, post, setData } = useForm([]);
     const props = usePage().props;
+
+    useEffect(() => {
+        handleSwitchSnippetTypeTab(defaultSnippetTab);
+    }, []);
 
     // persist snippet reorder on backend
     useEffect(async () => {
