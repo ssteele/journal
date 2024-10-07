@@ -2,7 +2,7 @@ import DragAndDropIcon from '@/Components/Icons/DragAndDrop';
 import Card from '@/Components/Snippet/Card';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
 import Authenticated from '@/Layouts/Authenticated';
-import { Head, Link, useForm } from '@inertiajs/inertia-react';
+import { Head, Link, useForm, usePage } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 import {
     DragDropContext,
@@ -28,14 +28,31 @@ export default function Index({
     const { data, post, setData } = useForm([]);
 
     // persist snippet reorder on backend
-    useEffect(() => {
+    useEffect(async () => {
         if (data?.idsOrders?.length) {
-            post(route('api.snippets.update-order'), {
-                onSuccess: () => {
-                    // @todo: flash notify
-                    console.log('Snippets reordered');
-                },
-            });
+            // post(route('api.snippets.update-order'), {
+            //     onSuccess: () => {
+            //         // @todo: flash notify
+            //         console.log(response?.message);
+            //     },
+            // });
+
+            const response = await fetch(
+                route('api.snippets.update-order'),
+                {
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': props.csrf_token,
+                    },
+                    method: 'POST',
+                }
+            )
+                .then(async response => response.ok ? await response.json() : null)
+                .catch(error => console.log(error.message));
+            console.log(response?.message);
         }
     }, [data]);
 
