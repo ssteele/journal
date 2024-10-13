@@ -61,9 +61,6 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippet
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (hasErrors) {
-            return;
-        }
         if ('tag' === data?.type) {
             setData('snippet', minifyJsonSnippet(data?.snippet));
         }
