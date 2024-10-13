@@ -25,7 +25,6 @@ export default function Index({
     const [currentSnippets, setCurrentSnippets] = useState([]);
 
     const { data, post, setData } = useForm([]);
-    const props = usePage().props;
 
     useEffect(() => {
         handleSwitchSnippetTypeTab(defaultSnippetTab);
@@ -34,29 +33,7 @@ export default function Index({
     // persist snippet reorder on backend
     useEffect(async () => {
         if (data?.idsOrders?.length) {
-            // post(route('api.snippets.update-order'), {
-            //     onSuccess: () => {
-            //         // @todo: flash notify
-            //         console.log(response?.message);
-            //     },
-            // });
-
-            const response = await fetch(
-                route('api.snippets.update-order'),
-                {
-                    body: JSON.stringify(data),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': props.csrf_token,
-                    },
-                    method: 'POST',
-                }
-            )
-                .then(async response => response.ok ? await response.json() : null)
-                .catch(error => console.log(error.message));
-            console.log(response?.message);
+            post(route('snippets.update-order'));
         }
     }, [data]);
 

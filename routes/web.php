@@ -29,6 +29,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 Route::resource('entries', EntryController::class);
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/snippets/update-order', [SnippetController::class, 'updateOrder'])->name('snippets.update-order');
+});
 Route::resource('snippets', SnippetController::class);
 
 Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
