@@ -7,14 +7,14 @@ import React, { useEffect, useState } from 'react';
 
 const InitialDays =  '0,1,2,3,4,5,6';
 
-export default function Form({ dbSnippet = {}, mentions = [], tags = [] }) {
+export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippetType = null }) {
     const {
         id,
         days = InitialDays,
         description = '',
         enabled = true,
         repeating = true,
-        type = 'tag',
+        type = snippetType,
     } = dbSnippet;
     let { snippet = '' } = dbSnippet;
     const isExistingSnippet = !!id;

@@ -171,7 +171,9 @@ export default function Index({
 
                         <div className="w-full mt-8 flex flex-col items-center">
                             <Link
-                                href={route('snippets.create')}
+                                href={route('snippets.create', {
+                                    type: currentSnippetType()?.value,
+                                })}
                                 className="py-4 text-sm text-blue-400"
                             >
                                 {`Create ${currentSnippetType()?.label} Snippet`}
