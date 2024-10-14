@@ -33,7 +33,12 @@ export default function Index({
     // persist snippet reorder on backend
     useEffect(async () => {
         if (data?.idsOrders?.length) {
-            post(route('snippets.update-order'));
+            post(route('snippets.update-order'), {
+                onSuccess: () => {
+                    // @todo: flash notify
+                    console.log('Snippets reordered');
+                },
+            });
         }
     }, [data]);
 
