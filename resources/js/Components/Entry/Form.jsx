@@ -1,5 +1,5 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
-import { DailyTagsColors } from '@/Constants/DailyAnnotations'; // @todo: separate DailyMentionsColors?
+import { DailyAnnotationsColors } from '@/Constants/DailyAnnotations';
 import { removeAtSigns, removeHashSigns } from '@/Utils/Snippet';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
@@ -426,8 +426,8 @@ export default function Form({
                                 >
                                     {
                                         getFilteredDailyTags(dailyTags, currentTags).map((group, i) => {
-                                            const colorIndex = i % DailyTagsColors.length;
-                                            const color = DailyTagsColors[colorIndex];
+                                            const colorIndex = i % DailyAnnotationsColors.length;
+                                            const color = DailyAnnotationsColors[colorIndex];
                                             return group.map((annotation, j) => {
                                                 return <AutoAnnotation
                                                     callback={populateTag}
@@ -477,8 +477,8 @@ export default function Form({
                                 >
                                     {
                                         getFilteredDailyMentions(dailyMentions, currentMentions).map((group, i) => {
-                                            const colorIndex = i % DailyTagsColors.length; // @todo: DailyMentionsColors?
-                                            const color = DailyTagsColors[colorIndex];
+                                            const colorIndex = i % DailyAnnotationsColors.length;
+                                            const color = DailyAnnotationsColors[colorIndex];
                                             return group.map((annotation, j) => {
                                                 return <AutoAnnotation
                                                     callback={populateMention}
