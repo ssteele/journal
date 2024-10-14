@@ -75,8 +75,11 @@ export default function Form({
         const day = new Date(date.split('-')).getDay();
         entrySnippets
             .filter(({ days, enabled }) => enabled && days.includes(day))
-            .map(({ snippet }) => {
-                entries += snippet;
+            .map(({ snippet }, i) => {
+                if (!!i) {
+                    entries += '\n\n';
+                }
+                entries += `${snippet}`;
             })
         return entries;
     }
