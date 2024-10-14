@@ -16,8 +16,15 @@ export default function Form({
     recentTags,
     tags,
 }) {
+    const snippetRecommendationConfig = {
+        dailyTags: true,
+        recentTags: true,
+        dailyMentions: true,
+        recentMentions: true,
+    };
     const recentMentionsCount = 25;
     const recentTagsCount = 25;
+
     const {
         id,
         date = nextDate || new Date().toISOString().slice(0, 10),
@@ -31,6 +38,7 @@ export default function Form({
         entry,
     };
     const { data, errors, post, put, setData } = useForm(initialState);
+
     const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
     const [isAnnotatingStart, setIsAnnotatingStart] = useState(false);
     const [isAnnotating, setIsAnnotating] = useState(false);
@@ -40,10 +48,20 @@ export default function Form({
     const [inputRef, setInputFocus] = UseFocus();
     
     // populate snippet tags
-    const tagSnippets = dbSnippets.filter((snippet) => 'tag' === snippet.type);
-    const dailyTags = buildDailyTags(date, tagSnippets);
-    const mentionSnippets = dbSnippets.filter((snippet) => 'mention' === snippet.type);
-    const dailyMentions = buildDailyMentions(date, mentionSnippets);
+    let tagSnippets = [];
+    let dailyTags = [];
+    if (snippetRecommendationConfig.dailyTags) {
+        tagSnippets = dbSnippets.filter((snippet) => 'tag' === snippet.type);
+        dailyTags = buildDailyTags(date, tagSnippets);
+    }
+
+    // populate mention tags
+    let mentionSnippets = [];
+    let dailyMentions = [];
+    if (snippetRecommendationConfig.dailyMentions) {
+        mentionSnippets = dbSnippets.filter((snippet) => 'mention' === snippet.type);
+        dailyMentions = buildDailyMentions(date, mentionSnippets);
+    }
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -398,71 +416,107 @@ export default function Form({
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm">
-                    <div className="px-6 bg-white">
-                        <div className="mt-6">
-                            <label>Daily</label>
-                            <div 
-                                className="w-full p-4 border border-gray-200"
-                            >
-                                {
-                                    // getFilteredDailyTags(dailyTags, currentTags).map((group, i) => {
-                                    //     const colorIndex = i % DailyTagsColors.length;
-                                    //     const color = DailyTagsColors[colorIndex];
-                                    //     return group.map((annotation, j) => {
-                                    //         return <AutoAnnotation
-                                    //             callback={populateTag}
-                                    //             className={color}
-                                    //             key={j}
-                                    //             type="button"
-                                    //         >{annotation}</AutoAnnotation>
-                                    //     })
-                                    // })
-                                    getFilteredDailyMentions(dailyMentions, currentMentions).map((group, i) => {
-                                        const colorIndex = i % DailyTagsColors.length; // @todo: DailyMentionsColors?
-                                        const color = DailyTagsColors[colorIndex];
-                                        return group.map((annotation, j) => {
+                { !!dailyTags.length && (
+                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Daily Tags</label>
+                                <div 
+                                    className="w-full p-4 border border-gray-200"
+                                >
+                                    {
+                                        getFilteredDailyTags(dailyTags, currentTags).map((group, i) => {
+                                            const colorIndex = i % DailyTagsColors.length;
+                                            const color = DailyTagsColors[colorIndex];
+                                            return group.map((annotation, j) => {
+                                                return <AutoAnnotation
+                                                    callback={populateTag}
+                                                    className={color}
+                                                    key={j}
+                                                    type="button"
+                                                >{annotation}</AutoAnnotation>
+                                            })
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                { !!recentTags.length && (
+                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Recent Tags</label>
+                                <div 
+                                    className="w-full p-4 border border-gray-200"
+                                >
+                                    {
+                                        getFilteredRecentTags(recentTags, dailyTags, currentTags).map((annotation, i) => {
                                             return <AutoAnnotation
-                                                callback={populateMention}
-                                                className={color}
-                                                key={j}
+                                                callback={populateTag}
+                                                key={i}
                                                 type="button"
                                             >{annotation}</AutoAnnotation>
                                         })
-                                    })
-                                }
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
 
-                <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
-                    <div className="px-6 bg-white">
-                        <div className="mt-6">
-                            <label>Recent</label>
-                            <div 
-                                className="w-full p-4 border border-gray-200"
-                            >
-                                {
-                                    // getFilteredRecentTags(recentTags, dailyTags, currentTags).map((annotation, i) => {
-                                    //     return <AutoAnnotation
-                                    //         callback={populateTag}
-                                    //         key={i}
-                                    //         type="button"
-                                    //     >{annotation}</AutoAnnotation>
-                                    // })
-                                    getFilteredRecentMentions(recentMentions, dailyMentions, currentMentions).map((annotation, i) => {
-                                        return <AutoAnnotation
-                                            callback={populateMention}
-                                            key={i}
-                                            type="button"
-                                        >{annotation}</AutoAnnotation>
-                                    })
-                                }
+                { !!dailyMentions.length && (
+                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Daily Mentions</label>
+                                <div 
+                                    className="w-full p-4 border border-gray-200"
+                                >
+                                    {
+                                        getFilteredDailyMentions(dailyMentions, currentMentions).map((group, i) => {
+                                            const colorIndex = i % DailyTagsColors.length; // @todo: DailyMentionsColors?
+                                            const color = DailyTagsColors[colorIndex];
+                                            return group.map((annotation, j) => {
+                                                return <AutoAnnotation
+                                                    callback={populateMention}
+                                                    className={color}
+                                                    key={j}
+                                                    type="button"
+                                                >{annotation}</AutoAnnotation>
+                                            })
+                                        })
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
+
+                { !!recentMentions.length && (
+                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Recent Mentions</label>
+                                <div 
+                                    className="w-full p-4 border border-gray-200"
+                                >
+                                    {
+                                        getFilteredRecentMentions(recentMentions, dailyMentions, currentMentions).map((annotation, i) => {
+                                            return <AutoAnnotation
+                                                callback={populateMention}
+                                                key={i}
+                                                type="button"
+                                            >{annotation}</AutoAnnotation>
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </form>
         </div>
     );
