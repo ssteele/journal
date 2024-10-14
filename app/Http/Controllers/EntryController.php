@@ -164,7 +164,7 @@ class EntryController extends Controller
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $currentMentions = $this->mentionRepository->getNamesForEntry($entry->id);
-        $recentMentions = $this->mentionRepository->getRecentNamesSortedByFrequency(Carbon::today(config('constants.timezone')), config('constants.day_limit_recent_mentions'));
+        $recentMentions = $this->mentionRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_mentions'));
         return Inertia::render('Entries/Edit')
             ->with('dbCurrentMentions', $currentMentions)
             ->with('dbCurrentTags', $currentTags)
