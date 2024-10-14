@@ -7,6 +7,7 @@ export default function Create({
     auth,
     dbMentions = [],
     dbNextDate,
+    dbRecentMentions = [],
     dbRecentTags = [],
     dbSnippets = [],
     dbTags = [],
@@ -29,6 +30,7 @@ export default function Create({
                 mentions={dbMentions}
                 nextDate={dbNextDate}
                 recentTags={dbRecentTags}
+                recentMentions={dbRecentMentions}
                 tags={dbTags}
             />
         </Authenticated>

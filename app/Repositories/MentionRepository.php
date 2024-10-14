@@ -26,6 +26,23 @@ class MentionRepository
             ->pluck('name');
     }
 
+    public function getRecentNamesSortedByFrequency($date = null, $dayLimit = null)
+    {
+        if (!$date) {
+            $date = Carbon::today(config('constants.timezone'));
+        }
+        $dayLimit = $dayLimit ?: config('constants.day_limit_recent_mentions');
+        $pastDate = $date->copy()->subDay($dayLimit);
+        return DB::table('mentions')
+            ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
+            ->join('entries', 'entry_has_mentions.entry_id', '=', 'entries.id')
+            ->select('name', DB::raw('count(*) as freq'))
+            ->whereBetween('entries.date', [$pastDate, $date])
+            ->groupBy('name')
+            ->orderBy('freq', 'desc')
+            ->pluck('name');
+    }
+
     public function getTimeline($id)
     {
         return DB::table('mentions')
@@ -35,6 +52,15 @@ class MentionRepository
             ->where('mentions.id', '=', $id)
             ->orderBy('date', 'desc')
             ->get();
+    }
+
+    public function getNamesForEntry($entryId)
+    {
+        return DB::table('mentions')
+            ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
+            ->distinct()
+            ->where('entry_id', '=', $entryId)
+            ->pluck('name');
     }
 
     public function getIdNamePairsForEntry($entryId)

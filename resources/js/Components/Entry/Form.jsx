@@ -1,6 +1,6 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
-import { DailyTagsColors } from '@/Constants/DailyAnnotations';
-import { removeHashes } from '@/Utils/Snippet';
+import { DailyTagsColors } from '@/Constants/DailyAnnotations'; // @todo: separate DailyMentionsColors?
+import { removeAtSigns, removeHashSigns } from '@/Utils/Snippet';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
@@ -8,12 +8,15 @@ import React, { useEffect, useState } from 'react';
 export default function Form({
     dbEntry = {},
     dbSnippets = [],
+    currentMentions = [],
     currentTags = [],
     mentions,
     nextDate,
+    recentMentions,
     recentTags,
     tags,
 }) {
+    const recentMentionsCount = 25;
     const recentTagsCount = 25;
     const {
         id,
@@ -39,6 +42,8 @@ export default function Form({
     // populate snippet tags
     const tagSnippets = dbSnippets.filter((snippet) => 'tag' === snippet.type);
     const dailyTags = buildDailyTags(date, tagSnippets);
+    const mentionSnippets = dbSnippets.filter((snippet) => 'mention' === snippet.type);
+    const dailyMentions = buildDailyMentions(date, mentionSnippets);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -65,9 +70,20 @@ export default function Form({
         tagSnippets
             .filter(({ days, enabled }) => enabled && days.includes(day))
             .map(({ snippet }) => {
-                tags = [...tags, ...JSON.parse(removeHashes(snippet))];
+                tags = [...tags, ...JSON.parse(removeHashSigns(snippet))];
             })
         return tags;
+    }
+
+    function buildDailyMentions(date, mentionSnippets) {
+        let mentions = [];
+        const day = new Date(date.split('-')).getDay();
+        mentionSnippets
+            .filter(({ days, enabled }) => enabled && days.includes(day))
+            .map(({ snippet }) => {
+                mentions = [...mentions, ...JSON.parse(removeAtSigns(snippet))];
+            })
+        return mentions;
     }
 
     function buildDailyEntries(date, entrySnippets) {
@@ -160,6 +176,17 @@ export default function Form({
         });
     }
 
+    function populateMention(text) {
+        const { entry } = getAnnotationState();
+        const entryEl = document.getElementById('entry');
+        populateAnnotation({
+            annotationStartIndex: (entryEl?.selectionStart) ?? entry.length,
+            entry,
+            searchTerm: '',
+            text: `@${text}`,
+        });
+    }
+
     function isValidKey(key) {
         let isValid = false;
         if (1 === key.length) {
@@ -248,7 +275,7 @@ export default function Form({
         const flatDailyTags = dailyTags.flat();
         const visibleTags = [...new Set([...currentTags, ...flatDailyTags])];
         let filteredTags = [];
-        for (let i=0; i<=recentTags.length; i++) {
+        for (let i=0; i<=recentTags?.length; i++) {
             const recentTag = recentTags[i];
             if (!visibleTags.includes(recentTag)) {
                 filteredTags.push(recentTag);
@@ -258,6 +285,29 @@ export default function Form({
             }
         }
         return filteredTags;
+    }
+
+    function getFilteredDailyMentions(dailyMentions, currentMentions) {
+        const filteredMentions = dailyMentions.map((group) => {
+            return group.filter(a => !currentMentions.includes(a));
+        });
+        return filteredMentions;
+    }
+
+    function getFilteredRecentMentions(recentMentions, dailyMentions, currentMentions) {
+        const flatDailyMentions = dailyMentions.flat();
+        const visibleMentions = [...new Set([...currentMentions, ...flatDailyMentions])];
+        let filteredMentions = [];
+        for (let i=0; i<=recentMentions?.length; i++) {
+            const recentMention = recentMentions[i];
+            if (!visibleMentions.includes(recentMention)) {
+                filteredMentions.push(recentMention);
+                if (filteredMentions.length >= recentMentionsCount) {
+                    break;
+                }
+            }
+        }
+        return filteredMentions;
     }
 
     return (
@@ -356,12 +406,24 @@ export default function Form({
                                 className="w-full p-4 border border-gray-200"
                             >
                                 {
-                                    getFilteredDailyTags(dailyTags, currentTags).map((group, i) => {
-                                        const colorIndex = i % DailyTagsColors.length;
+                                    // getFilteredDailyTags(dailyTags, currentTags).map((group, i) => {
+                                    //     const colorIndex = i % DailyTagsColors.length;
+                                    //     const color = DailyTagsColors[colorIndex];
+                                    //     return group.map((annotation, j) => {
+                                    //         return <AutoAnnotation
+                                    //             callback={populateTag}
+                                    //             className={color}
+                                    //             key={j}
+                                    //             type="button"
+                                    //         >{annotation}</AutoAnnotation>
+                                    //     })
+                                    // })
+                                    getFilteredDailyMentions(dailyMentions, currentMentions).map((group, i) => {
+                                        const colorIndex = i % DailyTagsColors.length; // @todo: DailyMentionsColors?
                                         const color = DailyTagsColors[colorIndex];
                                         return group.map((annotation, j) => {
                                             return <AutoAnnotation
-                                                callback={populateTag}
+                                                callback={populateMention}
                                                 className={color}
                                                 key={j}
                                                 type="button"
@@ -382,14 +444,20 @@ export default function Form({
                                 className="w-full p-4 border border-gray-200"
                             >
                                 {
-                                    getFilteredRecentTags(recentTags, dailyTags, currentTags)
-                                        .map((annotation, i) => {
-                                            return <AutoAnnotation
-                                                callback={populateTag}
-                                                key={i}
-                                                type="button"
-                                            >{annotation}</AutoAnnotation>
-                                        })
+                                    // getFilteredRecentTags(recentTags, dailyTags, currentTags).map((annotation, i) => {
+                                    //     return <AutoAnnotation
+                                    //         callback={populateTag}
+                                    //         key={i}
+                                    //         type="button"
+                                    //     >{annotation}</AutoAnnotation>
+                                    // })
+                                    getFilteredRecentMentions(recentMentions, dailyMentions, currentMentions).map((annotation, i) => {
+                                        return <AutoAnnotation
+                                            callback={populateMention}
+                                            key={i}
+                                            type="button"
+                                        >{annotation}</AutoAnnotation>
+                                    })
                                 }
                             </div>
                         </div>
