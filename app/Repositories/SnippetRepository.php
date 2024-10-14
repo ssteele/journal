@@ -12,6 +12,13 @@ class SnippetRepository
             ->get();
     }
 
+    public function getOrdered()
+    {
+        return DB::table('snippets')
+            ->orderBy('order', 'asc')
+            ->get();
+    }
+
     public function getOrderedEntrySnippets()
     {
         return DB::table('snippets')
