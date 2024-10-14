@@ -5,7 +5,15 @@ import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], mentions, nextDate, recentTags, tags }) {
+export default function Form({
+    dbEntry = {},
+    dbSnippets = [],
+    currentTags = [],
+    mentions,
+    nextDate,
+    recentTags,
+    tags,
+}) {
     const recentTagsCount = 25;
     const {
         id,
