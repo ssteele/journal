@@ -351,7 +351,7 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippet
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-t-lg">
+                    <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden">
                         <div className="px-6 bg-white">
                             <div className="mt-6">
                                 <label>Suggested</label>
