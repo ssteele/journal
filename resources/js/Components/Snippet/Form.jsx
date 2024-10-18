@@ -40,7 +40,7 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippet
 
     // handle submit
     useEffect(() => {
-        if (doSubmit) {
+        if (doSubmit && !hasErrors) {
             if (isExistingSnippet) {
                 put(route('snippets.update', id), {
                     onSuccess: () => {
@@ -136,6 +136,7 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippet
 
     function setSnippet(snippet) {
         if ('entry' == data?.type) {
+            clearErrors('snippet');
             setData('snippet', snippet);
             return;
         }
