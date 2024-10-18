@@ -34,6 +34,7 @@ export default function Index({
     useEffect(async () => {
         if (data?.idsOrders?.length) {
             post(route('snippets.update-order'), {
+                preserveScroll: true,
                 onSuccess: () => {
                     // @todo: flash notify
                     console.log('Snippets reordered');
