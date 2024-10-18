@@ -1,6 +1,7 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
 import { expandJsonSnippet, minifyJsonSnippet } from '@/Utils/Snippet';
+import { ucFirst } from '@/Utils/String';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
@@ -23,7 +24,7 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippet
         description,
         enabled,
         repeating,
-        snippet: (!!snippet && 'tag' === type) ? expandJsonSnippet(snippet) : snippet,
+        snippet: (!!snippet && 'entry' !== type) ? expandJsonSnippet(snippet) : snippet,
         type,
     };
     const { clearErrors, data, errors, hasErrors, post, put, setData, setError } = useForm(initialState);
@@ -144,9 +145,9 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippet
             jsonSnippet = JSON.parse(snippet);
         } catch (error) {
             if (error instanceof SyntaxError) {
-                setError('snippet', 'Tag snippet type should be valid JSON')
+                setError('snippet', `${ucFirst(data?.type)} snippet type should be valid JSON`);
             } else {
-                setError('snippet', 'An error occurred')
+                setError('snippet', 'An error occurred');
                 throw error;
             }
             setData('snippet', snippet);
