@@ -61,7 +61,7 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippet
 
     function handleSubmit(e) {
         e.preventDefault();
-        if ('tag' === data?.type) {
+        if ('entry' !== data?.type) {
             setData('snippet', minifyJsonSnippet(data?.snippet));
         }
         setDoSubmit(true);
@@ -134,7 +134,7 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippet
     }, [reset]);
 
     function setSnippet(snippet) {
-        if ('tag' !== data?.type) {
+        if ('entry' == data?.type) {
             setData('snippet', snippet);
             return;
         }
