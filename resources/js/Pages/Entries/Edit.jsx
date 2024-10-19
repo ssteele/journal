@@ -4,7 +4,17 @@ import { FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Edit({ auth, dbCurrentTags = [], dbEntry, dbMentions = [], dbRecentTags = [], dbSnippets = [], dbTags = [], errors }) {
+export default function Edit({
+    auth,
+    dbCurrentTags = [],
+    dbEntry,
+    dbMentions = [],
+    dbRecentMentions = [],
+    dbRecentTags = [],
+    dbSnippets = [],
+    dbTags = [],
+    errors,
+}) {
     return (
         <Authenticated
             auth={auth}
@@ -24,6 +34,7 @@ export default function Edit({ auth, dbCurrentTags = [], dbEntry, dbMentions = [
                 dbEntry={dbEntry}
                 dbSnippets={dbSnippets}
                 mentions={dbMentions}
+                recentMentions={dbRecentMentions}
                 recentTags={dbRecentTags}
                 tags={dbTags}
             />

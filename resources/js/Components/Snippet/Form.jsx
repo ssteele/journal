@@ -1,20 +1,21 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
 import { expandJsonSnippet, minifyJsonSnippet } from '@/Utils/Snippet';
+import { ucFirst } from '@/Utils/String';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
 const InitialDays =  '0,1,2,3,4,5,6';
 
-export default function Form({ dbSnippet = {}, mentions = [], tags = [] }) {
+export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippetType = null }) {
     const {
         id,
         days = InitialDays,
         description = '',
         enabled = true,
         repeating = true,
-        type = 'tag',
+        type = snippetType,
     } = dbSnippet;
     let { snippet = '' } = dbSnippet;
     const isExistingSnippet = !!id;
@@ -23,7 +24,7 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [] }) {
         description,
         enabled,
         repeating,
-        snippet: (!!snippet && 'tag' === type) ? expandJsonSnippet(snippet) : snippet,
+        snippet: (!!snippet && 'entry' !== type) ? expandJsonSnippet(snippet) : snippet,
         type,
     };
     const { clearErrors, data, errors, hasErrors, post, put, setData, setError } = useForm(initialState);
@@ -39,7 +40,7 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [] }) {
 
     // handle submit
     useEffect(() => {
-        if (doSubmit) {
+        if (doSubmit && !hasErrors) {
             if (isExistingSnippet) {
                 put(route('snippets.update', id), {
                     onSuccess: () => {
@@ -61,10 +62,7 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [] }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (hasErrors) {
-            return;
-        }
-        if ('tag' === data?.type) {
+        if ('entry' !== data?.type) {
             setData('snippet', minifyJsonSnippet(data?.snippet));
         }
         setDoSubmit(true);
@@ -137,7 +135,8 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [] }) {
     }, [reset]);
 
     function setSnippet(snippet) {
-        if ('tag' !== data?.type) {
+        if ('entry' == data?.type) {
+            clearErrors('snippet');
             setData('snippet', snippet);
             return;
         }
@@ -147,9 +146,9 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [] }) {
             jsonSnippet = JSON.parse(snippet);
         } catch (error) {
             if (error instanceof SyntaxError) {
-                setError('snippet', 'Tag snippet type should be valid JSON')
+                setError('snippet', `${ucFirst(data?.type)} snippet type should be valid JSON`);
             } else {
-                setError('snippet', 'An error occurred')
+                setError('snippet', 'An error occurred');
                 throw error;
             }
             setData('snippet', snippet);
@@ -352,7 +351,7 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [] }) {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-t-lg">
+                    <div className="grid grid-cols-1 md:grid-cols-3 pb-4 bg-white overflow-hidden">
                         <div className="px-6 bg-white">
                             <div className="mt-6">
                                 <label>Suggested</label>
@@ -395,7 +394,18 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [] }) {
                                     </span>
                                 </div>
 
-                                <div className="mt-6 flex justify-end">
+                                <div className="mt-6 flex gap-4 justify-end">
+                                    {!data?.enabled && (
+                                        <button
+                                            type="submit"
+                                            // className="px-6 py-2 font-bold text-white bg-red-500 rounded"
+                                            className="px-6 py-2 font-bold text-white bg-gray-900 opacity-25 rounded"
+                                            disabled={true}
+                                        >
+                                            Delete
+                                        </button>
+                                    )}
+
                                     <button
                                         type="submit"
                                         className="px-6 py-2 font-bold text-white bg-blue-500 rounded"

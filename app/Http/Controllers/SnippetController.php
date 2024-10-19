@@ -41,9 +41,13 @@ class SnippetController extends Controller
      */
     public function index()
     {
-        $snippets = $this->snippetRepository->get();
+        $entrySnippets = $this->snippetRepository->getOrderedEntrySnippets();
+        $tagSnippets = $this->snippetRepository->getOrderedTagSnippets();
+        $mentionSnippets = $this->snippetRepository->getOrderedMentionSnippets();
         return Inertia::render('Snippets/Index')
-            ->with('dbSnippets', $snippets);
+            ->with('dbEntrySnippets', $entrySnippets)
+            ->with('dbTagSnippets', $tagSnippets)
+            ->with('dbMentionSnippets', $mentionSnippets);
     }
 
     /**
@@ -132,4 +136,22 @@ class SnippetController extends Controller
         //
     }
 
+    /**
+     * Reorder snippets
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function updateOrder(Request $request)
+    {
+        $user = \Auth::user();
+
+        $idsOrders = $request->input('idsOrders');
+        foreach ($idsOrders as $idOrder) {
+            $snippet = Snippet::where('id', $idOrder['id'])
+                ->where('user_id', $user->id)
+                ->firstOrFail();
+            $snippet->order = $idOrder['order'];
+            $snippet->save();
+        }
+    }
 }

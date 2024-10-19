@@ -29,17 +29,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 Route::resource('entries', EntryController::class);
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/snippets/update-order', [SnippetController::class, 'updateOrder'])->name('snippets.update-order');
+});
 Route::resource('snippets', SnippetController::class);
 
-Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
-Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
-Route::get('/tags/{tag1}/{tag2}', [TagController::class, 'compare'])->name('tags.compare');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
+    Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
+    Route::get('/tags/{tag1}/{tag2}', [TagController::class, 'compare'])->name('tags.compare');
+});
 
-Route::get('/mentions', [MentionController::class, 'index'])->name('mentions.index');
-Route::get('/mentions/{mention}', [MentionController::class, 'show'])->name('mentions.show');
-Route::get('/mentions/{mention1}/{mention2}', [MentionController::class, 'compare'])->name('mentions.compare');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/mentions', [MentionController::class, 'index'])->name('mentions.index');
+    Route::get('/mentions/{mention}', [MentionController::class, 'show'])->name('mentions.show');
+    Route::get('/mentions/{mention1}/{mention2}', [MentionController::class, 'compare'])->name('mentions.compare');
+});
 
-Route::get('/markers', [MarkerController::class, 'index'])->name('markers.index');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/markers', [MarkerController::class, 'index'])->name('markers.index');
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

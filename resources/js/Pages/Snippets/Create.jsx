@@ -4,6 +4,8 @@ import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Create({ auth, dbMentions = [], dbTags = [], errors }) {
+    const snippetType = route().params?.type;
+
     return (
         <Authenticated
             auth={auth}
@@ -18,6 +20,7 @@ export default function Create({ auth, dbMentions = [], dbTags = [], errors }) {
 
             <Form
                 mentions={dbMentions}
+                snippetType={snippetType}
                 tags={dbTags}
             />
         </Authenticated>

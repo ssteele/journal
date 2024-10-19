@@ -20,6 +20,10 @@ export function expandJsonSnippet(snippet) {
     return formatted;
 }
 
-export function removeHashes(snippet) {
+export function removeAtSigns(snippet) {
+    return snippet.replaceAll('@', '');
+}
+
+export function removeHashSigns(snippet) {
     return snippet.replaceAll('#', '');
 }

@@ -1,12 +1,30 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
-import { DailyTagsColors } from '@/Constants/DailyAnnotations';
-import { removeHashes } from '@/Utils/Snippet';
+import { DailyAnnotationsColors } from '@/Constants/DailyAnnotations';
+import { removeAtSigns, removeHashSigns } from '@/Utils/Snippet';
 import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], mentions, nextDate, recentTags, tags }) {
+export default function Form({
+    dbEntry = {},
+    dbSnippets = [],
+    currentMentions = [],
+    currentTags = [],
+    mentions,
+    nextDate,
+    recentMentions,
+    recentTags,
+    tags,
+}) {
+    const snippetRecommendationConfig = {
+        dailyTags: true,
+        recentTags: true,
+        dailyMentions: true,
+        recentMentions: true,
+    };
+    const recentMentionsCount = 25;
     const recentTagsCount = 25;
+
     const {
         id,
         date = nextDate || new Date().toISOString().slice(0, 10),
@@ -20,6 +38,7 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
         entry,
     };
     const { data, errors, post, put, setData } = useForm(initialState);
+
     const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
     const [isAnnotatingStart, setIsAnnotatingStart] = useState(false);
     const [isAnnotating, setIsAnnotating] = useState(false);
@@ -29,8 +48,20 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
     const [inputRef, setInputFocus] = UseFocus();
     
     // populate snippet tags
-    const tagSnippets = dbSnippets.filter((snippet) => 'tag' === snippet.type);
-    const dailyTags = buildDailyTags(date, tagSnippets);
+    let tagSnippets = [];
+    let dailyTags = [];
+    if (snippetRecommendationConfig.dailyTags) {
+        tagSnippets = dbSnippets.filter((snippet) => 'tag' === snippet.type);
+        dailyTags = buildDailyTags(date, tagSnippets);
+    }
+
+    // populate mention tags
+    let mentionSnippets = [];
+    let dailyMentions = [];
+    if (snippetRecommendationConfig.dailyMentions) {
+        mentionSnippets = dbSnippets.filter((snippet) => 'mention' === snippet.type);
+        dailyMentions = buildDailyMentions(date, mentionSnippets);
+    }
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -57,9 +88,20 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
         tagSnippets
             .filter(({ days, enabled }) => enabled && days.includes(day))
             .map(({ snippet }) => {
-                tags = [...tags, ...JSON.parse(removeHashes(snippet))];
+                tags = [...tags, ...JSON.parse(removeHashSigns(snippet))];
             })
         return tags;
+    }
+
+    function buildDailyMentions(date, mentionSnippets) {
+        let mentions = [];
+        const day = new Date(date.split('-')).getDay();
+        mentionSnippets
+            .filter(({ days, enabled }) => enabled && days.includes(day))
+            .map(({ snippet }) => {
+                mentions = [...mentions, ...JSON.parse(removeAtSigns(snippet))];
+            })
+        return mentions;
     }
 
     function buildDailyEntries(date, entrySnippets) {
@@ -67,8 +109,11 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
         const day = new Date(date.split('-')).getDay();
         entrySnippets
             .filter(({ days, enabled }) => enabled && days.includes(day))
-            .map(({ snippet }) => {
-                entries += snippet;
+            .map(({ snippet }, i) => {
+                if (!!i) {
+                    entries += '\n\n';
+                }
+                entries += `${snippet}`;
             })
         return entries;
     }
@@ -146,6 +191,17 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
             entry,
             searchTerm: '',
             text: `#${text}`,
+        });
+    }
+
+    function populateMention(text) {
+        const { entry } = getAnnotationState();
+        const entryEl = document.getElementById('entry');
+        populateAnnotation({
+            annotationStartIndex: (entryEl?.selectionStart) ?? entry.length,
+            entry,
+            searchTerm: '',
+            text: `@${text}`,
         });
     }
 
@@ -237,7 +293,7 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
         const flatDailyTags = dailyTags.flat();
         const visibleTags = [...new Set([...currentTags, ...flatDailyTags])];
         let filteredTags = [];
-        for (let i=0; i<=recentTags.length; i++) {
+        for (let i=0; i<=recentTags?.length; i++) {
             const recentTag = recentTags[i];
             if (!visibleTags.includes(recentTag)) {
                 filteredTags.push(recentTag);
@@ -247,6 +303,29 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
             }
         }
         return filteredTags;
+    }
+
+    function getFilteredDailyMentions(dailyMentions, currentMentions) {
+        const filteredMentions = dailyMentions.map((group) => {
+            return group.filter(a => !currentMentions.includes(a));
+        });
+        return filteredMentions;
+    }
+
+    function getFilteredRecentMentions(recentMentions, dailyMentions, currentMentions) {
+        const flatDailyMentions = dailyMentions.flat();
+        const visibleMentions = [...new Set([...currentMentions, ...flatDailyMentions])];
+        let filteredMentions = [];
+        for (let i=0; i<=recentMentions?.length; i++) {
+            const recentMention = recentMentions[i];
+            if (!visibleMentions.includes(recentMention)) {
+                filteredMentions.push(recentMention);
+                if (filteredMentions.length >= recentMentionsCount) {
+                    break;
+                }
+            }
+        }
+        return filteredMentions;
     }
 
     return (
@@ -337,53 +416,107 @@ export default function Form({ dbEntry = {}, dbSnippets = [], currentTags = [], 
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm">
-                    <div className="px-6 bg-white">
-                        <div className="mt-6">
-                            <label>Daily</label>
-                            <div 
-                                className="w-full p-4 border border-gray-200"
-                            >
-                                {
-                                    getFilteredDailyTags(dailyTags, currentTags).map((group, i) => {
-                                        const colorIndex = i % DailyTagsColors.length;
-                                        const color = DailyTagsColors[colorIndex];
-                                        return group.map((annotation, j) => {
-                                            return <AutoAnnotation
-                                                callback={populateTag}
-                                                className={color}
-                                                key={j}
-                                                type="button"
-                                            >{annotation}</AutoAnnotation>
+                { !!dailyTags.length && (
+                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Daily Tags</label>
+                                <div 
+                                    className="w-full p-4 border border-gray-200"
+                                >
+                                    {
+                                        getFilteredDailyTags(dailyTags, currentTags).map((group, i) => {
+                                            const colorIndex = i % DailyAnnotationsColors.length;
+                                            const color = DailyAnnotationsColors[colorIndex];
+                                            return group.map((annotation, j) => {
+                                                return <AutoAnnotation
+                                                    callback={populateTag}
+                                                    className={color}
+                                                    key={j}
+                                                    type="button"
+                                                >{annotation}</AutoAnnotation>
+                                            })
                                         })
-                                    })
-                                }
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
 
-                <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
-                    <div className="px-6 bg-white">
-                        <div className="mt-6">
-                            <label>Recent</label>
-                            <div 
-                                className="w-full p-4 border border-gray-200"
-                            >
-                                {
-                                    getFilteredRecentTags(recentTags, dailyTags, currentTags)
-                                        .map((annotation, i) => {
+                { !!recentTags.length && (
+                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Recent Tags</label>
+                                <div 
+                                    className="w-full p-4 border border-gray-200"
+                                >
+                                    {
+                                        getFilteredRecentTags(recentTags, dailyTags, currentTags).map((annotation, i) => {
                                             return <AutoAnnotation
                                                 callback={populateTag}
                                                 key={i}
                                                 type="button"
                                             >{annotation}</AutoAnnotation>
                                         })
-                                }
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
+
+                { !!dailyMentions.length && (
+                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Daily Mentions</label>
+                                <div 
+                                    className="w-full p-4 border border-gray-200"
+                                >
+                                    {
+                                        getFilteredDailyMentions(dailyMentions, currentMentions).map((group, i) => {
+                                            const colorIndex = i % DailyAnnotationsColors.length;
+                                            const color = DailyAnnotationsColors[colorIndex];
+                                            return group.map((annotation, j) => {
+                                                return <AutoAnnotation
+                                                    callback={populateMention}
+                                                    className={color}
+                                                    key={j}
+                                                    type="button"
+                                                >{annotation}</AutoAnnotation>
+                                            })
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                { !!recentMentions.length && (
+                    <div className="grid grid-cols-1 pb-4 bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
+                        <div className="px-6 bg-white">
+                            <div className="mt-6">
+                                <label>Recent Mentions</label>
+                                <div 
+                                    className="w-full p-4 border border-gray-200"
+                                >
+                                    {
+                                        getFilteredRecentMentions(recentMentions, dailyMentions, currentMentions).map((annotation, i) => {
+                                            return <AutoAnnotation
+                                                callback={populateMention}
+                                                key={i}
+                                                type="button"
+                                            >{annotation}</AutoAnnotation>
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </form>
         </div>
     );

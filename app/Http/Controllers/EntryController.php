@@ -78,14 +78,17 @@ class EntryController extends Controller
      */
     public function create()
     {
-        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
         $nextDate = $this->entryRepository->getDateFollowing();
-        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(config('constants.timezone')), config('constants.day_limit_recent_tags'));
-        $snippets = $this->snippetRepository->get();
+
+        $snippets = $this->snippetRepository->getOrdered();
         $tags = $this->tagRepository->getNamesSortedByFrequency();
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(config('constants.timezone')), config('constants.day_limit_recent_tags'));
+        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
+        $recentMentions = $this->mentionRepository->getRecentNamesSortedByFrequency(Carbon::today(config('constants.timezone')), config('constants.day_limit_recent_mentions'));
         return Inertia::render('Entries/Create')
             ->with('dbMentions', $mentions)
             ->with('dbNextDate', $nextDate)
+            ->with('dbRecentMentions', $recentMentions)
             ->with('dbRecentTags', $recentTags)
             ->with('dbSnippets', $snippets)
             ->with('dbTags', $tags);
@@ -155,15 +158,19 @@ class EntryController extends Controller
     {
         $entryDate = Carbon::parse($entry['date']);
 
-        $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
-        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
-        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
         $snippets = $this->snippetRepository->get();
         $tags = $this->tagRepository->getNamesSortedByFrequency();
+        $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
+        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
+        $currentMentions = $this->mentionRepository->getNamesForEntry($entry->id);
+        $recentMentions = $this->mentionRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_mentions'));
         return Inertia::render('Entries/Edit')
+            ->with('dbCurrentMentions', $currentMentions)
             ->with('dbCurrentTags', $currentTags)
             ->with('dbEntry', $entry)
             ->with('dbMentions', $mentions)
+            ->with('dbRecentMentions', $recentMentions)
             ->with('dbRecentTags', $recentTags)
             ->with('dbSnippets', $snippets)
             ->with('dbTags', $tags);
