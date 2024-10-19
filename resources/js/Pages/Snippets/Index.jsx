@@ -163,40 +163,62 @@ export default function Index({
 
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-b-lg">
-                        <DragDropContext onDragEnd={handleDragEnd}>
-                            <Droppable droppableId="droppable">
-                                {(provided) => (
-                                    <ul {...provided.droppableProps} ref={provided.innerRef}>
-                                        {currentSnippets?.map((dbSnippet, i) => (
-                                            <Draggable key={dbSnippet?.id?.toString()} draggableId={dbSnippet?.id?.toString()} index={i}>
-                                                {(provided, snapshot) => (
-                                                    <li
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                        className="flex draggable-item"
-                                                        key={i}
-                                                        style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
-                                                    >
-                                                        <DragAndDropIcon className="w-10 h-6 self-center" />
-
-                                                        <Link
-                                                            className="flex-auto"
-                                                            href={route('snippets.edit', dbSnippet?.id)}
+                        {!showDisabled && (
+                            <DragDropContext onDragEnd={handleDragEnd}>
+                                <Droppable droppableId="droppable">
+                                    {(provided) => (
+                                        <ul {...provided.droppableProps} ref={provided.innerRef}>
+                                            {currentSnippets?.map((dbSnippet, i) => (
+                                                <Draggable key={dbSnippet?.id?.toString()} draggableId={dbSnippet?.id?.toString()} index={i}>
+                                                    {(provided, snapshot) => (
+                                                        <li
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            className="flex draggable-item"
+                                                            key={i}
+                                                            style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                                                         >
-                                                            <Card
-                                                                dbSnippet={dbSnippet}
-                                                            ></Card>
-                                                        </Link>
-                                                    </li>
-                                                )}
-                                            </Draggable>
-                                        ))}
-                                        {provided.placeholder}
-                                    </ul>
-                                )}
-                            </Droppable>
-                        </DragDropContext>
+                                                            <DragAndDropIcon className="w-10 h-6 self-center" />
+
+                                                            <Link
+                                                                className="flex-auto"
+                                                                href={route('snippets.edit', dbSnippet?.id)}
+                                                            >
+                                                                <Card
+                                                                    dbSnippet={dbSnippet}
+                                                                ></Card>
+                                                            </Link>
+                                                        </li>
+                                                    )}
+                                                </Draggable>
+                                            ))}
+                                            {provided.placeholder}
+                                        </ul>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
+                        )}
+
+                        {showDisabled && (
+                            <ul>
+                                {currentSnippets?.map((dbSnippet, i) => (
+                                    <li
+                                        className="flex draggable-item"
+                                        key={i}
+                                    >
+                                        <Link
+                                            className="flex-auto"
+                                            href={route('snippets.edit', dbSnippet?.id)}
+                                        >
+                                            <Card
+                                                dbSnippet={dbSnippet}
+                                            ></Card>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
 
                         <div className="w-full mt-8 flex flex-col items-center">
                             <Link
