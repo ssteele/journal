@@ -1,3 +1,4 @@
+import Checkbox from '@/Components/Checkbox';
 import DragAndDropIcon from '@/Components/Icons/DragAndDrop';
 import Card from '@/Components/Snippet/Card';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
@@ -17,18 +18,24 @@ export default function Index({
     dbMentionSnippets = [],
     errors,
 }) {
-    const defaultSnippetTab = 'entry';
-    const [currentSnippetTab, setCurrentSnippetTab] = useState(defaultSnippetTab);
-    const [entrySnippets, setEntrySnippets] = useState(dbEntrySnippets);
-    const [tagSnippets, setTagSnippets] = useState(dbTagSnippets);
-    const [mentionSnippets, setMentionSnippets] = useState(dbMentionSnippets);
+    const defaultSnippetType = 'entry';
+    const [currentSnippetType, setCurrentSnippetType] = useState(defaultSnippetType);
+    const [showDisabled, setShowDisabled] = useState(false);
+
+    const [entrySnippets, setEntrySnippets] = useState(filterStatus(dbEntrySnippets));
+    const [tagSnippets, setTagSnippets] = useState(filterStatus(dbTagSnippets));
+    const [mentionSnippets, setMentionSnippets] = useState(filterStatus(dbMentionSnippets));
     const [currentSnippets, setCurrentSnippets] = useState([]);
 
     const { data, post, setData } = useForm([]);
 
     useEffect(() => {
-        handleSwitchSnippetTypeTab(defaultSnippetTab);
+        handleSwitchSnippetType(defaultSnippetType);
     }, []);
+
+    useEffect(() => {
+        setSnippets(getCurrentSnippetType()?.value);
+    }, [showDisabled]);
 
     // persist snippet reorder on backend
     useEffect(async () => {
@@ -43,16 +50,20 @@ export default function Index({
         }
     }, [data]);
 
-    function currentSnippetType() {
-        return SnippetTypes.find(snippetType => snippetType?.value === currentSnippetTab);
+    function getCurrentSnippetType() {
+        return SnippetTypes.find(snippetType => snippetType?.value === currentSnippetType);
     }
 
-    function isActiveTab(tab) {
-        return tab === currentSnippetTab;
+    function isActiveType(type) {
+        return type === currentSnippetType;
     }
 
-    function setSnippets(snippets) {
-        const type = currentSnippetType()?.value;
+    function filterStatus(snippets) {
+        return snippets.filter(snippet => showDisabled ? !snippet?.enabled : !!snippet?.enabled);
+    }
+
+    function setSnippetOrder(snippets) {
+        const type = getCurrentSnippetType()?.value;
         setCurrentSnippets(snippets);
         switch (type) {
             case 'tag':
@@ -71,20 +82,28 @@ export default function Index({
         setData({ idsOrders: snippetOrder });
     }
 
-    function handleSwitchSnippetTypeTab(tab) {
-        setCurrentSnippetTab(tab);
-        switch (tab) {
+    function setSnippets(type) {
+        switch (type) {
             case 'tag':
-                setCurrentSnippets(tagSnippets);
+                setCurrentSnippets(filterStatus(dbTagSnippets));
                 break;
         
             case 'mention':
-                setCurrentSnippets(mentionSnippets);
+                setCurrentSnippets(filterStatus(dbMentionSnippets));
                 break;
         
             default:
-                setCurrentSnippets(entrySnippets);
+                setCurrentSnippets(filterStatus(dbEntrySnippets));
         }
+    }
+
+    function handleShowDisabledToggle() {
+        setShowDisabled(!showDisabled);
+    };
+
+    function handleSwitchSnippetType(type) {
+        setCurrentSnippetType(type);
+        setSnippets(type);
     }
 
     const getItemStyle = (isDragging, draggableStyle) => ({
@@ -103,7 +122,7 @@ export default function Index({
         const [ reorderedSnippet ] = snippets.splice(result.source.index, 1);
         snippets.splice(result.destination.index, 0, reorderedSnippet);
 
-        setSnippets(snippets);
+        setSnippetOrder(snippets);
     };
 
     return (
@@ -120,22 +139,35 @@ export default function Index({
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <ul className="flex justify-end divide-x divide-bg-gray-50 border-b border-gray-300">
-                        {SnippetTypes.map((snippetType, i) => {
-                            return (
-                                <li
-                                    className={`
-                                        px-4 py-1 rounded-t-md cursor-pointer
-                                        ${isActiveTab(snippetType?.value) ? 'bg-green-100' : 'bg-white'}
-                                    `}
-                                    key={i}
-                                    onClick={() => handleSwitchSnippetTypeTab(snippetType?.value)}
-                                >
-                                    { snippetType?.label }
-                                </li>
-                            );
-                        })}
-                    </ul>
+                    <div className="flex justify-between">
+                        
+                        <label className="flex items-center">
+                            <Checkbox
+                                name="show-disabled"
+                                value={showDisabled}
+                                handleChange={handleShowDisabledToggle}
+                            />
+                            <span className="ml-2 text-sm text-gray-600">Show disabled</span>
+                        </label>
+                       
+
+                        <ul className="flex divide-x divide-bg-gray-50 border-b border-gray-300">
+                            {SnippetTypes.map((snippetType, i) => {
+                                return (
+                                    <li
+                                        className={`
+                                            px-4 py-1 rounded-t-md cursor-pointer
+                                            ${isActiveType(snippetType?.value) ? 'bg-green-100' : 'bg-white'}
+                                        `}
+                                        key={i}
+                                        onClick={() => handleSwitchSnippetType(snippetType?.value)}
+                                    >
+                                        { snippetType?.label }
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
                 </div>
 
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -178,11 +210,11 @@ export default function Index({
                         <div className="w-full mt-8 flex flex-col items-center">
                             <Link
                                 href={route('snippets.create', {
-                                    type: currentSnippetType()?.value,
+                                    type: getCurrentSnippetType()?.value,
                                 })}
                                 className="py-4 text-sm text-blue-400"
                             >
-                                {`Create ${currentSnippetType()?.label} Snippet`}
+                                {`Create ${getCurrentSnippetType()?.label} Snippet`}
                             </Link>
                         </div>
                     </div>
