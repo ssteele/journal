@@ -394,7 +394,18 @@ export default function Form({ dbSnippet = {}, mentions = [], tags = [], snippet
                                     </span>
                                 </div>
 
-                                <div className="mt-6 flex justify-end">
+                                <div className="mt-6 flex gap-4 justify-end">
+                                    {!data?.enabled && (
+                                        <button
+                                            type="submit"
+                                            // className="px-6 py-2 font-bold text-white bg-red-500 rounded"
+                                            className="px-6 py-2 font-bold text-white bg-gray-900 opacity-25 rounded"
+                                            disabled={true}
+                                        >
+                                            Delete
+                                        </button>
+                                    )}
+
                                     <button
                                         type="submit"
                                         className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
