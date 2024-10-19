@@ -54,6 +54,14 @@ export default function Index({
         return SnippetTypes.find(snippetType => snippetType?.value === currentSnippetType);
     }
 
+    function currentSnippetValue() {
+        return getCurrentSnippetType()?.value;
+    }
+
+    function currentSnippetLabel() {
+        return getCurrentSnippetType()?.label;
+    }
+
     function isActiveType(type) {
         return type === currentSnippetType;
     }
@@ -63,7 +71,7 @@ export default function Index({
     }
 
     function setSnippetOrder(snippets) {
-        const type = getCurrentSnippetType()?.value;
+        const type = currentSnippetValue();
         setCurrentSnippets(snippets);
         switch (type) {
             case 'tag':
@@ -210,11 +218,11 @@ export default function Index({
                         <div className="w-full mt-8 flex flex-col items-center">
                             <Link
                                 href={route('snippets.create', {
-                                    type: getCurrentSnippetType()?.value,
+                                    type: currentSnippetValue(),
                                 })}
                                 className="py-4 text-sm text-blue-400"
                             >
-                                {`Create ${getCurrentSnippetType()?.label} Snippet`}
+                                {`Create ${currentSnippetLabel()} Snippet`}
                             </Link>
                         </div>
                     </div>
