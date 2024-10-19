@@ -21,10 +21,6 @@ export default function Index({
     const defaultSnippetType = 'entry';
     const [currentSnippetType, setCurrentSnippetType] = useState(defaultSnippetType);
     const [showDisabled, setShowDisabled] = useState(false);
-
-    const [entrySnippets, setEntrySnippets] = useState(filterStatus(dbEntrySnippets));
-    const [tagSnippets, setTagSnippets] = useState(filterStatus(dbTagSnippets));
-    const [mentionSnippets, setMentionSnippets] = useState(filterStatus(dbMentionSnippets));
     const [currentSnippets, setCurrentSnippets] = useState([]);
 
     const { data, post, setData } = useForm([]);
@@ -71,20 +67,7 @@ export default function Index({
     }
 
     function setSnippetOrder(snippets) {
-        const type = currentSnippetValue();
         setCurrentSnippets(snippets);
-        switch (type) {
-            case 'tag':
-                setTagSnippets(snippets);
-                break;
-        
-            case 'mention':
-                setMentionSnippets(snippets);
-                break;
-        
-            default:
-                setEntrySnippets(snippets);
-        }
 
         const snippetOrder = snippets.map(({ id }, i) => ({ id, order: i}));
         setData({ idsOrders: snippetOrder });
