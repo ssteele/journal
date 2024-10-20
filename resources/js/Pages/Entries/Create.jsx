@@ -4,35 +4,35 @@ import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Create({
-    auth,
-    dbMentions = [],
-    dbNextDate,
-    dbRecentMentions = [],
-    dbRecentTags = [],
-    dbSnippets = [],
-    dbTags = [],
-    errors,
+  auth,
+  dbMentions = [],
+  dbNextDate,
+  dbRecentMentions = [],
+  dbRecentTags = [],
+  dbSnippets = [],
+  dbTags = [],
+  errors,
 }) {
-    return (
-        <Authenticated
-            auth={auth}
-            errors={errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Create Entry
-                </h2>
-            }
-        >
-            <Head title="Create Entry" />
+  return (
+    <Authenticated
+      auth={auth}
+      errors={errors}
+      header={
+        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+          Create Entry
+        </h2>
+      }
+    >
+      <Head title="Create Entry" />
 
-            <Form
-                dbSnippets={dbSnippets}
-                mentions={dbMentions}
-                nextDate={dbNextDate}
-                recentTags={dbRecentTags}
-                recentMentions={dbRecentMentions}
-                tags={dbTags}
-            />
-        </Authenticated>
-    );
+      <Form
+        dbSnippets={dbSnippets}
+        mentions={dbMentions}
+        nextDate={dbNextDate}
+        recentTags={dbRecentTags}
+        recentMentions={dbRecentMentions}
+        tags={dbTags}
+      />
+    </Authenticated>
+  );
 }

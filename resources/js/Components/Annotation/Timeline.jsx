@@ -7,72 +7,72 @@ import 'react-calendar-heatmap/dist/styles.css';
 import '@/../css/react-calendar-heatmap.css';
 
 export default function Timeline({ annotationMap, handleDayClick = null, timelineFrequency, timelineYears }) {
-    return (
-        <>
-            {
-                timelineYears.map((timelineYear, i) => {
-                    return (
-                        <div className="mt-3 sm:mt-4 md:mt-6" key={i}>
-                            <span className="text-sm sm:text-base lg:text-lg">
-                                {timelineYear?.year}
-                            </span>
-                            <span className="text-xs font-thin">(
-                                {(timelineYear?.count?.constructor === Array)
-                                    ? timelineYear?.count?.join('/')
-                                    : timelineYear?.count
-                                }
-                            )
-                            </span>
+  return (
+    <>
+      {
+        timelineYears.map((timelineYear, i) => {
+          return (
+            <div className="mt-3 sm:mt-4 md:mt-6" key={i}>
+              <span className="text-sm sm:text-base lg:text-lg">
+                {timelineYear?.year}
+              </span>
+              <span className="text-xs font-thin">(
+                {(timelineYear?.count?.constructor === Array)
+                  ? timelineYear?.count?.join('/')
+                  : timelineYear?.count
+                }
+              )
+              </span>
 
-                            <CalendarHeatmap
-                                startDate={new Date(`${timelineYear?.year - 1}-12-31`)}
-                                endDate={new Date(`${timelineYear?.year}-12-31`)}
-                                horizontal={true}
-                                showMonthLabels={timelineYear?.year === timelineYears[0]?.year}
-                                showWeekdayLabels={false}
-                                titleForValue={(day) => {
-                                    if (day && day?.counts) {
-                                        return `${FormatDateWeekdayLong(day?.date)}, ${FormatDateForTitle(day?.date)}`;
-                                    }
-                                }}
-                                values={timelineFrequency}
-                                onClick={(day) => {
-                                    if (day && day.counts) {
-                                        if (!isMobile && !!handleDayClick) {
-                                            handleDayClick(day);
-                                        } else {
-                                            window.location.href = route('entries.show', FormatDateForRouteModelBinding(day?.date));
-                                        }
-                                    }
-                                }}
-                                classForValue={(day) => {
-                                    // past date: no tag
-                                    if (!day) {
-                                        return 'color-zero';
-                                    }
+              <CalendarHeatmap
+                startDate={new Date(`${timelineYear?.year - 1}-12-31`)}
+                endDate={new Date(`${timelineYear?.year}-12-31`)}
+                horizontal={true}
+                showMonthLabels={timelineYear?.year === timelineYears[0]?.year}
+                showWeekdayLabels={false}
+                titleForValue={(day) => {
+                  if (day && day?.counts) {
+                    return `${FormatDateWeekdayLong(day?.date)}, ${FormatDateForTitle(day?.date)}`;
+                  }
+                }}
+                values={timelineFrequency}
+                onClick={(day) => {
+                  if (day && day.counts) {
+                    if (!isMobile && !!handleDayClick) {
+                      handleDayClick(day);
+                    } else {
+                      window.location.href = route('entries.show', FormatDateForRouteModelBinding(day?.date));
+                    }
+                  }
+                }}
+                classForValue={(day) => {
+                  // past date: no tag
+                  if (!day) {
+                    return 'color-zero';
+                  }
 
-                                    // future date (no tag)
-                                    if (!day.counts) {
-                                        return 'color-empty';
-                                    }
+                  // future date (no tag)
+                  if (!day.counts) {
+                    return 'color-empty';
+                  }
 
-                                    const { counts: entryCounts } = day;
-                                    const entryIds = Object.keys(entryCounts);
-                                    const entryColors = entryIds.map(e => {
-                                        const entryId = parseInt(e);
-                                        const color = TimelineAnnotationColors[annotationMap.indexOf(entryId)];
-                                        const count = entryCounts[entryId];
-                                        return `${color}-${count}`;
-                                    });
+                  const { counts: entryCounts } = day;
+                  const entryIds = Object.keys(entryCounts);
+                  const entryColors = entryIds.map(e => {
+                    const entryId = parseInt(e);
+                    const color = TimelineAnnotationColors[annotationMap.indexOf(entryId)];
+                    const count = entryCounts[entryId];
+                    return `${color}-${count}`;
+                  });
 
-                                    const sortedEntryColors = entryColors.sort((a, b) => a.startsWith(TimelineAnnotationColors[0]) ? -1 : 1);
-                                    return sortedEntryColors.join('-');   // eg: 'red-1' or 'red-2-blue-5'
-                                }}
-                            />
-                        </div>
-                    )
-                })
-            }
-        </>
-    )
+                  const sortedEntryColors = entryColors.sort((a, b) => a.startsWith(TimelineAnnotationColors[0]) ? -1 : 1);
+                  return sortedEntryColors.join('-');   // eg: 'red-1' or 'red-2-blue-5'
+                }}
+              />
+            </div>
+          )
+        })
+      }
+    </>
+  )
 }

@@ -1,4 +1,4 @@
 export const AnnotationDetailPanelTabs = {
-    Edit: 'edit',
-    Excerpts: 'excerpts',
+  Edit: 'edit',
+  Excerpts: 'excerpts',
 };

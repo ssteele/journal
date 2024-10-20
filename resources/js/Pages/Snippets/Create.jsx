@@ -4,25 +4,25 @@ import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
 export default function Create({ auth, dbMentions = [], dbTags = [], errors }) {
-    const snippetType = route().params?.type;
+  const snippetType = route().params?.type;
 
-    return (
-        <Authenticated
-            auth={auth}
-            errors={errors}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Create Snippet
-                </h2>
-            }
-        >
-            <Head title="Create Snippet" />
+  return (
+    <Authenticated
+      auth={auth}
+      errors={errors}
+      header={
+        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+          Create Snippet
+        </h2>
+      }
+    >
+      <Head title="Create Snippet" />
 
-            <Form
-                mentions={dbMentions}
-                snippetType={snippetType}
-                tags={dbTags}
-            />
-        </Authenticated>
-    );
+      <Form
+        mentions={dbMentions}
+        snippetType={snippetType}
+        tags={dbTags}
+      />
+    </Authenticated>
+  );
 }
