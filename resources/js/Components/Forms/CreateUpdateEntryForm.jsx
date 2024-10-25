@@ -5,7 +5,7 @@ import UseFocus from '@/Utils/UseFocus';
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
-export default function Form({
+export default function CreateUpdateEntryForm({
   dbEntry = {},
   dbSnippets = [],
   currentMentions = [],
