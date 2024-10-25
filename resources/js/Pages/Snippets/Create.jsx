@@ -1,4 +1,4 @@
-import Form from '@/Components/Snippet/Form';
+import CreateUpdateDeleteSnippetForm from '@/Components/Forms/CreateUpdateDeleteSnippetForm';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
@@ -18,7 +18,7 @@ export default function Create({ auth, dbMentions = [], dbTags = [], errors }) {
     >
       <Head title="Create Snippet" />
 
-      <Form
+      <CreateUpdateDeleteSnippetForm
         mentions={dbMentions}
         snippetType={snippetType}
         tags={dbTags}
