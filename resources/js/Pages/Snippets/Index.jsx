@@ -47,8 +47,9 @@ export default function Index({
       })
         .then(async response => response?.ok ? await response?.json() : null)
         .catch(error => console.log(error?.message));
-      ;
+
       if (response?.message) {
+        // @todo: flash notify
         console.log(response?.message);
       }
     }

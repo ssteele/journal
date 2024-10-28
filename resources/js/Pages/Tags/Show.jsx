@@ -35,12 +35,13 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     setCurrentDetailPanelTab(AnnotationDetailPanelTabs.Excerpts);
 
     const tagEntry = await fetch(route('api.entries.id', day?.entryId))
-      .then(async response => response.ok ? await response.json() : null)
-      .catch(error => console.log(error.message));
+      .then(async response => response?.ok ? await response?.json() : null)
+      .catch(error => console.log(error?.message));
     ;
+
     if (tagEntry) {
-      if (!tagEntries.find(entry => entry.id === tagEntry.id)) {
-        setTagEntries([...tagEntries, tagEntry].sort((a, b) => new Date(a.date) - new Date(b.date)));
+      if (!tagEntries?.find(entry => entry?.id === tagEntry?.id)) {
+        setTagEntries([...tagEntries, tagEntry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
       }
     }
   }

@@ -12,12 +12,12 @@ export default function Index({ auth, dbEntries = [], errors }) {
   async function handleLoadMore() {
     setIsLoading(true);
     const more = await fetch(route('api.entries.more', lastEntryId))
-      .then(async response => response.ok ? await response.json() : null)
-      .catch(error => console.log(error.message));
-    ;
-    if (more.length) {
+      .then(async response => response?.ok ? await response?.json() : null)
+      .catch(error => console.log(error?.message));
+
+    if (more?.length) {
       setEntries([...entries, ...more]);
-      setLastEntryId(more[more.length - 1]?.id);
+      setLastEntryId(more[more?.length - 1]?.id);
     }
     setIsLoading(false);
   }

@@ -35,12 +35,12 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
     setCurrentDetailPanelTab(AnnotationDetailPanelTabs.Excerpts);
 
     const mentionEntry = await fetch(route('api.entries.id', day?.entryId))
-      .then(async response => response.ok ? await response.json() : null)
-      .catch(error => console.log(error.message));
-    ;
+      .then(async response => response?.ok ? await response?.json() : null)
+      .catch(error => console.log(error?.message));
+
     if (mentionEntry) {
-      if (!mentionEntries.find(entry => entry.id === mentionEntry.id)) {
-        setMentionEntries([...mentionEntries, mentionEntry].sort((a, b) => new Date(a.date) - new Date(b.date)));
+      if (!mentionEntries?.find(entry => entry?.id === mentionEntry?.id)) {
+        setMentionEntries([...mentionEntries, mentionEntry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
       }
     }
   }
