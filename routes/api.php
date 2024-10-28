@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\EntryController;
+use App\Http\Controllers\API\SnippetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/entries/{id}', [EntryController::class, 'get'])->name('api.entries.id');
     Route::get('/entries/more/{id}',[EntryController::class, 'moreEntries'])->name('api.entries.more');
+});
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/snippets/update-order', [SnippetController::class, 'updateOrder'])->name('api.snippets.update-order');
 });
 
 // one-off

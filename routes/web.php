@@ -29,9 +29,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 Route::resource('entries', EntryController::class);
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::post('/snippets/update-order', [SnippetController::class, 'updateOrder'])->name('snippets.update-order');
-});
 Route::resource('snippets', SnippetController::class);
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -45,7 +42,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mentions/{mention}', [MentionController::class, 'show'])->name('mentions.show');
     Route::get('/mentions/{mention1}/{mention2}', [MentionController::class, 'compare'])->name('mentions.compare');
 });
-
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/markers', [MarkerController::class, 'index'])->name('markers.index');
