@@ -84,7 +84,10 @@ export default function Login({ status, canResetPassword }) {
             </Link>
           )}
 
-          <Button className="ml-4" processing={processing}>
+          <Button
+            className="bg-gray-900 border border-transparent font-semibold inline-flex items-center ml-4 px-4 py-2 rounded-md text-white tracking-widest text-xs uppercase"
+            processing={processing}
+          >
             Log in
           </Button>
         </div>

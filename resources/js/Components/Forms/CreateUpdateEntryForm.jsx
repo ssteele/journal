@@ -1,4 +1,5 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
+import Button from '@/Components/Button';
 import { DailyAnnotationsColors } from '@/Constants/DailyAnnotations';
 import { removeAtSigns, removeHashSigns } from '@/Utils/Snippet';
 import UseFocus from '@/Utils/UseFocus';
@@ -405,12 +406,9 @@ export default function CreateUpdateEntryForm({
               </div>
 
               <div className="mt-6 flex justify-end">
-                <button
-                  type="submit"
-                  className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
-                >
+                <Button>
                   {isExistingEntry ? 'Update' : 'Log'}
-                </button>
+                </Button>
               </div>
             </div>
           </div>

@@ -1,3 +1,4 @@
+import Button from '@/Components/Button';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head, useForm } from '@inertiajs/inertia-react';
 import React from 'react';
@@ -61,12 +62,9 @@ export default function Create({ auth, errors: authErrors }) {
                 </div>
 
                 <div className="mt-4 flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
-                  >
+                  <Button type="submit">
                     Upload
-                  </button>
+                  </Button>
                 </div>
               </form>
             </div>
