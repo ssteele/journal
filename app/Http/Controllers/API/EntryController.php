@@ -31,7 +31,11 @@ class EntryController extends Controller
      */
     public function get($id)
     {
-        $entry = Entry::find($id);
+        $user = \Auth::user();
+
+        $entry = Entry::where('id', $id)
+            ->where('user_id', $user->id)
+            ->firstOrFail();
         return response()->json($entry);
     }
 
