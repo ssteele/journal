@@ -25,5 +25,7 @@ class SnippetController extends Controller
             $snippet->order = $idOrder['order'];
             $snippet->save();
         }
+
+        return response()->json([ 'message' => 'Snippets reordered' ]);
     }
 }
