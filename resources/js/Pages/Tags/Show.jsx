@@ -30,20 +30,52 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
     setCurrentDetailPanelTab(tab);
   }
 
+  async function handleYearClick(year) {
+    const timelineYear = timelineYears.find(timelineYear => timelineYear?.year === parseInt(year));
+    const yearHasEntries = parseInt(timelineYear?.count) > 0;
+    if (!yearHasEntries) {
+      return;
+    }
+
+    if (!isDetailPanelOpen) {
+      setIsDetailPanelOpen(true);
+    }
+    setCurrentDetailPanelTab(AnnotationDetailPanelTabs.Excerpts);
+
+    const entriesList = await fetch(route('api.entries.list', { ids: timelineYear?.entryIds }))
+      .then(async response => response?.ok ? await response?.json() : null)
+      .catch(error => console.log(error?.message));
+    ;
+
+    if (entriesList.length) {
+      const entries = [];
+      for (const entryItem of entriesList) {
+        if (!tagEntries?.find(entry => entry?.id === entryItem?.id)) {
+          entries.push(entryItem);
+        }
+      }
+      if (entries.length) {
+        setTagEntries([...tagEntries, ...entries].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
+      }
+    }
+  }
+
   async function handleDayClick(day) {
     if (!isDetailPanelOpen) {
       setIsDetailPanelOpen(true);
     }
     setCurrentDetailPanelTab(AnnotationDetailPanelTabs.Excerpts);
 
-    const tagEntry = await fetch(route('api.entries.id', day?.entryId))
-      .then(async response => response?.ok ? await response?.json() : null)
-      .catch(error => console.log(error?.message));
-    ;
+    if (!tagEntries?.find(entry => entry?.id === day?.entryId)) {
+      const tagEntry = await fetch(route('api.entries.id', day?.entryId))
+        .then(async response => response?.ok ? await response?.json() : null)
+        .catch(error => console.log(error?.message));
+      ;
 
-    if (tagEntry) {
-      if (!tagEntries?.find(entry => entry?.id === tagEntry?.id)) {
-        setTagEntries([...tagEntries, tagEntry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
+      if (tagEntry) {
+        if (!tagEntries?.find(entry => entry?.id === tagEntry?.id)) {
+          setTagEntries([...tagEntries, tagEntry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
+        }
       }
     }
   }
@@ -99,6 +131,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
             <Timeline
               annotationMap={annotationMap}
               handleDayClick={handleDayClick}
+              handleYearClick={handleYearClick}
               timelineFrequency={timelineFrequency}
               timelineYears={timelineYears}
             ></Timeline>

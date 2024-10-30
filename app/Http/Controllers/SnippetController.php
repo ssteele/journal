@@ -8,7 +8,6 @@ use App\Models\Snippet;
 use App\Repositories\MentionRepository;
 use App\Repositories\SnippetRepository;
 use App\Repositories\TagRepository;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SnippetController extends Controller

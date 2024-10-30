@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/entries/{id}', [EntryController::class, 'get'])->name('api.entries.id');
     Route::get('/entries/more/{id}',[EntryController::class, 'moreEntries'])->name('api.entries.more');
+    Route::get('/entries/list', [EntryController::class, 'getList'])->name('api.entries.list');
+    Route::get('/entries/{id}', [EntryController::class, 'get'])->name('api.entries.id');
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

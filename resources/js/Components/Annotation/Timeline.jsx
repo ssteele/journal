@@ -6,14 +6,27 @@ import { isMobile } from 'react-device-detect';
 import 'react-calendar-heatmap/dist/styles.css';
 import '@/../css/react-calendar-heatmap.css';
 
-export default function Timeline({ annotationMap, handleDayClick = null, timelineFrequency, timelineYears }) {
+export default function Timeline({
+  annotationMap,
+  handleDayClick = null,
+  handleYearClick = null,
+  timelineFrequency,
+  timelineYears,
+}) {
   return (
     <>
       {
         timelineYears.map((timelineYear, i) => {
           return (
             <div className="mt-3 sm:mt-4 md:mt-6" key={i}>
-              <span className="text-sm sm:text-base lg:text-lg">
+              <span
+                className="cursor-pointer text-sm sm:text-base lg:text-lg"
+                onClick={(e) => {
+                  if (!isMobile && !!handleYearClick) {
+                    handleYearClick(e?.target?.innerText);
+                  }
+                }}
+              >
                 {timelineYear?.year}
               </span>
               <span className="text-xs font-thin">(
