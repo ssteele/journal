@@ -73,9 +73,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
       ;
 
       if (tagEntry) {
-        if (!tagEntries?.find(entry => entry?.id === tagEntry?.id)) {
-          setTagEntries([...tagEntries, tagEntry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
-        }
+        setTagEntries([...tagEntries, tagEntry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
       }
     }
   }
