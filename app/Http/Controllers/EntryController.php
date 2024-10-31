@@ -80,7 +80,7 @@ class EntryController extends Controller
     {
         $nextDate = $this->entryRepository->getDateFollowing();
 
-        $snippets = $this->snippetRepository->getOrdered();
+        $snippets = $this->snippetRepository->getOrderedRepeating($nextDate);
         $tags = $this->tagRepository->getNamesSortedByFrequency();
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(config('constants.timezone')), config('constants.day_limit_recent_tags'));
         $mentions = $this->mentionRepository->getNamesSortedByFrequency();
