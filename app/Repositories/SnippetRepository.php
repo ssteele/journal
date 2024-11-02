@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class SnippetRepository
@@ -15,6 +16,21 @@ class SnippetRepository
     public function getOrdered()
     {
         return DB::table('snippets')
+            ->orderBy('order', 'asc')
+            ->get();
+    }
+
+    public function getOrderedRepeating($nextDate)
+    {
+        $targetDate = new Carbon($nextDate);
+        $targetDate->subDays(7);
+
+        return DB::table('snippets')
+            ->where('repeating', '=', '1')
+            ->orWhere(function ($query) use ($targetDate) {
+                $query->where('repeating', '=', '0')
+                      ->whereDate('updated_at', '>', $targetDate);
+            })
             ->orderBy('order', 'asc')
             ->get();
     }

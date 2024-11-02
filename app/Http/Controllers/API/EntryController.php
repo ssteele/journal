@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Entry;
 use App\Repositories\EntryRepository;
+use Illuminate\Http\Request;
 
 class EntryController extends Controller
 {
@@ -31,8 +32,29 @@ class EntryController extends Controller
      */
     public function get($id)
     {
-        $entry = Entry::find($id);
+        $user = \Auth::user();
+
+        $entry = Entry::where('id', $id)
+            ->where('user_id', $user->id)
+            ->firstOrFail();
         return response()->json($entry);
+    }
+
+    /**
+     * Get entries by ids.
+     *
+     * @param  array  $ids
+     * @return \Illuminate\Http\JsonResponse 
+     */
+    public function getList(Request $request)
+    {
+        $ids = $request->input('ids');
+        $user = \Auth::user();
+
+        $entries = Entry::whereIn('id', $ids)
+            ->where('user_id', $user->id)
+            ->get();
+        return response()->json($entries);
     }
 
     /**

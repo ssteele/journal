@@ -57,8 +57,10 @@ export function getTimelineYears(timelineFrequency) {
   const timelineEndYear = timelineEnd.getFullYear();
   let timelineYears = [];
   for (let i=timelineEndYear; i>=timelineStartYear; i--) {
+    const entryIdsForYear = [];
     const count = timelineFrequency.reduce((acc, cur) => {
       if (cur?.counts && cur?.date?.getFullYear() === i) {
+        entryIdsForYear.push(cur?.entryId);
         acc += Object.values(cur?.counts)[0];
       }
       return acc;
@@ -66,6 +68,7 @@ export function getTimelineYears(timelineFrequency) {
     timelineYears.push({
       year: i,
       count: `${count}`,
+      entryIds: entryIdsForYear.sort(),
     });
   }
   return timelineYears;

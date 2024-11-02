@@ -1,7 +1,9 @@
 import EditPanel from '@/Components/Annotation/Detail/EditPanel';
 import ExcerptPanel from '@/Components/Annotation/Detail/ExcerptPanel';
 import Timeline from '@/Components/Annotation/Timeline';
+import Button from '@/Components/Button';
 import Edit from '@/Components/Icons/Edit';
+import ExpandBox from '@/Components/Icons/ExpandBox';
 import XClose from '@/Components/Icons/XClose';
 import { AnnotationDetailPanelTabs } from '@/Constants/AnnotationDetailPanelTabs';
 import Authenticated from '@/Layouts/Authenticated';
@@ -28,20 +30,56 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
     setCurrentDetailPanelTab(tab);
   }
 
+  async function handleYearClick(year) {
+    const timelineYear = timelineYears.find(timelineYear => timelineYear?.year === parseInt(year));
+    const yearHasEntries = parseInt(timelineYear?.count) > 0;
+    if (!yearHasEntries) {
+      return;
+    }
+
+    if (!isDetailPanelOpen) {
+      setIsDetailPanelOpen(true);
+    }
+    setCurrentDetailPanelTab(AnnotationDetailPanelTabs.Excerpts);
+
+    const entriesList = await fetch(route('api.entries.list', { ids: timelineYear?.entryIds }))
+      .then(async response => response?.ok ? await response?.json() : null)
+      .catch(error => console.log(error?.message));
+    ;
+
+    if (entriesList.length) {
+      const entries = [];
+      for (const entryItem of entriesList) {
+        if (!mentionEntries?.find(entry => entry?.id === entryItem?.id)) {
+          entries.push(entryItem);
+        }
+      }
+      if (entries.length) {
+        setMentionEntries([...mentionEntries, ...entries].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
+      }
+    }
+  }
+
   async function handleDayClick(day) {
     if (!isDetailPanelOpen) {
       setIsDetailPanelOpen(true);
     }
     setCurrentDetailPanelTab(AnnotationDetailPanelTabs.Excerpts);
 
-    const mentionEntry = await fetch(route('api.entries.id', day?.entryId))
-      .then(async response => response.ok ? await response.json() : null)
-      .catch(error => console.log(error.message));
-    ;
-    if (mentionEntry) {
-      if (!mentionEntries.find(entry => entry.id === mentionEntry.id)) {
-        setMentionEntries([...mentionEntries, mentionEntry].sort((a, b) => new Date(a.date) - new Date(b.date)));
+    if (!mentionEntries?.find(entry => entry?.id === day?.entryId)) {
+      const mentionEntry = await fetch(route('api.entries.id', day?.entryId))
+        .then(async response => response?.ok ? await response?.json() : null)
+        .catch(error => console.log(error?.message));
+
+      if (mentionEntry) {
+        setMentionEntries([...mentionEntries, mentionEntry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
       }
+    }
+  }
+
+  function handleOpenAllToTabs() {
+    for (const { date } of mentionEntries) {
+      window.open(route('entries.show', date));
     }
   }
 
@@ -90,6 +128,7 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
             <Timeline
               annotationMap={annotationMap}
               handleDayClick={handleDayClick}
+              handleYearClick={handleYearClick}
               timelineFrequency={timelineFrequency}
               timelineYears={timelineYears}
             ></Timeline>
@@ -144,6 +183,15 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                   ),
                 }[currentDetailPanelTab]
               }
+
+              {isDetailPanelOpen && mentionEntries?.length > 1 && (
+                <div className="flex justify-end mt-4">
+                  <Button onClick={() => handleOpenAllToTabs()}>
+                    Open all
+                    <ExpandBox className="align-sub h-4 inline-block ml-4 text-white w-auto" />
+                  </Button>
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -1,4 +1,5 @@
 import AutoAnnotation from '@/Components/AutoAnnotation';
+import Button from '@/Components/Button';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
 import { expandJsonSnippet, minifyJsonSnippet } from '@/Utils/Snippet';
 import { ucFirst } from '@/Utils/String';
@@ -396,22 +397,19 @@ export default function CreateUpdateDeleteSnippetForm({ dbSnippet = {}, mentions
 
                 <div className="mt-6 flex gap-4 justify-end">
                   {!data?.enabled && (
-                    <button
+                    <Button
                       type="submit"
-                      // className="px-6 py-2 font-bold text-white bg-red-500 rounded"
-                      className="px-6 py-2 font-bold text-white bg-gray-900 opacity-25 rounded"
+                      // className="bg-red-500"
+                      className="bg-gray-900 cursor-not-allowed opacity-25 active:bg-gray-900 active:opacity-25"
                       disabled={true}
                     >
                       Delete
-                    </button>
+                    </Button>
                   )}
 
-                  <button
-                    type="submit"
-                    className="px-6 py-2 font-bold text-white bg-blue-500 rounded"
-                  >
+                  <Button type="submit">
                     {isExistingSnippet ? 'Update' : 'Create'}
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

@@ -3,7 +3,7 @@ import DragAndDropIcon from '@/Components/Icons/DragAndDrop';
 import Card from '@/Components/Snippet/Card';
 import { SnippetTypes } from '@/Constants/SnippetTypes';
 import Authenticated from '@/Layouts/Authenticated';
-import { Head, Link, useForm } from '@inertiajs/inertia-react';
+import { Head, Link, useForm, usePage } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 import {
   DragDropContext,
@@ -23,7 +23,8 @@ export default function Index({
   const [showDisabled, setShowDisabled] = useState(false);
   const [currentSnippets, setCurrentSnippets] = useState([]);
 
-  const { data, post, setData } = useForm([]);
+  const { data, setData } = useForm([]);
+  const { props } = usePage();
 
   useEffect(() => {
     handleSwitchSnippetType(defaultSnippetType);
@@ -36,13 +37,21 @@ export default function Index({
   // persist snippet reorder on backend
   useEffect(async () => {
     if (data?.idsOrders?.length) {
-      post(route('snippets.update-order'), {
-        preserveScroll: true,
-        onSuccess: () => {
-          // @todo: flash notify
-          console.log('Snippets reordered');
+      const response = await fetch(route('api.snippets.update-order'), {
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': props?.csrf_token,
         },
-      });
+        method: 'POST',
+      })
+        .then(async response => response?.ok ? await response?.json() : null)
+        .catch(error => console.log(error?.message));
+
+      if (response?.message) {
+        // @todo: flash notify
+        console.log(response?.message);
+      }
     }
   }, [data]);
 

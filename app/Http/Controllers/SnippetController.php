@@ -8,7 +8,6 @@ use App\Models\Snippet;
 use App\Repositories\MentionRepository;
 use App\Repositories\SnippetRepository;
 use App\Repositories\TagRepository;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SnippetController extends Controller
@@ -134,24 +133,5 @@ class SnippetController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     * Reorder snippets
-     *
-     * @param  \Illuminate\Http\Request  $request
-     */
-    public function updateOrder(Request $request)
-    {
-        $user = \Auth::user();
-
-        $idsOrders = $request->input('idsOrders');
-        foreach ($idsOrders as $idOrder) {
-            $snippet = Snippet::where('id', $idOrder['id'])
-                ->where('user_id', $user->id)
-                ->firstOrFail();
-            $snippet->order = $idOrder['order'];
-            $snippet->save();
-        }
     }
 }

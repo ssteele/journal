@@ -29,7 +29,12 @@ export default function VerifyEmail({ status }) {
 
       <form onSubmit={submit}>
         <div className="mt-4 flex items-center justify-between">
-          <Button processing={processing}>Resend Verification Email</Button>
+          <Button
+            className="bg-gray-900 border border-transparent font-semibold inline-flex items-center ml-4 px-4 py-2 rounded-md text-white tracking-widest text-xs uppercase"
+            processing={processing}
+          >
+            Resend Verification Email
+          </Button>
 
           <Link
             href={route('logout')}
