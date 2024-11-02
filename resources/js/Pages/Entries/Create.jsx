@@ -1,4 +1,4 @@
-import Form from '@/Components/Entry/Form';
+import CreateUpdateEntryForm from '@/Components/Forms/CreateUpdateEntryForm';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
@@ -25,7 +25,7 @@ export default function Create({
     >
       <Head title="Create Entry" />
 
-      <Form
+      <CreateUpdateEntryForm
         dbSnippets={dbSnippets}
         mentions={dbMentions}
         nextDate={dbNextDate}

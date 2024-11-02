@@ -1,4 +1,4 @@
-import Form from '@/Components/Entry/Form';
+import CreateUpdateEntryForm from '@/Components/Forms/CreateUpdateEntryForm';
 import Authenticated from '@/Layouts/Authenticated';
 import { FormatDateForTitle, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import { Head } from '@inertiajs/inertia-react';
@@ -29,7 +29,7 @@ export default function Edit({
     >
       <Head title="Update Entry" />
 
-      <Form
+      <CreateUpdateEntryForm
         currentTags={dbCurrentTags}
         dbEntry={dbEntry}
         dbSnippets={dbSnippets}
