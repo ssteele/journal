@@ -159,12 +159,17 @@ class EntryController extends Controller
         $entryDate = Carbon::parse($entry['date']);
 
         $snippets = $this->snippetRepository->get();
+
+        // @todo: get suggested tags, merge with all tags
         $tags = $this->tagRepository->getNamesSortedByFrequency();
-        $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
-        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
-        $currentMentions = $this->mentionRepository->getNamesForEntry($entry->id);
+        $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
+
         $recentMentions = $this->mentionRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_mentions'));
+        $currentMentions = $this->mentionRepository->getNamesForEntry($entry->id);
+        $allMentions = $this->mentionRepository->getNamesSortedByFrequency();
+        $suggestedMentions = $this->mentionRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_suggested_mentions'));
+        $mentions = $suggestedMentions->merge($allMentions)->unique()->values();
         return Inertia::render('Entries/Edit')
             ->with('dbCurrentMentions', $currentMentions)
             ->with('dbCurrentTags', $currentTags)
