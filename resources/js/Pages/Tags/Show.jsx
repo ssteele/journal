@@ -1,4 +1,5 @@
 import EditPanel from '@/Components/Annotation/Detail/EditPanel';
+import ComparePanel from '@/Components/Annotation/Detail/ComparePanel';
 import ExcerptPanel from '@/Components/Annotation/Detail/ExcerptPanel';
 import Timeline from '@/Components/Annotation/Timeline';
 import Button from '@/Components/Button';
@@ -160,6 +161,16 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                       { ucFirst(AnnotationDetailPanelTabs.Excerpts) }
                     </li>
                   )}
+
+                  <li
+                    className={`
+                      px-4 py-1 rounded-t-md cursor-pointer
+                      ${isActiveTab(AnnotationDetailPanelTabs.Compare) ? 'bg-green-100' : 'bg-white'}
+                    `}
+                    onClick={() => handleSwitchDetailPanelTab(AnnotationDetailPanelTabs.Compare)}
+                  >
+                    { ucFirst(AnnotationDetailPanelTabs.Compare) }
+                  </li>
                 </ul>
 
                 <span className="mt-2" onClick={() => handleCloseDetailBar()}>
@@ -180,6 +191,12 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                       annotation={tag}
                       annotationType="tag"
                       annotationEntries={tagEntries}
+                    />
+                  ),
+                  compare: (
+                    <ComparePanel
+                      annotation={tag}
+                      annotationType="tag"
                     />
                   ),
                 }[currentDetailPanelTab]
