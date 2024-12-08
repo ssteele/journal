@@ -1,5 +1,5 @@
-import EditPanel from '@/Components/Annotation/Detail/EditPanel';
 import ComparePanel from '@/Components/Annotation/Detail/ComparePanel';
+import EditPanel from '@/Components/Annotation/Detail/EditPanel';
 import ExcerptPanel from '@/Components/Annotation/Detail/ExcerptPanel';
 import Timeline from '@/Components/Annotation/Timeline';
 import Button from '@/Components/Button';
