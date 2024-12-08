@@ -14,7 +14,7 @@ import { Head } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
 import { isMobile } from 'react-device-detect';
 
-export default function Show({ auth, errors, tag, timeline = [] }) {
+export default function Show({ auth, errors, tag, tags = [], timeline = [] }) {
   const annotationMap = [tag.id];
   const timelineFrequency = getTimelineFrequency(timeline);
   const timelineYears = getTimelineYears(timelineFrequency);
@@ -196,6 +196,7 @@ export default function Show({ auth, errors, tag, timeline = [] }) {
                   compare: (
                     <ComparePanel
                       annotation={tag}
+                      annotations={tags}
                       annotationType="tag"
                     />
                   ),
