@@ -4,11 +4,21 @@ import React, { useState } from 'react';
 export default function ComparePanel({ annotation, annotations, annotationType }) {
   const [filteredAnnotations, setFilteredAnnotations] = useState(annotations);
 
+  function compareLink(compareAnnotationName) {
+    switch (annotationType) {
+      case 'tag':
+        return route('tags.compare', {tag1: annotation?.name, tag2: compareAnnotationName});
+    
+      case 'mention':
+        return route('mentions.compare', {mention1: annotation?.name, mention2: compareAnnotationName});
+    }
+  }
+
   function searchAnnotations(e) {
     if ('Enter' === e.key && filteredAnnotations.length) {
       const compareAnnotationName = filteredAnnotations[0]?.name;
       if (compareAnnotationName) {
-        window.location.href = route('tags.compare', {tag1: annotation?.name, tag2: compareAnnotationName});
+        window.location.href = compareLink(compareAnnotationName);
       }
     }
 
@@ -43,7 +53,7 @@ export default function ComparePanel({ annotation, annotations, annotationType }
             const compareAnnotationName = filteredAnnotation?.name;
             return (
               <Link
-                href={route('tags.compare', {tag1: annotation?.name, tag2: compareAnnotationName})}
+                href={compareLink(compareAnnotationName)}
                 key={i}
               >
                 <span className="inline-flex px-2 py-1">
