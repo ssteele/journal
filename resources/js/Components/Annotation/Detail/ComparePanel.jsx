@@ -48,7 +48,7 @@ export default function ComparePanel({ annotation, annotations, annotationType }
           />
         </div>
 
-        <div className="p-6 pt-0 bg-white">
+        <div className="p-6 pt-0 bg-white max-h-screen overflow-y-scroll">
           {filteredAnnotations.map((filteredAnnotation, i) => {
             const compareAnnotationName = filteredAnnotation?.name;
             return (
