@@ -44,9 +44,17 @@ class MentionController extends Controller
      */
     public function show(Mention $mention)
     {
+        // grab mentions and remove the current mention from the collection
+        $mentions = $this->mentionRepository->getSortedByFrequency();
+        $mentionIndex = $mentions->search(function ($item) use ($mention) {
+            return $item->name === $mention->name;
+        });
+        $mentions = $mentions->forget($mentionIndex)->collect()->values();
+
         $timeline = $this->mentionRepository->getTimeline($mention->id);
         return Inertia::render('Mentions/Show')
             ->with('mention', $mention)
+            ->with('mentions', $mentions)
             ->with('timeline', $timeline);
     }
 
