@@ -1,3 +1,4 @@
+import ComparePanel from '@/Components/Annotation/Detail/ComparePanel';
 import EditPanel from '@/Components/Annotation/Detail/EditPanel';
 import ExcerptPanel from '@/Components/Annotation/Detail/ExcerptPanel';
 import Timeline from '@/Components/Annotation/Timeline';
@@ -13,7 +14,7 @@ import { Head } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
 import { isMobile } from 'react-device-detect';
 
-export default function Show({ auth, errors, mention, timeline = [] }) {
+export default function Show({ auth, errors, mention, mentions = [], timeline = [] }) {
   const annotationMap = [mention.id];
   const timelineFrequency = getTimelineFrequency(timeline);
   const timelineYears = getTimelineYears(timelineFrequency);
@@ -159,6 +160,16 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                       { ucFirst(AnnotationDetailPanelTabs.Excerpts) }
                     </li>
                   )}
+
+                  <li
+                    className={`
+                      px-4 py-1 rounded-t-md cursor-pointer
+                      ${isActiveTab(AnnotationDetailPanelTabs.Compare) ? 'bg-green-100' : 'bg-white'}
+                    `}
+                    onClick={() => handleSwitchDetailPanelTab(AnnotationDetailPanelTabs.Compare)}
+                  >
+                    { ucFirst(AnnotationDetailPanelTabs.Compare) }
+                  </li>
                 </ul>
 
                 <span className="mt-2" onClick={() => handleCloseDetailBar()}>
@@ -179,6 +190,13 @@ export default function Show({ auth, errors, mention, timeline = [] }) {
                       annotation={mention}
                       annotationType="mention"
                       annotationEntries={mentionEntries}
+                    />
+                  ),
+                  compare: (
+                    <ComparePanel
+                      annotation={mention}
+                      annotations={mentions}
+                      annotationType="mention"
                     />
                   ),
                 }[currentDetailPanelTab]

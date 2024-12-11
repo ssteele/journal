@@ -33,16 +33,24 @@ export default function Authenticated({ auth, header, children }) {
         if (entryDate) {
           return route('entries.show', entryDate);
         }
-        break;
+
       case 'snippets.create':
       case 'snippets.edit':
         return route('snippets.index');
-      case 'mentions.show':
+
       case 'mentions.compare':
+        const mentionName = (history?.state?.props?.mentions || [])[0]?.name;
+        return mentionName ? route('mentions.show', mentionName) : route('mentions.index');
+
+      case 'mentions.show':
         // @todo: use cookies to store previous url, then nav back
         return route('mentions.index');
-      case 'tags.show':
+
       case 'tags.compare':
+        const tagName = (history?.state?.props?.tags || [])[0]?.name;
+        return tagName ? route('tags.show', tagName) : route('tags.index');
+
+      case 'tags.show':
         // @todo: use cookies to store previous url, then nav back
         return route('tags.index');
     }

@@ -44,9 +44,17 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
+        // grab tags and remove the current tag from the collection
+        $tags = $this->tagRepository->getSortedByFrequency();
+        $tagIndex = $tags->search(function ($item) use ($tag) {
+            return $item->name === $tag->name;
+        });
+        $tags = $tags->forget($tagIndex)->collect()->values();
+
         $timeline = $this->tagRepository->getTimeline($tag->id);
         return Inertia::render('Tags/Show')
             ->with('tag', $tag)
+            ->with('tags', $tags)
             ->with('timeline', $timeline);
     }
 

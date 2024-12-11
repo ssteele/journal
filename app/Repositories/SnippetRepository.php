@@ -23,7 +23,7 @@ class SnippetRepository
     public function getOrderedRepeating($nextDate)
     {
         $targetDate = new Carbon($nextDate);
-        $targetDate->subDays(7);
+        $targetDate->subDays(8);
 
         return DB::table('snippets')
             ->where('repeating', '=', '1')
