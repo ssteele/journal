@@ -9,6 +9,8 @@ class MentionRepository
     public function getSortedByFrequency()
     {
         return DB::table('mentions')
+            ->where('mentions.enabled', true)
+            ->where('mentions.deleted', false)
             ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
             ->select('id', 'name', DB::raw('count(*) as freq'))
             ->groupBy('id', 'name')
@@ -19,6 +21,8 @@ class MentionRepository
     public function getNamesSortedByFrequency()
     {
         return DB::table('mentions')
+            ->where('mentions.enabled', true)
+            ->where('mentions.deleted', false)
             ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
             ->select('name', DB::raw('count(*) as freq'))
             ->groupBy('name')
@@ -34,6 +38,8 @@ class MentionRepository
         $dayLimit = $dayLimit ?: config('constants.day_limit_recent_mentions');
         $pastDate = $date->copy()->subDay($dayLimit);
         return DB::table('mentions')
+            ->where('mentions.enabled', true)
+            ->where('mentions.deleted', false)
             ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
             ->join('entries', 'entry_has_mentions.entry_id', '=', 'entries.id')
             ->select('name', DB::raw('count(*) as freq'))
@@ -46,6 +52,8 @@ class MentionRepository
     public function getTimeline($id)
     {
         return DB::table('mentions')
+            ->where('mentions.enabled', true)
+            ->where('mentions.deleted', false)
             ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
             ->join('entries', 'entry_has_mentions.entry_id', '=', 'entries.id')
             ->select('date', 'entries.id as entryId', 'mentions.id as annotationId')
@@ -57,6 +65,8 @@ class MentionRepository
     public function getNamesForEntry($entryId)
     {
         return DB::table('mentions')
+            ->where('mentions.enabled', true)
+            ->where('mentions.deleted', false)
             ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
             ->distinct()
             ->where('entry_id', '=', $entryId)
@@ -66,6 +76,8 @@ class MentionRepository
     public function getIdNamePairsForEntry($entryId)
     {
         return DB::table('mentions')
+            ->where('mentions.enabled', true)
+            ->where('mentions.deleted', false)
             ->join('entry_has_mentions', 'mentions.id', '=', 'entry_has_mentions.mention_id')
             ->select('id', 'name')
             ->where('entry_id', '=', $entryId)

@@ -11,6 +11,8 @@ class EntryRepository
     public function getRecent($dayLimit = null)
     {
         return DB::table('entries')
+            ->where('enabled', true)
+            ->where('deleted', false)
             ->orderBy('date', 'desc')
             ->limit($dayLimit ?: config('constants.day_limit'))
             ->get();
@@ -19,6 +21,8 @@ class EntryRepository
     public function getRecentWithMentions($dayLimit = null)
     {
         return Entry::with(['entryHasMention.mention'])
+            ->where('enabled', true)
+            ->where('deleted', false)
             ->orderBy('date', 'desc')
             ->limit($dayLimit ?: config('constants.day_limit'))
             ->get();
@@ -27,6 +31,8 @@ class EntryRepository
     public function getMoreWithMentions($lastFetchedId, $dayLimit = null)
     {
         return Entry::with(['entryHasMention.mention'])
+            ->where('enabled', true)
+            ->where('deleted', false)
             ->where('id', '<', $lastFetchedId)
             ->orderBy('date', 'desc')
             ->limit($dayLimit ?: config('constants.day_limit'))
@@ -36,6 +42,8 @@ class EntryRepository
     public function getRange($startDate = null, $endDate = null)
     {
         return DB::table('entries')
+            ->where('enabled', true)
+            ->where('deleted', false)
             ->when($startDate, function ($query, $startDate) {
                 $query->where('date', '>=', $startDate);
             })
@@ -49,6 +57,8 @@ class EntryRepository
     public function getDateFollowing()
     {
         $entry = DB::table('entries')
+            ->where('enabled', true)
+            ->where('deleted', false)
             ->orderBy('date', 'desc')
             ->limit(1)
             ->get('date');
@@ -60,6 +70,8 @@ class EntryRepository
     {
         $today = Carbon::today(config('constants.timezone'));
         $entry = DB::table('entries')
+            ->where('enabled', true)
+            ->where('deleted', false)
             ->whereDate('date', '=', $today)
             ->limit(1)
             ->get();

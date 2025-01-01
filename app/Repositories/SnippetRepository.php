@@ -10,12 +10,14 @@ class SnippetRepository
     public function get()
     {
         return DB::table('snippets')
+            ->where('deleted', false)
             ->get();
     }
 
     public function getOrdered()
     {
         return DB::table('snippets')
+            ->where('deleted', false)
             ->orderBy('order', 'asc')
             ->get();
     }
@@ -26,6 +28,7 @@ class SnippetRepository
         $targetDate->subDays(8);
 
         return DB::table('snippets')
+            ->where('deleted', false)
             ->where('repeating', '=', '1')
             ->orWhere(function ($query) use ($targetDate) {
                 $query->where('repeating', '=', '0')
@@ -38,6 +41,7 @@ class SnippetRepository
     public function getOrderedEntrySnippets()
     {
         return DB::table('snippets')
+            ->where('deleted', false)
             ->where('type', '=', 'entry')
             ->orderBy('order', 'asc')
             ->get();
@@ -46,6 +50,7 @@ class SnippetRepository
     public function getOrderedTagSnippets()
     {
         return DB::table('snippets')
+            ->where('deleted', false)
             ->where('type', '=', 'tag')
             ->orderBy('order', 'asc')
             ->get();
@@ -54,6 +59,7 @@ class SnippetRepository
     public function getOrderedMentionSnippets()
     {
         return DB::table('snippets')
+            ->where('deleted', false)
             ->where('type', '=', 'mention')
             ->orderBy('order', 'asc')
             ->get();
