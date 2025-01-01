@@ -16,6 +16,11 @@ return new class extends Migration
             $table->boolean('deleted')->after('enabled')->default(false);
         });
 
+        Schema::table('marker_categories', function (Blueprint $table) {
+            $table->boolean('enabled')->after('is_default')->default(true);
+            $table->boolean('deleted')->after('enabled')->default(false);
+        });
+
         Schema::table('markers', function (Blueprint $table) {
             $table->boolean('enabled')->after('marker')->default(true);
             $table->boolean('deleted')->after('enabled')->default(false);
@@ -47,6 +52,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('entries', function (Blueprint $table) {
+            $table->dropColumn('enabled');
+            $table->dropColumn('deleted');
+        });
+
+        Schema::table('marker_categories', function (Blueprint $table) {
             $table->dropColumn('enabled');
             $table->dropColumn('deleted');
         });
