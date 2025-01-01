@@ -19,6 +19,8 @@ class Entry extends Model
         'date',
         'tempo',
         'entry',
+        'enabled',
+        'deleted',
     ];
 
     /**
