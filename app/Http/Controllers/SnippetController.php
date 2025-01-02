@@ -109,7 +109,13 @@ class SnippetController extends Controller
     {
         // get the things
         $user = \Auth::user();
-        $snippet = Snippet::find($id);
+        try {
+            $snippet = Snippet::where('id', $id)
+                ->where('user_id', $user->id)
+                ->firstOrFail();
+        } catch (\Throwable $th) {
+            return new \Illuminate\Http\Response('Unable to update snippet', 422);
+        }
         $update = new Snippet($request->all());
 
         // update fillable fields (except user_id), then save
@@ -132,6 +138,18 @@ class SnippetController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = \Auth::user();
+        try {
+            $snippet = Snippet::where('id', $id)
+                ->where('user_id', $user->id)
+                ->firstOrFail();
+        } catch (\Throwable $th) {
+            return new \Illuminate\Http\Response('Unable to delete snippet', 422);
+        }
+
+        $snippet->deleted = true;
+        $snippet->save();
+
+        return redirect()->route('snippets.index');
     }
 }
