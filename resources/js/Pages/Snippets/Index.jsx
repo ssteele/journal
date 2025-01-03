@@ -19,10 +19,13 @@ export default function Index({
   errors,
 }) {
   const defaultSnippetType = 'entry';
-  const [currentSnippetType, setCurrentSnippetType] = useState(() => {
-    return localStorage.getItem('snippets-current-snippet-type') || defaultSnippetType;
+  const [showDisabled, setShowDisabled] = useState(() => {
+    return 'true' === localStorage.getItem('state-snippets-show-disabled');
   });
-  const [showDisabled, setShowDisabled] = useState(false);
+  const [currentSnippetType, setCurrentSnippetType] = useState(() => {
+    return localStorage.getItem('state-snippets-current-snippet-type') || defaultSnippetType;
+  });
+
   const [currentSnippets, setCurrentSnippets] = useState([]);
 
   const { data, setData } = useForm([]);
@@ -98,12 +101,18 @@ export default function Index({
     }
   }
 
+  function persistShowDisabled(doShowDisabled) {
+    localStorage.setItem('state-snippets-show-disabled', doShowDisabled);
+  }
+
   function handleShowDisabledToggle() {
-    setShowDisabled(!showDisabled);
+    const doShowDisabled = !showDisabled;
+    setShowDisabled(doShowDisabled);
+    persistShowDisabled(doShowDisabled);
   };
 
   function persistCurrentSnippetType(type) {
-    localStorage.setItem('snippets-current-snippet-type', type);
+    localStorage.setItem('state-snippets-current-snippet-type', type);
   }
 
   function handleSwitchSnippetType(type) {
