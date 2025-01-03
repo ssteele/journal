@@ -19,16 +19,14 @@ export default function Index({
   errors,
 }) {
   const defaultSnippetType = 'entry';
-  const [currentSnippetType, setCurrentSnippetType] = useState(defaultSnippetType);
+  const [currentSnippetType, setCurrentSnippetType] = useState(() => {
+    return localStorage.getItem('snippets-current-snippet-type') || defaultSnippetType;
+  });
   const [showDisabled, setShowDisabled] = useState(false);
   const [currentSnippets, setCurrentSnippets] = useState([]);
 
   const { data, setData } = useForm([]);
   const { props } = usePage();
-
-  useEffect(() => {
-    handleSwitchSnippetType(defaultSnippetType);
-  }, []);
 
   useEffect(() => {
     setSnippets(getCurrentSnippetType()?.value);
@@ -104,8 +102,13 @@ export default function Index({
     setShowDisabled(!showDisabled);
   };
 
+  function persistCurrentSnippetType(type) {
+    localStorage.setItem('snippets-current-snippet-type', type);
+  }
+
   function handleSwitchSnippetType(type) {
     setCurrentSnippetType(type);
+    persistCurrentSnippetType(type);
     setSnippets(type);
   }
 
