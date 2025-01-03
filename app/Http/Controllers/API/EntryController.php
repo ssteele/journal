@@ -33,11 +33,14 @@ class EntryController extends Controller
     public function get($id)
     {
         $user = \Auth::user();
-
-        $entry = Entry::where('id', $id)
-            ->where('user_id', $user->id)
-            ->firstOrFail();
-        return response()->json($entry);
+        try {
+            $entry = Entry::where('id', $id)
+                ->where('user_id', $user->id)
+                ->firstOrFail();
+            return response()->json($entry);
+        } catch (\Exception $e) {
+            return response('Unable to get entry', 422);
+        }
     }
 
     /**
@@ -50,11 +53,17 @@ class EntryController extends Controller
     {
         $ids = $request->input('ids');
         $user = \Auth::user();
-
-        $entries = Entry::whereIn('id', $ids)
-            ->where('user_id', $user->id)
-            ->get();
-        return response()->json($entries);
+        try {
+            $entries = Entry::whereIn('id', $ids)
+                ->where('user_id', $user->id)
+                ->get();
+            if ($entries->count() > 0) {
+                return response()->json($entries);
+            }
+            throw new \Exception('No entries found');
+        } catch (\Exception $e) {
+            return response('Unable to get entries', 422);
+        }
     }
 
     /**
