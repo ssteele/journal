@@ -44,7 +44,10 @@ export default function Show({ auth, errors, tag, tags = [], timeline = [] }) {
     setCurrentDetailPanelTab(AnnotationDetailPanelTabs.Excerpts);
 
     const entriesList = await fetch(route('api.entries.list', { ids: timelineYear?.entryIds }))
-      .then(async response => response?.ok ? await response?.json() : null)
+      .then(async response => response?.ok
+        ? await response?.json()
+        : [{ id: 0, date: new Date().toISOString().slice(0, 10), entry: `Could not get entries for #${tag?.name}` }]
+      )
       .catch(error => console.log(error?.message));
     ;
 
@@ -69,7 +72,10 @@ export default function Show({ auth, errors, tag, tags = [], timeline = [] }) {
 
     if (!tagEntries?.find(entry => entry?.id === day?.entryId)) {
       const tagEntry = await fetch(route('api.entries.id', day?.entryId))
-        .then(async response => response?.ok ? await response?.json() : null)
+        .then(async response => response?.ok
+          ? await response?.json()
+          : { id: 0, date: new Date().toISOString().slice(0, 10), entry: `Could not get entry for #${tag?.name}` }
+        )
         .catch(error => console.log(error?.message));
       ;
 

@@ -45,7 +45,10 @@ export default function Index({
         },
         method: 'POST',
       })
-        .then(async response => response?.ok ? await response?.json() : null)
+        .then(async response => response?.ok
+          ? await response?.json()
+          : { message: "Snippets not reordered" }
+        )
         .catch(error => console.log(error?.message));
 
       if (response?.message) {
