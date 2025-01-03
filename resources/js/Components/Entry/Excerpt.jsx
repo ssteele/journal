@@ -18,8 +18,8 @@ export default function Excerpt({ annotation, annotationType, entry: dbEntry }) 
   }, [doRefresh]);
 
   function getSpaceIndices(segment) {
-    const spaceIndices = [...segment.matchAll(/\s/g)].map(s => s.index);
-    return [0, ...spaceIndices, segment.length];
+    const spaceIndices = [...segment?.matchAll(/\s/g)]?.map(s => s?.index);
+    return [0, ...spaceIndices, segment?.length];
   }
 
   function getExcerptBefore(segment, length, spaceIndices) {

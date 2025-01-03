@@ -51,7 +51,7 @@ export default function Show({ auth, errors, tag, tags = [], timeline = [] }) {
       .catch(error => console.log(error?.message));
     ;
 
-    if (entriesList.length) {
+    if (entriesList?.length) {
       const entries = [];
       for (const entryItem of entriesList) {
         if (!tagEntries?.find(entry => entry?.id === entryItem?.id)) {
