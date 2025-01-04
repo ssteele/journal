@@ -16,8 +16,6 @@ class MarkerCategory extends Model
         'name',
         'shorthand',
         'is_default',
-        'enabled',
-        'deleted',
     ];
 
     /**

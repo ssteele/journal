@@ -15,8 +15,6 @@ class Marker extends Model
         'marker_category_id',
         'entry_id',
         'marker',
-        'enabled',
-        'deleted',
     ];
 
     /**
