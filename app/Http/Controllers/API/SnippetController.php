@@ -16,14 +16,17 @@ class SnippetController extends Controller
     public function updateOrder(Request $request)
     {
         $user = \Auth::user();
-
         $idsOrders = $request->input('idsOrders');
         foreach ($idsOrders as $idOrder) {
-            $snippet = Snippet::where('id', $idOrder['id'])
-                ->where('user_id', $user->id)
-                ->firstOrFail();
-            $snippet->order = $idOrder['order'];
-            $snippet->save();
+            try {
+                $snippet = Snippet::where('id', $idOrder['id'])
+                    ->where('user_id', $user->id)
+                    ->firstOrFail();
+                $snippet->order = $idOrder['order'];
+                $snippet->save();
+            } catch (\Exception $e) {
+                return response('Unable to update snippet order', 422);
+            }
         }
 
         return response()->json([ 'message' => 'Snippets reordered' ]);

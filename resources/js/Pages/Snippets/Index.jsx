@@ -19,16 +19,17 @@ export default function Index({
   errors,
 }) {
   const defaultSnippetType = 'entry';
-  const [currentSnippetType, setCurrentSnippetType] = useState(defaultSnippetType);
-  const [showDisabled, setShowDisabled] = useState(false);
+  const [showDisabled, setShowDisabled] = useState(() => {
+    return 'true' === localStorage.getItem('state-snippets-show-disabled');
+  });
+  const [currentSnippetType, setCurrentSnippetType] = useState(() => {
+    return localStorage.getItem('state-snippets-current-snippet-type') || defaultSnippetType;
+  });
+
   const [currentSnippets, setCurrentSnippets] = useState([]);
 
   const { data, setData } = useForm([]);
   const { props } = usePage();
-
-  useEffect(() => {
-    handleSwitchSnippetType(defaultSnippetType);
-  }, []);
 
   useEffect(() => {
     setSnippets(getCurrentSnippetType()?.value);
@@ -45,7 +46,10 @@ export default function Index({
         },
         method: 'POST',
       })
-        .then(async response => response?.ok ? await response?.json() : null)
+        .then(async response => response?.ok
+          ? await response?.json()
+          : { message: "Snippets not reordered" }
+        )
         .catch(error => console.log(error?.message));
 
       if (response?.message) {
@@ -97,12 +101,23 @@ export default function Index({
     }
   }
 
+  function persistShowDisabled(doShowDisabled) {
+    localStorage.setItem('state-snippets-show-disabled', doShowDisabled);
+  }
+
   function handleShowDisabledToggle() {
-    setShowDisabled(!showDisabled);
+    const doShowDisabled = !showDisabled;
+    setShowDisabled(doShowDisabled);
+    persistShowDisabled(doShowDisabled);
   };
+
+  function persistCurrentSnippetType(type) {
+    localStorage.setItem('state-snippets-current-snippet-type', type);
+  }
 
   function handleSwitchSnippetType(type) {
     setCurrentSnippetType(type);
+    persistCurrentSnippetType(type);
     setSnippets(type);
   }
 

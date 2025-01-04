@@ -1,7 +1,8 @@
+import RepeatClock from '@/Components/Icons/RepeatClock';
 import React from 'react';
 
 export default function Card({ dbSnippet }) {
-  const { days, description, enabled } = dbSnippet;
+  const { days, description, repeating } = dbSnippet;
   const dayAbbreviations = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
 
   function isDayChecked(dayIndex) {
@@ -28,9 +29,11 @@ export default function Card({ dbSnippet }) {
         })}
       </span>
 
-      <span className="text-sm text-center italic pt-2 sm:col-span-2 sm:pt-0 sm:text-right">
-        { (enabled) ? 'Enabled' : 'Disabled' }
-      </span>
+      {!!repeating && (
+        <span className="my-0 ml-auto mr-0 pt-2 sm:col-span-2 sm:pt-0">
+          <RepeatClock className="w-5" strokeColor="#6b7280" />
+        </span>
+      )}
     </div>
   );
 }

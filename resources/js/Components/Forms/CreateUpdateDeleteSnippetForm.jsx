@@ -15,6 +15,7 @@ export default function CreateUpdateDeleteSnippetForm({ dbSnippet = {}, mentions
     days = InitialDays,
     description = '',
     enabled = true,
+    deleted = false,
     repeating = true,
     type = snippetType,
   } = dbSnippet;
@@ -24,11 +25,22 @@ export default function CreateUpdateDeleteSnippetForm({ dbSnippet = {}, mentions
     days,
     description,
     enabled,
+    deleted,
     repeating,
     snippet: (!!snippet && 'entry' !== type) ? expandJsonSnippet(snippet) : snippet,
     type,
   };
-  const { clearErrors, data, errors, hasErrors, post, put, setData, setError } = useForm(initialState);
+  const {
+    clearErrors,
+    data,
+    delete: destroy, // delete is a reserved word
+    errors,
+    hasErrors,
+    post,
+    put,
+    setData,
+    setError,
+  } = useForm(initialState);
   const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
   const [isAnnotatingStart, setIsAnnotatingStart] = useState(false);
   const [isAnnotating, setIsAnnotating] = useState(false);
@@ -67,6 +79,19 @@ export default function CreateUpdateDeleteSnippetForm({ dbSnippet = {}, mentions
       setData('snippet', minifyJsonSnippet(data?.snippet));
     }
     setDoSubmit(true);
+  }
+
+  function handleDelete() {
+    destroy(route('snippets.destroy', id), {
+      onSuccess: () => {
+        // @todo: flash notify
+        console.log('Snippet deleted');
+        return;
+      },
+    });
+
+    // @todo: flash notify
+    console.log('Snippet not deleted');
   }
 
   function isDayChecked(dayIndex) {
@@ -398,10 +423,9 @@ export default function CreateUpdateDeleteSnippetForm({ dbSnippet = {}, mentions
                 <div className="mt-6 flex gap-4 justify-end">
                   {!data?.enabled && (
                     <Button
-                      type="submit"
-                      // className="bg-red-500"
-                      className="bg-gray-900 cursor-not-allowed opacity-25 active:bg-gray-900 active:opacity-25"
-                      disabled={true}
+                      className="bg-red-500 active:bg-gray-900 active:opacity-25"
+                      type="button"
+                      onClick={_ => handleDelete()}
                     >
                       Delete
                     </Button>

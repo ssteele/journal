@@ -10,6 +10,8 @@ class TagRepository
     public function getSortedByFrequency()
     {
         return DB::table('tags')
+            ->where('tags.enabled', true)
+            ->where('tags.deleted', false)
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
             ->select('id', 'name', DB::raw('count(*) as freq'))
             ->groupBy('id', 'name')
@@ -20,6 +22,8 @@ class TagRepository
     public function getNamesSortedByFrequency()
     {
         return DB::table('tags')
+            ->where('tags.enabled', true)
+            ->where('tags.deleted', false)
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
             ->select('name', DB::raw('count(*) as freq'))
             ->groupBy('name')
@@ -35,6 +39,8 @@ class TagRepository
         $dayLimit = $dayLimit ?: config('constants.day_limit_recent_tags');
         $pastDate = $date->copy()->subDay($dayLimit);
         return DB::table('tags')
+            ->where('tags.enabled', true)
+            ->where('tags.deleted', false)
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
             ->join('entries', 'entry_has_tags.entry_id', '=', 'entries.id')
             ->select('name', DB::raw('count(*) as freq'))
@@ -47,6 +53,8 @@ class TagRepository
     public function getTimeline($id)
     {
         return DB::table('tags')
+            ->where('tags.enabled', true)
+            ->where('tags.deleted', false)
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
             ->join('entries', 'entry_has_tags.entry_id', '=', 'entries.id')
             ->select('date', 'entries.id as entryId', 'tags.id as annotationId')
@@ -58,6 +66,8 @@ class TagRepository
     public function getNamesForEntry($entryId)
     {
         return DB::table('tags')
+            ->where('tags.enabled', true)
+            ->where('tags.deleted', false)
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
             ->distinct()
             ->where('entry_id', '=', $entryId)
@@ -67,6 +77,8 @@ class TagRepository
     public function getIdNamePairsForEntry($entryId)
     {
         return DB::table('tags')
+            ->where('tags.enabled', true)
+            ->where('tags.deleted', false)
             ->join('entry_has_tags', 'tags.id', '=', 'entry_has_tags.tag_id')
             ->select('id', 'name')
             ->where('entry_id', '=', $entryId)

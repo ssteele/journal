@@ -21,6 +21,7 @@ class Snippet extends Model
         'days',
         'repeating',
         'enabled',
+        'deleted',
     ];
 
     // /**
