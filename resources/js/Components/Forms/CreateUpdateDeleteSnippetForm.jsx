@@ -421,7 +421,7 @@ export default function CreateUpdateDeleteSnippetForm({ dbSnippet = {}, mentions
                 </div>
 
                 <div className="mt-6 flex gap-4 justify-end">
-                  {!data?.enabled && (
+                  {isExistingSnippet && !data?.enabled && (
                     <Button
                       className="bg-red-500 active:bg-gray-900 active:opacity-25"
                       type="button"
