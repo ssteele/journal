@@ -198,10 +198,7 @@ class EntryController extends Controller
         $user = \Auth::user();
         $update = new Entry($request->all());
 
-        // update fillable fields (except user_id), then save
-        $fillable = array_filter($update->getFillable(), function ($prop) {
-            return $prop != 'user_id';
-        });
+        $fillable = $update->getFillable();
         foreach ($fillable as $prop) {
             $entry->$prop = $update->$prop;
         }

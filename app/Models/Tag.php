@@ -14,8 +14,6 @@ class Tag extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'enabled',
-        'deleted',
     ];
 
     /**

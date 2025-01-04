@@ -15,12 +15,9 @@ class Entry extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
         'date',
         'tempo',
         'entry',
-        'enabled',
-        'deleted',
     ];
 
     /**
