@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function RepeatClock({ className, strokeColor = 'black'  }) {
+export default function RepeatClock({ className, strokeColor = 'black' }) {
   return (
     <svg className={className} viewBox="0 0 512 512.584" xmlns="http://www.w3.org/2000/svg">
       <g>
