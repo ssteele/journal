@@ -134,7 +134,8 @@ class EntryController extends Controller
         $datesPrevNext = [
             'prev' => Entry::where('date', '<', $entry->date)->max('date'),
             'next' => Entry::where('date', '>', $entry->date)->min('date'),
-            'tomorrow' => Carbon::parse($entry->date)->addDay()->toDateString(),
+            'dateToday' => Carbon::today(config('constants.timezone'))->toDateString(),
+            'dateNext' => Carbon::parse($entry->date)->addDay()->toDateString(),
         ];
         $markerCategories = $this->markerCategoryRepository->get();
         $markers = $this->markerRepository->getForEntry($entry->id);

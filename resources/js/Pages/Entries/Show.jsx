@@ -1,3 +1,4 @@
+import CalendarDay from '@/Components/Icons/CalendarDay';
 import { MarkerColorMap } from '@/Constants/MarkerColorMap';
 import Authenticated from '@/Layouts/Authenticated';
 import GetMarkerCategory from '@/Utils/GetMarkerCategory';
@@ -107,11 +108,18 @@ export default function Show({ auth, dbEntry, dbDatesPrevNext, dbMarkerCategorie
       auth={auth}
       errors={errors}
       header={
-        <h2
-          className="font-semibold text-xl text-gray-800 leading-tight"
-          dangerouslySetInnerHTML={{__html: `${FormatDateForTitle(date)} &#8211; ${FormatDateWeekdayLong(date)}`}}
-        >
-        </h2>
+        <>
+          <h2
+            className="font-semibold text-xl text-gray-800 leading-tight"
+            dangerouslySetInnerHTML={{__html: `${FormatDateForTitle(date)} &#8211; ${FormatDateWeekdayLong(date)}`}}
+          ></h2>
+
+          {date === dbDatesPrevNext.dateToday && (
+            <span className="float-right relative bottom-6" title="Today">
+              <CalendarDay className="block h-6 w-auto" strokeColor="#e5e7eb" />
+            </span>
+          )}
+        </>
       }
     >
       <Head title="Entry" />
@@ -131,7 +139,7 @@ export default function Show({ auth, dbEntry, dbDatesPrevNext, dbMarkerCategorie
           )}
 
           {!dbDatesPrevNext?.next && (
-            <Link href={route('entries.next', dbDatesPrevNext?.tomorrow)}>
+            <Link href={route('entries.next', dbDatesPrevNext?.dateNext)}>
               <button className="px-2 font-bold text-white bg-green-400 rounded">&raquo;</button>
             </Link>
           )}
