@@ -22,6 +22,7 @@ use Inertia\Inertia;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/entries/today', [EntryController::class, 'today'])->name('entries.today');
+    Route::get('/entries/next/{date}', [EntryController::class, 'next'])->name('entries.next');
     Route::get('/entries/upload', [EntryController::class, 'createUpload'])->name('entries.create-upload');
     Route::post('/entries/upload', [EntryController::class, 'storeUpload'])->name('entries.store-upload');
     Route::get('/entries/export', [EntryController::class, 'createExport'])->name('entries.create-export');

@@ -134,6 +134,8 @@ class EntryController extends Controller
         $datesPrevNext = [
             'prev' => Entry::where('date', '<', $entry->date)->max('date'),
             'next' => Entry::where('date', '>', $entry->date)->min('date'),
+            'dateToday' => Carbon::today(config('constants.timezone'))->toDateString(),
+            'dateNext' => Carbon::parse($entry->date)->addDay()->toDateString(),
         ];
         $markerCategories = $this->markerCategoryRepository->get();
         $markers = $this->markerRepository->getForEntry($entry->id);
@@ -243,6 +245,22 @@ class EntryController extends Controller
         if ($entry->count()) {
             $entryDate = $entry[0]->date;
             return redirect()->route('entries.edit', $entryDate);
+        } else {
+            return redirect()->route('entries.create');
+        }
+    }
+
+    /**
+     * Redirect to next entry or create new if entry doesn't exist.
+     *
+     * @param  Entry  $entry
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function next(string $date)
+    {
+        $entry = $this->entryRepository->getDate($date);
+        if ($entry) {
+            return redirect()->route('entries.show', $entry->date);
         } else {
             return redirect()->route('entries.create');
         }
