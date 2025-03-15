@@ -114,7 +114,7 @@ export default function Show({ auth, dbEntry, dbDatesPrevNext, dbMarkerCategorie
             dangerouslySetInnerHTML={{__html: `${FormatDateForTitle(date)} &#8211; ${FormatDateWeekdayLong(date)}`}}
           ></h2>
 
-          {date === dbDatesPrevNext.dateToday && (
+          {date === dbDatesPrevNext?.dateToday && (
             <span className="float-right relative bottom-6" title="Today">
               <CalendarDay className="block h-6 w-auto" strokeColor="#e5e7eb" />
             </span>
