@@ -77,4 +77,15 @@ class EntryRepository
             ->get();
         return $entry;
     }
+
+    public function getDate(string $date)
+    {
+        $entry = DB::table('entries')
+            ->where('enabled', true)
+            ->where('deleted', false)
+            ->whereDate('date', '=', $date)
+            ->limit(1)
+            ->first();
+        return $entry;
+    }
 }

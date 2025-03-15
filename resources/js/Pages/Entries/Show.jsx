@@ -131,7 +131,7 @@ export default function Show({ auth, dbEntry, dbDatesPrevNext, dbMarkerCategorie
           )}
 
           {!dbDatesPrevNext?.next && (
-            <Link href={route('entries.create')}>
+            <Link href={route('entries.next', dbDatesPrevNext?.tomorrow)}>
               <button className="px-2 font-bold text-white bg-green-400 rounded">&raquo;</button>
             </Link>
           )}
