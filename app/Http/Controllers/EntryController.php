@@ -142,8 +142,8 @@ class EntryController extends Controller
         $mentions = $this->mentionRepository->getIdNamePairsForEntry($entry->id);
         $tags = $this->tagRepository->getIdNamePairsForEntry($entry->id);
         return Inertia::render('Entries/Show')
-            ->with('dbEntry', $entry)
             ->with('dbDatesPrevNext', $datesPrevNext)
+            ->with('dbEntry', $entry)
             ->with('dbMarkerCategories', $markerCategories)
             ->with('dbMarkers', $markers)
             ->with('dbMentions', $mentions)
@@ -159,6 +159,13 @@ class EntryController extends Controller
     public function edit(Entry $entry)
     {
         $entryDate = Carbon::parse($entry['date']);
+
+        $datesPrevNext = [
+            'prev' => Entry::where('date', '<', $entryDate)->max('date'),
+            'next' => Entry::where('date', '>', $entryDate)->min('date'),
+            'dateToday' => Carbon::today(config('constants.timezone'))->toDateString(),
+            'dateNext' => $entryDate->addDay()->toDateString(),
+        ];
 
         $allTags = $this->tagRepository->getNamesSortedByFrequency();
         $suggestedTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_suggested_mentions'));
@@ -179,6 +186,7 @@ class EntryController extends Controller
         return Inertia::render('Entries/Edit')
             ->with('dbCurrentMentions', $currentMentions)
             ->with('dbCurrentTags', $currentTags)
+            ->with('dbDatesPrevNext', $datesPrevNext)
             ->with('dbEntry', $entry)
             ->with('dbMentions', $mentions)
             ->with('dbRecentMentions', $recentMentions)
