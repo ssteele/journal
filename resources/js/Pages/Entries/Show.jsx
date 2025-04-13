@@ -1,4 +1,4 @@
-import CalendarDay from '@/Components/Icons/CalendarDay';
+import New from '@/Components/Icons/New';
 import { MarkerColorMap } from '@/Constants/MarkerColorMap';
 import Authenticated from '@/Layouts/Authenticated';
 import GetMarkerCategory from '@/Utils/GetMarkerCategory';
@@ -7,7 +7,16 @@ import MarkupEntry from '@/Utils/MarkupEntry';
 import { Head, Link } from '@inertiajs/inertia-react';
 import React from 'react';
 
-export default function Show({ auth, dbEntry, dbDatesPrevNext, dbMarkerCategories = [], dbMarkers = [], dbMentions = [], dbTags = [], errors }) {
+export default function Show({
+  auth,
+  dbEntry,
+  dbDatesPrevNext,
+  dbMarkerCategories = [],
+  dbMarkers = [],
+  dbMentions = [],
+  dbTags = [],
+  errors,
+}) {
   const { date, tempo, entry } = dbEntry;
 
   function renderMarkers(markers, markerCategories) {
@@ -116,7 +125,7 @@ export default function Show({ auth, dbEntry, dbDatesPrevNext, dbMarkerCategorie
 
           {date === dbDatesPrevNext?.dateToday && (
             <span className="float-right relative bottom-6" title="Today">
-              <CalendarDay className="block h-6 w-auto" strokeColor="#e5e7eb" />
+              <New className="block h-8 w-auto" strokeColor="#000" />
             </span>
           )}
         </>
