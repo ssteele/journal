@@ -78,9 +78,15 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
     }
   }
 
-  function handleOpenAllToTabs() {
+  function handleOpenAllToTabsRead() {
     for (const { date } of mentionEntries) {
       window.open(route('entries.show', date));
+    }
+  }
+
+  function handleOpenAllToTabsEdit() {
+    for (const { date } of mentionEntries) {
+      window.open(route('entries.edit', date));
     }
   }
 
@@ -203,9 +209,17 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
               }
 
               {isDetailPanelOpen && mentionEntries?.length > 1 && (
-                <div className="flex justify-end mt-4">
-                  <Button onClick={() => handleOpenAllToTabs()}>
+                <div className="flex gap-4 justify-end mt-4">
+                  <Button onClick={() => handleOpenAllToTabsRead()}>
                     Open all
+                    <ExpandBox className="align-sub h-4 inline-block ml-4 text-white w-auto" />
+                  </Button>
+
+                  <Button
+                    className="bg-green-500"
+                    onClick={() => handleOpenAllToTabsEdit()}
+                  >
+                    Edit all
                     <ExpandBox className="align-sub h-4 inline-block ml-4 text-white w-auto" />
                   </Button>
                 </div>
