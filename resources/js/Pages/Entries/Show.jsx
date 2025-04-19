@@ -62,6 +62,12 @@ export default function Show({
     let tagsHash = {};
     let groupedByCount = {};
 
+    tags.sort((a, b) => {
+      if (a?.name < b?.name) return -1;
+      if (a?.name > b?.name) return 1;
+      return 0;
+    });
+
     tags.map(t => {
       tagsHash[t.id] = tagsHash[t.id] ? tagsHash[t.id] + 1 : 1;
       return t;
