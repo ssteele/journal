@@ -40,6 +40,8 @@ export default function CreateUpdateEntryForm({
   };
   const { data, errors, post, put, setData } = useForm(initialState);
 
+  const [currentTagsState, setCurrentTagsState] = useState(currentTags);
+
   const [annotationStartIndex, setAnnotationStartIndex] = useState(0);
   const [isAnnotatingStart, setIsAnnotatingStart] = useState(false);
   const [isAnnotating, setIsAnnotating] = useState(false);
@@ -154,6 +156,11 @@ export default function CreateUpdateEntryForm({
 
   useEffect(() => {
     if (null !== reset) {
+      const { searchTerm } = getAnnotationState();
+      console.log('SHS searchTerm:', searchTerm); // @debug
+      if (searchTerm.length) {
+        setCurrentTagsState([...new Set([...currentTagsState, searchTerm])]);
+      }
       setInputFocus(reset);
       setAnnotationStartIndex(0);
       setIsAnnotating(false);
@@ -284,6 +291,7 @@ export default function CreateUpdateEntryForm({
   }
 
   function getFilteredDailyTags(dailyTags, currentTags) {
+    console.log('SHS currentTags:', currentTags); // @debug
     const filteredTags = dailyTags.map((group) => {
       return group.filter(a => !currentTags.includes(a));
     });
@@ -423,7 +431,7 @@ export default function CreateUpdateEntryForm({
                   className="w-full p-4 border border-gray-200"
                 >
                   {
-                    getFilteredDailyTags(dailyTags, currentTags).map((group, i) => {
+                    getFilteredDailyTags(dailyTags, currentTagsState).map((group, i) => {
                       const colorIndex = i % DailyAnnotationsColors.length;
                       const color = DailyAnnotationsColors[colorIndex];
                       return group.map((annotation, j) => {
@@ -451,7 +459,7 @@ export default function CreateUpdateEntryForm({
                   className="w-full p-4 border border-gray-200"
                 >
                   {
-                    getFilteredRecentTags(recentTags, dailyTags, currentTags).map((annotation, i) => {
+                    getFilteredRecentTags(recentTags, dailyTags, currentTagsState).map((annotation, i) => {
                       return <AutoAnnotation
                         callback={populateTag}
                         key={i}
