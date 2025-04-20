@@ -1,3 +1,4 @@
+import SearchIcon from '@/Components/Icons/Search';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
@@ -44,8 +45,9 @@ export default function Search({ auth, errors: authErrors }) {
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             {!searchTerm?.length && (
-              <div className="p-6 bg-white border-b border-gray-200 text-center text-gray-500">
-                No search term entered
+              <div className="grid grid-cols-1 justify-items-center gap-8 px-6 py-12 bg-white border-b border-gray-200">
+                <SearchIcon className="block h-36 w-auto" strokeColor="#4b5563" />
+                <span className="text-gray-500">No search term entered</span>
               </div>
             )}
           </div>
