@@ -78,13 +78,21 @@ class EntryController extends Controller
      */
     public function create()
     {
+        $todayDate = Carbon::today(config('constants.timezone'));
         $nextDate = $this->entryRepository->getDateFollowing();
 
+        $allTags = $this->tagRepository->getNamesSortedByFrequency();
+        $suggestedTags = $this->tagRepository->getRecentNamesSortedByFrequency($todayDate, config('constants.day_limit_suggested_mentions'));
+        $tags = $suggestedTags->merge($allTags)->unique()->values();
+        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($todayDate, config('constants.day_limit_recent_tags'));
+
+        $allMentions = $this->mentionRepository->getNamesSortedByFrequency();
+        $suggestedMentions = $this->mentionRepository->getRecentNamesSortedByFrequency($todayDate, config('constants.day_limit_suggested_mentions'));
+        $mentions = $suggestedMentions->merge($allMentions)->unique()->values();
+        $recentMentions = $this->mentionRepository->getRecentNamesSortedByFrequency($todayDate, config('constants.day_limit_recent_mentions'));
+
         $snippets = $this->snippetRepository->getOrderedRepeating($nextDate);
-        $tags = $this->tagRepository->getNamesSortedByFrequency();
-        $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency(Carbon::today(config('constants.timezone')), config('constants.day_limit_recent_tags'));
-        $mentions = $this->mentionRepository->getNamesSortedByFrequency();
-        $recentMentions = $this->mentionRepository->getRecentNamesSortedByFrequency(Carbon::today(config('constants.timezone')), config('constants.day_limit_recent_mentions'));
+
         return Inertia::render('Entries/Create')
             ->with('dbMentions', $mentions)
             ->with('dbNextDate', $nextDate)
@@ -170,14 +178,12 @@ class EntryController extends Controller
         $allTags = $this->tagRepository->getNamesSortedByFrequency();
         $suggestedTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_suggested_mentions'));
         $tags = $suggestedTags->merge($allTags)->unique()->values();
-
         $recentTags = $this->tagRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_tags'));
         $currentTags = $this->tagRepository->getNamesForEntry($entry->id);
 
         $allMentions = $this->mentionRepository->getNamesSortedByFrequency();
         $suggestedMentions = $this->mentionRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_suggested_mentions'));
         $mentions = $suggestedMentions->merge($allMentions)->unique()->values();
-
         $recentMentions = $this->mentionRepository->getRecentNamesSortedByFrequency($entryDate, config('constants.day_limit_recent_mentions'));
         $currentMentions = $this->mentionRepository->getNamesForEntry($entry->id);
 
