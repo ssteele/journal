@@ -1,34 +1,18 @@
-import Button from '@/Components/Button';
 import Authenticated from '@/Layouts/Authenticated';
-import { Head, useForm } from '@inertiajs/inertia-react';
-import React from 'react';
+import { Head } from '@inertiajs/inertia-react';
+import React, { useState } from 'react';
 
-export default function Create({ auth, errors: authErrors }) {
-  const today = new Date();
+export default function Search({ auth, errors: authErrors }) {
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const initialState = {
-    startDate: '',
-    endDate: today.toISOString().slice(0, 10),
-  };
-  const { data, errors, setData } = useForm(initialState);
+  function searchEntries(e) {
+    const term = e?.target?.value;
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    const url = new URL(route('entries.download-export'));
-    const { startDate, endDate } = data;
-    if (!!startDate) {
-      url.searchParams.append('startDate', data?.startDate);
+    if ('Enter' === e.key && term.length) {
+      setSearchTerm(term);
+      console.log('SHS searchTerm:', searchTerm); // @debug
+      // @todo: search
     }
-    if (!!endDate) {
-      url.searchParams.append('endDate', data?.endDate);
-    }
-
-    // note: you can't trigger export download using ajax (inertiajs)
-    document.location = url.toString();
-
-    // @todo: flash notify
-    console.log('File exported');
   }
 
   return (
@@ -36,59 +20,34 @@ export default function Create({ auth, errors: authErrors }) {
       auth={auth}
       errors={authErrors}
       header={
-        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-          Export
-        </h2>
+        <div className="flex gap-4 justify-between items-center">
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+            <span>Search</span>
+          </h2>
+
+          <input
+            autoComplete="off"
+            autoFocus
+            className="w-full p-4 border border-gray-200"
+            label="Search"
+            name="search"
+            onKeyUp={e => searchEntries(e)}
+            placeholder="Search entries"
+            type="input"
+          />
+        </div>
       }
     >
-      <Head title="Export" />
+      <Head title="Search" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div className="p-6 bg-white border-b border-gray-200">
-              <form
-                // encType="multipart/form-data"
-                name="createExport"
-                onSubmit={handleSubmit}
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                  <div className="mb-4">
-                    <label>Start Date</label>
-                    <input
-                      className="w-full p-4 border-gray-200"
-                      label="date"
-                      name="date"
-                      onChange={e => setData('startDate', e?.target?.value)}
-                      type="date"
-                      value={data?.startDate}
-                    />
-                    <span className="text-red-600">
-                      {errors?.date}
-                    </span>
-                  </div>
-
-                  <div className="mb-4">
-                    <label>End Date</label>
-                    <input
-                      className="w-full p-4 border-gray-200"
-                      label="date"
-                      name="date"
-                      onChange={e => setData('endDate', e?.target?.value)}
-                      type="date"
-                      value={data?.endDate}
-                    />
-                    <span className="text-red-600">
-                      {errors?.date}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-4 flex justify-end">
-                  <Button type="submit">Export</Button>
-                </div>
-              </form>
-            </div>
+            {!searchTerm?.length && (
+              <div className="p-6 bg-white border-b border-gray-200 text-center text-gray-500">
+                No search term entered
+              </div>
+            )}
           </div>
         </div>
       </div>
