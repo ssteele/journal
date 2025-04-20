@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ApplicationLogo from '@/Components/Icons/ApplicationLogo';
-import BackArrow from '@/Components/Icons/BackArrow';
+import ApplicationLogoIcon from '@/Components/Icons/ApplicationLogo';
+import BackArrowIcon from '@/Components/Icons/BackArrow';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
@@ -67,7 +67,7 @@ export default function Authenticated({ auth, header, children }) {
               { !doRenderBackArrow && (
                 <div className="shrink-0 flex items-center">
                   <Link href="/">
-                    <ApplicationLogo className="block h-9 w-auto text-gray-500" />
+                    <ApplicationLogoIcon className="block h-9 w-auto text-gray-500" />
                   </Link>
                 </div>
               )}
@@ -75,7 +75,7 @@ export default function Authenticated({ auth, header, children }) {
               { doRenderBackArrow && (
                 <div className="shrink-0 flex items-center">
                   <Link href={routeBackArrow(route().current())}>
-                    <BackArrow className="block h-9 w-auto text-gray-600" />
+                    <BackArrowIcon className="block h-9 w-auto text-gray-600" />
                   </Link>
                 </div>
               )}

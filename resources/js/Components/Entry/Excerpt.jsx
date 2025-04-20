@@ -1,5 +1,5 @@
-import ExpandBox from '@/Components/Icons/ExpandBox';
-import ExpandVertical from '@/Components/Icons/ExpandVertical';
+import ExpandBoxIcon from '@/Components/Icons/ExpandBox';
+import ExpandVerticalIcon from '@/Components/Icons/ExpandVertical';
 import { FormatDateForInputField, FormatDateWeekdayLong } from '@/Utils/FormatDate';
 import React, { useEffect, useState } from 'react';
 
@@ -66,7 +66,7 @@ export default function Excerpt({ annotation, annotationType, entry: dbEntry }) 
     <div className="pt-4 pb-2 border-b border-gray-200">
       <div>
         <span className="cursor-pointer" onClick={() => expandExcerpt()}>
-          <ExpandVertical className="inline-block h-4 align-sub w-auto text-gray-600" />
+          <ExpandVerticalIcon className="inline-block h-4 align-sub w-auto text-gray-600" />
         </span>
 
         <span className="ml-2 inline sm:hidden">{ `${FormatDateForInputField(date)}` }</span>
@@ -78,7 +78,7 @@ export default function Excerpt({ annotation, annotationType, entry: dbEntry }) 
 
         <span className="float-right">
           <a href={route('entries.show', date)} target="_blank" rel="noopener noreferrer">
-            <ExpandBox className="inline-block h-4 align-sub w-auto text-gray-600" />
+            <ExpandBoxIcon className="inline-block h-4 align-sub w-auto text-gray-600" />
           </a>
         </span>
       </div>

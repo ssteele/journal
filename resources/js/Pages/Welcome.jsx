@@ -1,4 +1,4 @@
-import ApplicationLogo from '@/Components/Icons/ApplicationLogo';
+import ApplicationLogoIcon from '@/Components/Icons/ApplicationLogo';
 import { Link, Head } from '@inertiajs/inertia-react';
 import React from 'react';
 
@@ -41,7 +41,7 @@ export default function Welcome(props) {
 
         <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
           <h1 className="flex justify-center pt-8 sm:justify-start text-6xl">
-            <ApplicationLogo className="block h-32 w-auto text-gray-500" />ournal
+            <ApplicationLogoIcon className="block h-32 w-auto text-gray-500" />ournal
           </h1>
         </div>
       </div>

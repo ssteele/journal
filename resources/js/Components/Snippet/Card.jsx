@@ -1,4 +1,4 @@
-import RepeatClock from '@/Components/Icons/RepeatClock';
+import RepeatClockIcon from '@/Components/Icons/RepeatClock';
 import React from 'react';
 
 export default function Card({ dbSnippet }) {
@@ -31,7 +31,7 @@ export default function Card({ dbSnippet }) {
 
       {!!repeating && (
         <span className="my-0 ml-auto mr-0 pt-2 sm:col-span-2 sm:pt-0">
-          <RepeatClock className="w-5" strokeColor="#6b7280" />
+          <RepeatClockIcon className="w-5" strokeColor="#6b7280" />
         </span>
       )}
     </div>

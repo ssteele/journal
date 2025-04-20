@@ -1,4 +1,4 @@
-import New from '@/Components/Icons/New';
+import NewIcon from '@/Components/Icons/New';
 import { MarkerColorMap } from '@/Constants/MarkerColorMap';
 import Authenticated from '@/Layouts/Authenticated';
 import GetMarkerCategory from '@/Utils/GetMarkerCategory';
@@ -131,7 +131,7 @@ export default function Show({
 
           {date === dbDatesPrevNext?.dateToday && (
             <span className="float-right relative bottom-6" title="Today">
-              <New className="block h-8 w-auto" strokeColor="#000" />
+              <NewIcon className="block h-8 w-auto" strokeColor="#000" />
             </span>
           )}
         </>

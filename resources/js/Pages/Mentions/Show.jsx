@@ -3,9 +3,9 @@ import EditPanel from '@/Components/Annotation/Detail/EditPanel';
 import ExcerptPanel from '@/Components/Annotation/Detail/ExcerptPanel';
 import Timeline from '@/Components/Annotation/Timeline';
 import Button from '@/Components/Button';
-import Edit from '@/Components/Icons/Edit';
-import ExpandBox from '@/Components/Icons/ExpandBox';
-import XClose from '@/Components/Icons/XClose';
+import EditIcon from '@/Components/Icons/Edit';
+import ExpandBoxIcon from '@/Components/Icons/ExpandBox';
+import XCloseIcon from '@/Components/Icons/XClose';
 import { AnnotationDetailPanelTabs } from '@/Constants/AnnotationDetailPanelTabs';
 import Authenticated from '@/Layouts/Authenticated';
 import { ucFirst } from '@/Utils/String';
@@ -127,7 +127,7 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
         >
           {!isDetailPanelOpen && !isMobile && (
             <div className="mt-8 mr-6 float-right" onClick={() => handleOpenDetailBar()}>
-              <Edit className="block h-5 w-auto" strokeColor="#4b5563" />
+              <EditIcon className="block h-5 w-auto" strokeColor="#4b5563" />
             </div>
           )}
 
@@ -179,7 +179,7 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
                 </ul>
 
                 <span className="mt-2" onClick={() => handleCloseDetailBar()}>
-                  <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
+                  <XCloseIcon className="block h-5 w-auto" strokeColor="#4b5563" />
                 </span>
               </div>
 
@@ -212,7 +212,7 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
                 <div className="flex gap-4 justify-end mt-4">
                   <Button onClick={() => handleOpenAllToTabsRead()}>
                     Open all
-                    <ExpandBox className="align-sub h-4 inline-block ml-4 text-white w-auto" />
+                    <ExpandBoxIcon className="align-sub h-4 inline-block ml-4 text-white w-auto" />
                   </Button>
 
                   <Button
@@ -220,7 +220,7 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
                     onClick={() => handleOpenAllToTabsEdit()}
                   >
                     Edit all
-                    <ExpandBox className="align-sub h-4 inline-block ml-4 text-white w-auto" />
+                    <ExpandBoxIcon className="align-sub h-4 inline-block ml-4 text-white w-auto" />
                   </Button>
                 </div>
               )}
