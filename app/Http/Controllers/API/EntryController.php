@@ -77,13 +77,6 @@ class EntryController extends Controller
     {
         $user = \Auth::user();
         try {
-            // $entries = Entry::query()
-                // ->latest()
-                // ->select(['id', 'first_name', 'last_name', 'email', 'company', 'created_at'])
-                // ->where(function (Builder $subQuery) use ($searchTerm) {
-                //     $subQuery->where('entry', 'like', '%' . $searchTerm . '%');
-                // });
-
             $entries = DB::table('entries')
                 ->where('user_id', $user->id)
                 ->where('entry', 'like', '%' . $searchTerm . '%')
