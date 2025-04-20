@@ -2,22 +2,43 @@ import SearchIcon from '@/Components/Icons/Search';
 import LoadingSpinner from '@/Components/LoadingSpinner';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function Search({ auth, errors: authErrors }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
-  function searchEntries(e) {
+  useEffect(() => {
+    searchEntries(searchTerm);
+  }, [searchTerm]);
+
+  async function searchEntries(searchTerm) {
+    if (searchTerm.length) {
+      try {
+        setIsSearching(true);
+        const results = await fetch(route('api.entries.search', searchTerm))
+          .then(async response => response?.ok ? await response?.json() : null)
+          .catch(error => console.log(error?.message));
+
+        if (results?.length) {
+          console.log('SHS results:', results); // @debug
+          // @todo: render in calendar
+          // setEntries([...entries, ...more]);
+          // setLastEntryId(more[more?.length - 1]?.id);
+        }
+      } catch (error) {
+        console.error('There was a problem searching entries:', error);
+      } finally {
+        setIsSearching(false);
+      }
+    }
+  }
+
+  function pollSearchBar(e) {
     const term = e?.target?.value;
 
     if ('Enter' === e.key) {
       setSearchTerm(term);
-      if (term.length) {
-        setIsSearching(true);
-        // @todo: search
-        // setIsSearching(false);
-      }
     }
   }
 
@@ -37,7 +58,7 @@ export default function Search({ auth, errors: authErrors }) {
             className="w-full p-4 border border-gray-200"
             label="Search"
             name="search"
-            onKeyUp={e => searchEntries(e)}
+            onKeyUp={e => pollSearchBar(e)}
             placeholder="Search entries"
             type="input"
           />
