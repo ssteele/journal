@@ -89,7 +89,7 @@ export default function Search({ auth, errors: authErrors }) {
               {!searchTerm?.length && (
                 <div className="grid grid-cols-1 content-center justify-items-center gap-8 h-96 p-6 bg-white border-b border-gray-200">
                   <SearchIcon className="block h-36 w-auto" strokeColor="#4b5563" />
-                  <span className="text-gray-500">No search term entered</span>
+                  <span className="text-gray-500">Enter your search in the box above.</span>
                 </div>
               )}
             </div>
