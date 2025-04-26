@@ -1,7 +1,7 @@
 import ComparePanel from '@/Components/Annotation/Detail/ComparePanel';
 import EditPanel from '@/Components/Annotation/Detail/EditPanel';
 import ExcerptPanel from '@/Components/Annotation/Detail/ExcerptPanel';
-import Timeline from '@/Components/Annotation/Timeline';
+import AnnotationTimeline from '@/Components/Annotation/Timeline';
 import Button from '@/Components/Button';
 import EditIcon from '@/Components/Icons/Edit';
 import ExpandBoxIcon from '@/Components/Icons/ExpandBox';
@@ -139,13 +139,13 @@ export default function Show({ auth, errors, tag, tags = [], timeline = [] }) {
           )}
 
           <div className="p-6">
-            <Timeline
+            <AnnotationTimeline
               annotationMap={annotationMap}
               handleDayClick={handleDayClick}
               handleYearClick={handleYearClick}
               timelineFrequency={timelineFrequency}
               timelineYears={timelineYears}
-            ></Timeline>
+            ></AnnotationTimeline>
           </div>
 
           {isDetailPanelOpen && (
