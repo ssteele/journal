@@ -12,20 +12,30 @@ import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
 export default function Search({ auth, errors: authErrors }) {
-  const [searchTerm, setSearchTerm] = useState('implore');
-  // const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [entryExcerpts, setEntryExcerpts] = useState([]);
+  const [timeline, setTimeline] = useState([]);
+  const [timelineFrequency, setTimelineFrequency] = useState([]);
+  const [timelineYears, setTimelineYears] = useState([]);
 
-  // @todo: handle vars appropriately
   const annotationMap = [-1];
-  const timeline = [{ date: "2021-06-22", entryId: 4882, annotationId: -1 }];
-  const timelineFrequency = getTimelineFrequency(timeline);
-  const timelineYears = getTimelineYears(timelineFrequency);
 
   useEffect(() => {
     searchEntries(searchTerm);
   }, [searchTerm]);
+
+  useEffect(() => {
+    if (timeline?.length) {
+      setTimelineFrequency(getTimelineFrequency(timeline));
+    }
+  }, [timeline]);
+
+  useEffect(() => {
+    if (timelineFrequency?.length) {
+      setTimelineYears(getTimelineYears(timelineFrequency));
+    }
+  }, [timelineFrequency]);
 
   async function handleYearClick(year) {}
 
@@ -54,8 +64,7 @@ export default function Search({ auth, errors: authErrors }) {
         if (results?.length) {
           console.log('SHS results:', results); // @debug
           // @todo: render in calendar
-          // setEntries([...entries, ...more]);
-          // setLastEntryId(more[more?.length - 1]?.id);
+          setTimeline([{ date: "2021-06-22", entryId: 4882, annotationId: -1 }]);
         }
       } catch (error) {
         console.error('There was a problem searching entries:', error);
