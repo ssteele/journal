@@ -77,10 +77,7 @@ class EntryController extends Controller
     {
         $user = \Auth::user();
         try {
-            $entries = DB::table('entries')
-                ->where('user_id', $user->id)
-                ->where('entry', 'like', '%' . $searchTerm . '%')
-                ->get();
+            $entries = $this->entryRepository->search($searchTerm);
             if ($entries->count() > 0) {
                 return response()->json($entries);
             }
@@ -88,6 +85,7 @@ class EntryController extends Controller
         } catch (\Exception $e) {
             return response('Unable to get entries', 422);
         }
+        return response()->json($entries);
     }
 
     /**

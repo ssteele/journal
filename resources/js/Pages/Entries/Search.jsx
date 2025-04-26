@@ -12,6 +12,7 @@ import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
 export default function Search({ auth, errors: authErrors }) {
+  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [entryExcerpts, setEntryExcerpts] = useState([]);
@@ -22,17 +23,23 @@ export default function Search({ auth, errors: authErrors }) {
   const annotationMap = [-1];
 
   useEffect(() => {
-    searchEntries(searchTerm);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      searchEntries(searchTerm);
+    }
   }, [searchTerm]);
 
   useEffect(() => {
-    if (timeline?.length) {
+    if (!isLoading) {
       setTimelineFrequency(getTimelineFrequency(timeline));
     }
   }, [timeline]);
 
   useEffect(() => {
-    if (timelineFrequency?.length) {
+    if (!isLoading) {
       setTimelineYears(getTimelineYears(timelineFrequency));
     }
   }, [timelineFrequency]);
@@ -57,14 +64,12 @@ export default function Search({ auth, errors: authErrors }) {
     if (searchTerm.length) {
       try {
         setIsSearching(true);
-        const results = await fetch(route('api.entries.search', searchTerm))
+        const entryResults = await fetch(route('api.entries.search', searchTerm))
           .then(async response => response?.ok ? await response?.json() : null)
           .catch(error => console.log(error?.message));
 
-        if (results?.length) {
-          console.log('SHS results:', results); // @debug
-          // @todo: render in calendar
-          setTimeline([{ date: "2021-06-22", entryId: 4882, annotationId: -1 }]);
+        if (entryResults?.length) {
+          setTimeline(entryResults.map(({date, id}) => ({date, entryId: id, annotationId: -1})));
         }
       } catch (error) {
         console.error('There was a problem searching entries:', error);

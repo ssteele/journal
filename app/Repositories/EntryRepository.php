@@ -88,4 +88,21 @@ class EntryRepository
             ->first();
         return $entry;
     }
+
+    /**
+     * Search entries by search term.
+     *
+     * @param  string  $searchTerm
+     * @return \Illuminate\Http\JsonResponse 
+     */
+    public function search($searchTerm)
+    {
+        $user = \Auth::user();
+        $entries = DB::table('entries')
+            ->where('user_id', $user->id)
+            ->where('entry', 'like', '%' . $searchTerm . '%')
+            ->orderBy('date', 'desc')
+            ->get();
+        return $entries;
+    }
 }
