@@ -44,7 +44,33 @@ export default function Search({ auth, errors: authErrors }) {
     }
   }, [timelineFrequency]);
 
-  async function handleYearClick(year) {}
+  async function handleYearClick(year) {
+    const timelineYear = timelineYears.find(timelineYear => timelineYear?.year === parseInt(year));
+    const yearHasEntries = parseInt(timelineYear?.count) > 0;
+    if (!yearHasEntries) {
+      return;
+    }
+
+    const entriesList = await fetch(route('api.entries.list', { ids: timelineYear?.entryIds }))
+      .then(async response => response?.ok
+        ? await response?.json()
+        : [{ id: 0, date: new Date().toISOString().slice(0, 10), entry: 'Could not get entries' }]
+      )
+      .catch(error => console.log(error?.message));
+    ;
+
+    if (entriesList?.length) {
+      const entries = [];
+      for (const entryItem of entriesList) {
+        if (!entryExcerpts?.find(entry => entry?.id === entryItem?.id)) {
+          entries.push(entryItem);
+        }
+      }
+      if (entries.length) {
+        setEntryExcerpts([...entryExcerpts, ...entries].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
+      }
+    }
+  }
 
   async function handleDayClick(day) {
     if (!entryExcerpts?.find(entry => entry?.id === day?.entryId)) {
