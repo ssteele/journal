@@ -40,8 +40,23 @@ export default function Excerpt({ annotation, annotationType, entry: dbEntry }) 
     return [ellipsesBefore, ellipsesAfter];
   }
 
+  function getAnnotationSymbol(annotationType) {
+    switch (annotationType) {
+      case 'tag':
+        return '#';
+
+      case 'mention':
+        return '@';
+
+      case 'search':
+        return '';
+    }
+
+    throw new Error(`Unknown annotation type: ${annotationType}`);
+  }
+
   function getExcerpt(target, annotationType, entry, length = excerptLengthOptions[0]) {
-    const annotationSymbol = ('tag' === annotationType) ? '#' : '@';
+    const annotationSymbol = getAnnotationSymbol(annotationType);
     const [segBefore, segAfter] = entry.split(`${annotationSymbol}${target}`);
 
     const segBeforeSpaceIndices = getSpaceIndices(segBefore);

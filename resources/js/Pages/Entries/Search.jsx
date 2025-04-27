@@ -46,7 +46,21 @@ export default function Search({ auth, errors: authErrors }) {
 
   async function handleYearClick(year) {}
 
-  async function handleDayClick(day) {}
+  async function handleDayClick(day) {
+    if (!entryExcerpts?.find(entry => entry?.id === day?.entryId)) {
+      const entry = await fetch(route('api.entries.id', day?.entryId))
+        .then(async response => response?.ok
+          ? await response?.json()
+          : { id: 0, date: new Date().toISOString().slice(0, 10), entry: 'Could not get entry' }
+        )
+        .catch(error => console.log(error?.message));
+      ;
+
+      if (entry) {
+        setEntryExcerpts([...entryExcerpts, entry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
+      }
+    }
+  }
 
   function handleOpenAllToTabsRead() {
     // for (const { date } of tagEntries) {
@@ -83,7 +97,10 @@ export default function Search({ auth, errors: authErrors }) {
     const term = e?.target?.value;
 
     if ('Enter' === e.key) {
-      setSearchTerm(term);
+      if (term !== searchTerm) {
+        setEntryExcerpts([]);
+        setSearchTerm(term);
+      }
     }
   }
 
@@ -152,7 +169,7 @@ export default function Search({ auth, errors: authErrors }) {
                     </div>
 
                     <ExcerptPanel
-                      annotation=""
+                      annotation={{name: searchTerm}}
                       annotationType="search"
                       annotationEntries={entryExcerpts}
                     />
