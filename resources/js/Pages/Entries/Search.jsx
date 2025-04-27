@@ -89,15 +89,15 @@ export default function Search({ auth, errors: authErrors }) {
   }
 
   function handleOpenAllToTabsRead() {
-    // for (const { date } of tagEntries) {
-    //   window.open(route('entries.show', date));
-    // }
+    for (const { date } of entryExcerpts) {
+      window.open(route('entries.show', date));
+    }
   }
 
   function handleOpenAllToTabsEdit() {
-    // for (const { date } of tagEntries) {
-    //   window.open(route('entries.edit', date));
-    // }
+    for (const { date } of entryExcerpts) {
+      window.open(route('entries.edit', date));
+    }
   }
 
   async function searchEntries(searchTerm) {
