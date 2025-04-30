@@ -81,9 +81,9 @@ class EntryController extends Controller
             if ($entries->count() > 0) {
                 return response()->json($entries);
             }
-            throw new \Exception('No entries found');
+            throw new \Exception('No search results');
         } catch (\Exception $e) {
-            return response('Unable to get entries', 422);
+            return response('No search results', 422);
         }
         return response()->json($entries);
     }
