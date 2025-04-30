@@ -108,8 +108,10 @@ export default function Search({ auth, errors: authErrors }) {
           .then(async response => response?.ok ? await response?.json() : null)
           .catch(error => console.log(error?.message));
 
-        if (entryResults?.length) {
+        if (!!entryResults && entryResults?.length) {
           setTimeline(entryResults.map(({date, id}) => ({date, entryId: id, annotationId: -1})));
+        } else {
+          console.error('There was a problem searching entries');
         }
       } catch (error) {
         console.error('There was a problem searching entries:', error);
@@ -166,14 +168,14 @@ export default function Search({ auth, errors: authErrors }) {
           {!isSearching && (
             <div
               className={`
-                ${!!searchTerm?.length ? 'grid grid-cols-1 md:grid-cols-2' : ''}
+                ${!!searchTerm?.length && !!entryExcerpts?.length ? 'grid grid-cols-1 md:grid-cols-2' : ''}
                 bg-white
                 overflow-hidden
                 shadow-sm
                 sm:rounded-lg
               `}
             >
-              {!!searchTerm?.length && (
+              {!!searchTerm?.length && !!entryExcerpts?.length && (
                 <>
                   <div className="p-6">
                     <AnnotationTimeline
@@ -224,6 +226,13 @@ export default function Search({ auth, errors: authErrors }) {
                 <div className="grid grid-cols-1 content-center justify-items-center gap-8 h-96 p-6 bg-white border-b border-gray-200">
                   <SearchIcon className="block h-36 w-auto" strokeColor="#4b5563" />
                   <span className="text-gray-500">Enter your search in the box above.</span>
+                </div>
+              )}
+
+              {!!searchTerm.length && !entryExcerpts?.length && (
+                <div className="grid grid-cols-1 content-center justify-items-center gap-8 h-96 p-6 bg-white border-b border-gray-200">
+                  <SearchIcon className="block h-36 w-auto" strokeColor="#4b5563" />
+                  <span className="text-gray-500">No search results found for { searchTerm }.</span>
                 </div>
               )}
             </div>
