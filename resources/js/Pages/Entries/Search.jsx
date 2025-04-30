@@ -168,14 +168,14 @@ export default function Search({ auth, errors: authErrors }) {
           {!isSearching && (
             <div
               className={`
-                ${!!searchTerm?.length && !!entryExcerpts?.length ? 'grid grid-cols-1 md:grid-cols-2' : ''}
+                ${!!searchTerm?.length && !!timeline?.length ? 'grid grid-cols-1 md:grid-cols-2' : ''}
                 bg-white
                 overflow-hidden
                 shadow-sm
                 sm:rounded-lg
               `}
             >
-              {!!searchTerm?.length && !!entryExcerpts?.length && (
+              {!!searchTerm?.length && !!timeline?.length && (
                 <>
                   <div className="p-6">
                     <AnnotationTimeline
@@ -229,7 +229,7 @@ export default function Search({ auth, errors: authErrors }) {
                 </div>
               )}
 
-              {!!searchTerm.length && !entryExcerpts?.length && (
+              {!!searchTerm.length && !timeline?.length && (
                 <div className="grid grid-cols-1 content-center justify-items-center gap-8 h-96 p-6 bg-white border-b border-gray-200">
                   <SearchIcon className="block h-36 w-auto" strokeColor="#4b5563" />
                   <span className="text-gray-500">No search results found for { searchTerm }.</span>
