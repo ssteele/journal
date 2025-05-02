@@ -53,6 +53,11 @@ export default function Search({ auth, errors: authErrors }) {
     }
   }, [timelineYears]);
 
+  function resetSearch() {
+    setTimeline([]);
+    setEntryExcerpts([]);
+  }
+
   async function handleYearClick(year) {
     const timelineYear = timelineYears.find(timelineYear => timelineYear?.year === parseInt(year));
     const yearHasEntries = parseInt(timelineYear?.count) > 0;
@@ -120,12 +125,11 @@ export default function Search({ auth, errors: authErrors }) {
           setTimeline(entryResults.map(({date, id}) => ({date, entryId: id, annotationId: -1})));
         } else {
           console.error('There was a problem searching entries');
-          setIsSearching(false);
-          setSearchTerm('');
+          resetSearch();
         }
       } catch (error) {
-        setIsSearching(false);
         console.error('There was a problem searching entries:', error);
+        resetSearch();
       }
     }
   }
