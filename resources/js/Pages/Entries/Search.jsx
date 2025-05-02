@@ -12,7 +12,7 @@ import { Head } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
 export default function Search({ auth, errors: authErrors }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [entryExcerpts, setEntryExcerpts] = useState([]);
@@ -23,26 +23,35 @@ export default function Search({ auth, errors: authErrors }) {
   const annotationMap = [-1];
 
   useEffect(() => {
-    setIsLoading(false);
+    setIsInitializing(false);
   }, []);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isInitializing) {
+      if (searchTerm?.length) {
+        setIsSearching(true);
+      }
       searchEntries(searchTerm);
     }
   }, [searchTerm]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isInitializing) {
       setTimelineFrequency(getTimelineFrequency(timeline));
     }
   }, [timeline]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isInitializing) {
       setTimelineYears(getTimelineYears(timelineFrequency));
     }
   }, [timelineFrequency]);
+
+  useEffect(() => {
+    if (!isInitializing) {
+      setIsSearching(false);
+    }
+  }, [timelineYears]);
 
   async function handleYearClick(year) {
     const timelineYear = timelineYears.find(timelineYear => timelineYear?.year === parseInt(year));
@@ -103,7 +112,6 @@ export default function Search({ auth, errors: authErrors }) {
   async function searchEntries(searchTerm) {
     if (searchTerm.length) {
       try {
-        setIsSearching(true);
         const entryResults = await fetch(route('api.entries.search', searchTerm))
           .then(async response => response?.ok ? await response?.json() : null)
           .catch(error => console.log(error?.message));
@@ -112,11 +120,12 @@ export default function Search({ auth, errors: authErrors }) {
           setTimeline(entryResults.map(({date, id}) => ({date, entryId: id, annotationId: -1})));
         } else {
           console.error('There was a problem searching entries');
+          setIsSearching(false);
+          setSearchTerm('');
         }
       } catch (error) {
-        console.error('There was a problem searching entries:', error);
-      } finally {
         setIsSearching(false);
+        console.error('There was a problem searching entries:', error);
       }
     }
   }
@@ -126,8 +135,8 @@ export default function Search({ auth, errors: authErrors }) {
 
     if ('Enter' === e.key) {
       if (term !== searchTerm) {
-        setEntryExcerpts([]);
         setSearchTerm(term);
+        setEntryExcerpts([]);
       }
     }
   }
