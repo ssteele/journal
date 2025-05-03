@@ -91,10 +91,9 @@ export default function Search({ auth, errors: authErrors }) {
       const entry = await fetch(route('api.entries.id', day?.entryId))
         .then(async response => response?.ok
           ? await response?.json()
-          : { id: 0, date: new Date().toISOString().slice(0, 10), entry: 'Could not get entry' }
+          : { id: 0, date: new Date().toISOString().slice(0, 10), entry: `Could not get entry containing "${searchTerm}"` }
         )
         .catch(error => console.log(error?.message));
-      ;
 
       if (entry) {
         setEntryExcerpts([...entryExcerpts, entry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
