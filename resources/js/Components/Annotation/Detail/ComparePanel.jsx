@@ -42,9 +42,9 @@ export default function ComparePanel({ annotation, annotations, annotationType }
             className="w-full p-4 border border-gray-200"
             label="Search"
             name="search"
-            onKeyUp={e => searchAnnotations(e)}
+            onChange={e => searchAnnotations(e)}
             placeholder="Search annotations"
-            type="input"
+            type="search"
           />
         </div>
 
