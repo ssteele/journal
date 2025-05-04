@@ -123,7 +123,6 @@ export default function Search({ auth, errors: authErrors }) {
         if (!!entryResults && entryResults?.length) {
           setTimeline(entryResults.map(({date, id}) => ({date, entryId: id, annotationId: -1})));
         } else {
-          console.error('There was a problem searching entries');
           resetSearch();
         }
       } catch (error) {
