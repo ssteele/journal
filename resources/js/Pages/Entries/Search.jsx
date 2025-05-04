@@ -189,6 +189,10 @@ export default function Search({ auth, errors: authErrors }) {
               {!!searchTerm?.length && !!timeline?.length && (
                 <>
                   <div className="p-6">
+                    <div className="mb-12 font-semibold text-gray-800 leading-tight">
+                      {searchTerm} <span className="text-xs font-thin">({timeline.length})</span>
+                    </div>
+
                     <AnnotationTimeline
                       annotationMap={annotationMap}
                       handleDayClick={handleDayClick}
