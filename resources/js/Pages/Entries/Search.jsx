@@ -161,7 +161,7 @@ export default function Search({ auth, errors: authErrors }) {
             name="search"
             onKeyUp={e => pollSearchBar(e)}
             placeholder="Search entries"
-            type="input"
+            type="search"
           />
         </div>
       }
