@@ -40,7 +40,7 @@ class EntryController extends Controller
                 ->firstOrFail();
             return response()->json($entry);
         } catch (\Exception $e) {
-            return response('Unable to get entry', 422);
+            return response('No entry found', 422);
         }
     }
 
@@ -63,7 +63,7 @@ class EntryController extends Controller
             }
             throw new \Exception('No entries found');
         } catch (\Exception $e) {
-            return response('Unable to get entries', 422);
+            return response('No entries found', 422);
         }
     }
 
@@ -85,7 +85,6 @@ class EntryController extends Controller
         } catch (\Exception $e) {
             return response('No search results', 422);
         }
-        return response()->json($entries);
     }
 
     /**
