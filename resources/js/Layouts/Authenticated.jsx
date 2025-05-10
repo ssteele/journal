@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ApplicationLogo from '@/Components/Icons/ApplicationLogo';
-import BackArrow from '@/Components/Icons/BackArrow';
+import ApplicationLogoIcon from '@/Components/Icons/ApplicationLogo';
+import BackArrowIcon from '@/Components/Icons/BackArrow';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
@@ -10,20 +10,21 @@ export default function Authenticated({ auth, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
   const doRenderBackArrow = [
     'entries.create',
-    'entries.show',
-    'entries.edit',
-    'entries.create-upload',
     'entries.create-export',
+    'entries.create-upload',
+    'entries.edit',
+    'entries.search',
+    'entries.show',
     'markers.index',
+    'mentions.compare',
     'mentions.index',
     'mentions.show',
-    'mentions.compare',
     'snippets.create',
     'snippets.edit',
     'snippets.index',
+    'tags.compare',
     'tags.index',
     'tags.show',
-    'tags.compare',
   ].includes(route().current());
   
   function routeBackArrow(currentRoute) {
@@ -66,7 +67,7 @@ export default function Authenticated({ auth, header, children }) {
               { !doRenderBackArrow && (
                 <div className="shrink-0 flex items-center">
                   <Link href="/">
-                    <ApplicationLogo className="block h-9 w-auto text-gray-500" />
+                    <ApplicationLogoIcon className="block h-9 w-auto text-gray-500" />
                   </Link>
                 </div>
               )}
@@ -74,7 +75,7 @@ export default function Authenticated({ auth, header, children }) {
               { doRenderBackArrow && (
                 <div className="shrink-0 flex items-center">
                   <Link href={routeBackArrow(route().current())}>
-                    <BackArrow className="block h-9 w-auto text-gray-600" />
+                    <BackArrowIcon className="block h-9 w-auto text-gray-600" />
                   </Link>
                 </div>
               )}
@@ -126,6 +127,10 @@ export default function Authenticated({ auth, header, children }) {
 
                     <Dropdown.Link href={route('entries.index')} as="a" method="get">
                       Entries
+                    </Dropdown.Link>
+
+                    <Dropdown.Link href={route('entries.search')} as="a" method="get">
+                      Search
                     </Dropdown.Link>
 
                     <Dropdown.Link href={route('entries.create')} as="a" method="get">
@@ -280,6 +285,12 @@ export default function Authenticated({ auth, header, children }) {
           <div className="pb-1">
             <ResponsiveNavLink href={route('markers.index')} active={route().current('markers.index')}>
               Markers
+            </ResponsiveNavLink>
+          </div>
+
+          <div className="pb-1">
+            <ResponsiveNavLink href={route('entries.search')} active={route().current('entries.search')}>
+              Search
             </ResponsiveNavLink>
           </div>
 

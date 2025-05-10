@@ -303,6 +303,16 @@ class EntryController extends Controller
     }
 
     /**
+     * Show the entry search page
+     *
+     * @return Response
+     */
+    public function search()
+    {
+        return Inertia::render('Entries/Search');
+    }
+
+    /**
      * Show the form for saving several journal entries
      *
      * @return Response

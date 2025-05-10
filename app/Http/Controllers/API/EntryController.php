@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Entry;
 use App\Repositories\EntryRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EntryController extends Controller
 {
@@ -39,7 +40,7 @@ class EntryController extends Controller
                 ->firstOrFail();
             return response()->json($entry);
         } catch (\Exception $e) {
-            return response('Unable to get entry', 422);
+            return response('No entry found', 422);
         }
     }
 
@@ -62,7 +63,27 @@ class EntryController extends Controller
             }
             throw new \Exception('No entries found');
         } catch (\Exception $e) {
-            return response('Unable to get entries', 422);
+            return response('No entries found', 422);
+        }
+    }
+
+    /**
+     * Search entries by search term.
+     *
+     * @param  string  $searchTerm
+     * @return \Illuminate\Http\JsonResponse 
+     */
+    public function search($searchTerm)
+    {
+        $user = \Auth::user();
+        try {
+            $entries = $this->entryRepository->search($searchTerm);
+            if ($entries->count() > 0) {
+                return response()->json($entries);
+            }
+            throw new \Exception('No search results');
+        } catch (\Exception $e) {
+            return response('No search results', 422);
         }
     }
 

@@ -1,11 +1,11 @@
 import ComparePanel from '@/Components/Annotation/Detail/ComparePanel';
 import EditPanel from '@/Components/Annotation/Detail/EditPanel';
 import ExcerptPanel from '@/Components/Annotation/Detail/ExcerptPanel';
-import Timeline from '@/Components/Annotation/Timeline';
+import AnnotationTimeline from '@/Components/Annotation/Timeline';
 import Button from '@/Components/Button';
-import Edit from '@/Components/Icons/Edit';
-import ExpandBox from '@/Components/Icons/ExpandBox';
-import XClose from '@/Components/Icons/XClose';
+import EditIcon from '@/Components/Icons/Edit';
+import ExpandBoxIcon from '@/Components/Icons/ExpandBox';
+import XCloseIcon from '@/Components/Icons/XClose';
 import { AnnotationDetailPanelTabs } from '@/Constants/AnnotationDetailPanelTabs';
 import Authenticated from '@/Layouts/Authenticated';
 import { ucFirst } from '@/Utils/String';
@@ -21,7 +21,7 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
 
   const [currentDetailPanelTab, setCurrentDetailPanelTab] = useState(AnnotationDetailPanelTabs.Edit);
   const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(!isMobile);
-  const [mentionEntries, setMentionEntries] = useState([]);
+  const [entryExcerpts, setEntryExcerpts] = useState([]);
 
   function isActiveTab(tab) {
     return tab === currentDetailPanelTab;
@@ -51,12 +51,12 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
     if (entriesList.length) {
       const entries = [];
       for (const entryItem of entriesList) {
-        if (!mentionEntries?.find(entry => entry?.id === entryItem?.id)) {
+        if (!entryExcerpts?.find(entry => entry?.id === entryItem?.id)) {
           entries.push(entryItem);
         }
       }
       if (entries.length) {
-        setMentionEntries([...mentionEntries, ...entries].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
+        setEntryExcerpts([...entryExcerpts, ...entries].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
       }
     }
   }
@@ -67,25 +67,25 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
     }
     setCurrentDetailPanelTab(AnnotationDetailPanelTabs.Excerpts);
 
-    if (!mentionEntries?.find(entry => entry?.id === day?.entryId)) {
+    if (!entryExcerpts?.find(entry => entry?.id === day?.entryId)) {
       const mentionEntry = await fetch(route('api.entries.id', day?.entryId))
         .then(async response => response?.ok ? await response?.json() : null)
         .catch(error => console.log(error?.message));
 
       if (mentionEntry) {
-        setMentionEntries([...mentionEntries, mentionEntry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
+        setEntryExcerpts([...entryExcerpts, mentionEntry].sort((a, b) => new Date(a?.date) - new Date(b?.date)));
       }
     }
   }
 
   function handleOpenAllToTabsRead() {
-    for (const { date } of mentionEntries) {
+    for (const { date } of entryExcerpts) {
       window.open(route('entries.show', date));
     }
   }
 
   function handleOpenAllToTabsEdit() {
-    for (const { date } of mentionEntries) {
+    for (const { date } of entryExcerpts) {
       window.open(route('entries.edit', date));
     }
   }
@@ -127,18 +127,18 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
         >
           {!isDetailPanelOpen && !isMobile && (
             <div className="mt-8 mr-6 float-right" onClick={() => handleOpenDetailBar()}>
-              <Edit className="block h-5 w-auto" strokeColor="#4b5563" />
+              <EditIcon className="block h-5 w-auto" strokeColor="#4b5563" />
             </div>
           )}
 
           <div className="p-6">
-            <Timeline
+            <AnnotationTimeline
               annotationMap={annotationMap}
               handleDayClick={handleDayClick}
               handleYearClick={handleYearClick}
               timelineFrequency={timelineFrequency}
               timelineYears={timelineYears}
-            ></Timeline>
+            ></AnnotationTimeline>
           </div>
 
           {isDetailPanelOpen && (
@@ -155,7 +155,7 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
                     { ucFirst(AnnotationDetailPanelTabs.Edit) }
                   </li>
 
-                  {!!mentionEntries.length && (
+                  {!!entryExcerpts.length && (
                     <li
                       className={`
                         px-4 py-1 rounded-t-md cursor-pointer
@@ -179,7 +179,7 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
                 </ul>
 
                 <span className="mt-2" onClick={() => handleCloseDetailBar()}>
-                  <XClose className="block h-5 w-auto" strokeColor="#4b5563" />
+                  <XCloseIcon className="block h-5 w-auto" strokeColor="#4b5563" />
                 </span>
               </div>
 
@@ -195,7 +195,7 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
                     <ExcerptPanel
                       annotation={mention}
                       annotationType="mention"
-                      annotationEntries={mentionEntries}
+                      annotationEntries={entryExcerpts}
                     />
                   ),
                   compare: (
@@ -208,11 +208,11 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
                 }[currentDetailPanelTab]
               }
 
-              {isDetailPanelOpen && mentionEntries?.length > 1 && (
+              {isDetailPanelOpen && entryExcerpts?.length > 1 && (
                 <div className="flex gap-4 justify-end mt-4">
                   <Button onClick={() => handleOpenAllToTabsRead()}>
                     Open all
-                    <ExpandBox className="align-sub h-4 inline-block ml-4 text-white w-auto" />
+                    <ExpandBoxIcon className="align-sub h-4 inline-block ml-4 text-white w-auto" />
                   </Button>
 
                   <Button
@@ -220,7 +220,7 @@ export default function Show({ auth, errors, mention, mentions = [], timeline = 
                     onClick={() => handleOpenAllToTabsEdit()}
                   >
                     Edit all
-                    <ExpandBox className="align-sub h-4 inline-block ml-4 text-white w-auto" />
+                    <ExpandBoxIcon className="align-sub h-4 inline-block ml-4 text-white w-auto" />
                   </Button>
                 </div>
               )}

@@ -6,7 +6,7 @@ import { isMobile } from 'react-device-detect';
 import 'react-calendar-heatmap/dist/styles.css';
 import '@/../css/react-calendar-heatmap.css';
 
-export default function Timeline({
+export default function AnnotationTimeline({
   annotationMap,
   handleDayClick = null,
   handleYearClick = null,

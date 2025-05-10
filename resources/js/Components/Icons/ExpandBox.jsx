@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ExpandBox({ className }) {
+export default function ExpandBoxIcon({ className }) {
   return (
     <svg className={className} x="0px" y="0px" viewBox="0 0 122.6 122.88" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
       <g>

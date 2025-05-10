@@ -1,5 +1,5 @@
 import CreateUpdateEntryForm from '@/Components/Forms/CreateUpdateEntryForm';
-import New from '@/Components/Icons/New';
+import NewIcon from '@/Components/Icons/New';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
 import React from 'react';
@@ -25,7 +25,7 @@ export default function Create({
           </h2>
 
           <span className="float-right relative bottom-6" title="New">
-            <New className="block h-8 w-auto" strokeColor="#000" />
+            <NewIcon className="block h-8 w-auto" strokeColor="#000" />
           </span>
         </>
       }

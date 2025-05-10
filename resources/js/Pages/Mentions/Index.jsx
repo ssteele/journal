@@ -43,9 +43,9 @@ export default function Index({ auth, errors, mentions = [] }) {
                 className="w-full p-4 border border-gray-200"
                 label="Search"
                 name="search"
-                onKeyUp={e => searchMentions(e)}
+                onChange={e => searchMentions(e)}
                 placeholder="Search mentions"
-                type="input"
+                type="search"
               />
             </div>
 
